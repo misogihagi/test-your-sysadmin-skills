@@ -100,7 +100,7 @@
 ###### システムに関する質問 (37)
 
 <details>
-<summary><b>Give some examples of Linux distribution. What is your favorite distro and why?</b></summary><br>
+<summary><b>Linuxディストリビューションの例をいくつか挙げてください。あなたのお気に入りのディストリビューションは何ですか？その理由は？</b></summary><br>
 - Red Hat Enterprise Linux
 - Fedora
 - CentOS
@@ -114,110 +114,111 @@
 - Kali
 - Backbox
 
-My favorite Linux distribution:
+私のお気に入りのLinuxディストリビューション:
 
-- **Arch Linux**, which offers a nice minimalist base system on which one can build a custom operating system. The beauty of it too is that it has the Arch User Repository (AUR), which when combined with its official binary repositories allows it to probably have the largest repositories of any distribution. Its packaging process is also very simple, which means if one wants a package not in its official repositories or the AUR, it should be easy to make it for oneself.
-- **Linux Mint**, which is also built from Ubuntu LTS releases, but features editions featuring a few different desktop environments, including Cinnamon, MATE and Xfce. Mint is quite polished and its aesthetics are rather appealing, I especially like its new icon theme, although I do quite dislike its GTK+ theme (too bland to my taste). I’ve also found a bug in its latest release Mint 19, that is getting quite irritating as I asked for with it over a fortnight ago on their forums and I have received no replies so far and it is a bug that makes my life on it more difficult.
-- **Kali Linux**, is a Debian-based Linux distribution aimed at advanced Penetration Testing and Security Auditing. Kali contains several hundred tools which are geared towards various information security tasks, such as Penetration Testing, Security research, Computer Forensics and Reverse Engineering.
+- **Arch Linux** は、カスタムオペレーティングシステムを構築するための最小限の基本システムを提供します。また、公式のバイナリリポジトリと組み合わせると、おそらくすべてのディストリビューションの中で最大のリポジトリを持つ可能性があるArchユーザーリポジトリ（AUR）も持っています。パッケージングプロセスも非常に簡単で、公式リポジトリやAURにないパッケージが欲しい場合、自分で作成するのも容易です。
+- **Linux Mint** は、Ubuntu LTSリリースから派生しており、Cinnamon、MATE、Xfceなど、いくつかの異なるデスクトップ環境を特徴としています。Mintは非常に洗練されており、その美学は非常に魅力的です。特に新しいアイコンテーマが気に入っていますが、GTK+テーマは私の好みに合わないのであまり好きではありません。最新リリースのMint 19ではバグがあり、約2週間前にフォーラムで質問しましたが、まだ返信がなく、そのバグは私の生活を少し不便にしています。
+- **Kali Linux** は、上級のペネトレーションテストやセキュリティ監査を目的としたDebianベースのLinuxディストリビューションです。Kaliには、ペネトレーションテスト、セキュリティリサーチ、コンピューターフォレンジクス、リバースエンジニアリングなど、さまざまな情報セキュリティタスクに向けた数百のツールが含まれています。
 
-Useful resources:
+役立つリソース:
 
-- [List of Linux distributions](https://en.wikipedia.org/wiki/List_of_Linux_distributions)
-- [What is your favorite Linux distro and why?](https://www.quora.com/What-is-your-favorite-Linux-distro-and-why)
-
-</details>
-
-<details>
-<summary><b>What are the differences between Unix, Linux, BSD, and GNU?</b></summary><br>
-
-**GNU** isn't really an OS. It's more of a set of rules or philosophies that govern free software, that at the same time gave birth to a bunch of tools while trying to create an OS. So **GNU** tools are basically open versions of tools that already existed, but were reimplemented to conform to principals of open software. **GNU/Linux** is a mesh of those tools and the **Linux kernel** to form a complete OS, but there are other GNUs, e.g. **GNU/Hurd**.
-
-**Unix** and **BSD** are "older" implementations of POSIX that are various levels of "closed source". **Unix** is usually totally closed source, but there are as many flavors of **Unix** as there are **Linux** (if not more). **BSD** is not usually considered "open", but it was considered to be very open when it was released. Its licensing also allowed for commercial use with far fewer restrictions than the more "open" licenses of the time allowed.
-
-**Linux** is the newest of the four. Strictly speaking, it's "just a kernel"; however, in general, it's thought of as a full OS when combined with GNU Tools and several other core components.
-
-The main governing differences between these are their ideals. **Unix**, **Linux**, and **BSD** have different ideals that they implement. They are all POSIX, and are all basically interchangeable. They do solve some of the same problems in different ways. So other then ideals and how they choose to implement POSIX standards, there is little difference.
-
-For more info I suggest your read a brief article on the creation of **GNU**, **OSS**, **Linux**, **BSD**, and **UNIX**. They will be slanted towards their individual ideas, but those articles should give you a better idea of the differences.
-
-Useful resources:
-
-- [What is the difference between Unix, Linux, BSD and GNU? (original)](https://unix.stackexchange.com/questions/104714/what-is-the-difference-between-unix-linux-bsd-and-gnu)
-- [The Great Debate: Is it Linux or GNU/Linux?](https://www.howtogeek.com/139287/the-great-debate-is-it-linux-or-gnulinux/)
+- [Linuxディストリビューションの一覧](https://en.wikipedia.org/wiki/List_of_Linux_distributions)
+- [あなたのお気に入りのLinuxディストリビューションは何ですか？その理由は？](https://www.quora.com/What-is-your-favorite-Linux-distro-and-why)
 
 </details>
 
 <details>
-<summary><b>What is a CLI? Tell me about your favorite CLI tools, tips, and hacks.</b></summary><br>
+<summary><b>Unix、Linux、BSD、GNUの違いは何ですか？</b></summary><br>
 
-**CLI** is an acronym for Command Line Interface or Command Language Interpreter. The command line is one of the most powerful ways to control your system/computer.
+**GNU** は実際にはOSではありません。むしろ、自由ソフトウェアを統治する一連のルールや哲学であり、同時にOSを作成しようとする過程で多くのツールを生み出しました。つまり、**GNU**ツールは、すでに存在していたツールのオープンバージョンであり、オープンソフトウェアの原則に従って再実装されたものです。**GNU/Linux** は、これらのツールと **Linuxカーネル** を組み合わせた完全なOSですが、他にも**GNU/Hurd**のようなGNUが存在します。
 
-In Unix like systems, **CLI** is the interface by which a user can type commands for the system to execute. The **CLI** is very powerful, but is not very error-tolerant.
+**Unix** と **BSD** は、さまざまなレベルの「クローズドソース」であるPOSIXの「古い」実装です。**Unix** は通常、完全にクローズドソースですが、**Unix**のフレーバーは **Linux** のフレーバーと同じくらい多いかもしれません。**BSD** は通常「オープン」とは見なされませんが、リリースされた当時は非常にオープンだと考えられていました。ライセンスも、当時の「よりオープン」なライセンスよりも、商業利用に対してはるかに少ない制約を持っていました。
 
-The **CLI** allows you to do manipulations with your system’s internals and with code in a much more fine-tuned way. It offers greater flexibility and control than a GUI regardless of what OS is used. Many programs that you might want to use in your software that are hosted on say Github also require running some commands on the **CLI** in order to get them running.
+**Linux** はこの4つの中で最も新しいです。厳密には「カーネルのみ」です。しかし、一般的には、GNUツールやその他のコアコンポーネントと組み合わせることで、完全なOSと見なされます。
 
-**My favorite tools**
+これらの主な違いは、その理想にあります。**Unix**、**Linux**、**BSD** は、それぞれ異なる理想を実装しています。すべてPOSIXに準拠しており、基本的に互換性があります。彼らは同じ問題を異なる方法で解決することもあります。そのため、理想とPOSIX標準の実装方法以外には、大きな違いはほとんどありません。
 
-- `screen` - free terminal multiplexer, I can start a session and My terminals will be saved even when you connection is lost, so you can resume later or from home
-- `ssh` - the most valuable over-all command to learn, I can use it to do some amazing things:
-  * mount a file system over the internet with `sshfs`
-  * forward commands: runs against a `rsync` server with no `rsync` deamon by starting one itself via ssh
-  * run in batch files: I can redirect the output from the remote command and use it within local batch file
-- `vi/vim` - is the most popular and powerful text editor, it's universal, it's work very fast, even on large files
-- `bash-completion` - contains a number of predefined completion rules for shell
+詳細については、**GNU**、**OSS**、**Linux**、**BSD**、**UNIX** の作成に関する簡単な記事を読むことをお勧めします。それらは個々の理想に傾倒していますが、これらの記事を読むことで、違いをよりよく理解できるでしょう。
 
-**Tips & Hacks**
+役立つリソース:
 
-- searches the command history with `CTRL + R`
-- `popd/pushd` and other shell builtins which allow you manipulate the directory stack
-- editing keyboard shortcuts like a `CTRL + U`, `CTRL + E`
-- combinations will be auto-expanded:
-  * `!*` - all arguments of last command
-  * `!!` - the whole of last command
-  * `!ssh` - last command starting with ssh
-
-Useful resources:
-
-- [Command Line Interface Definition](http://www.linfo.org/command_line_interface.html)
-- [What is your single most favorite command-line trick using Bash?](https://stackoverflow.com/questions/68372/what-is-your-single-most-favorite-command-line-trick-using-bash/69716)
-- [What are your favorite command line features or tricks?](https://unix.stackexchange.com/questions/6/what-are-your-favorite-command-line-features-or-tricks)
+- [Unix、Linux、BSD、GNUの違いは何ですか？ (オリジナル)](https://unix.stackexchange.com/questions/104714/what-is-the-difference-between-unix-linux-bsd-and-gnu)
+- [大論争: それはLinuxか、GNU/Linuxか？](https://www.howtogeek.com/139287/the-great-debate-is-it-linux-or-gnulinux/)
 
 </details>
 
 <details>
-<summary><b>What is your favorite shell and why?</b></summary><br>
+<summary><b>CLIとは何ですか？お気に入りのCLIツール、ヒント、ハックについて教えてください。</b></summary><br>
 
-**BASH** is my favorite. It’s really a preferential kind of thing, where I love the syntax and it just "clicks" for me. The input/output redirection syntax (`>>`, `<< 2>&1`, `2>`, `1>`, etc) is similar to C++ which makes it easier for me to recognize.
+**CLI** はコマンドラインインターフェースまたはコマンド言語インタープリタの略です。コマンドラインはシステムやコンピュータを制御するための最も強力な方法の一つです。
 
-I also like the **ZSH** shell, because is much more customizable than **BASH**. It has the Oh-My-Zsh framework, powerful context based tab completion, pattern matching/globbing on steroids, loadable modules and more.
+Unixのようなシステムでは、**CLI** はユーザーがシステムに実行させるコマンドを入力できるインターフェースです。**CLI** は非常に強力ですが、エラーに対して寛容ではありません。
 
-Useful resources:
+**CLI** を使用すると、システムの内部やコードを非常に細かく操作できます。どのOSを使用していても、GUIよりも柔軟性とコントロールを提供します。Githubにホストされているソフトウェアを使用する場合、**CLI** でいくつかのコマンドを実行して動作させる必要があることが多いです。
 
-- [Comparison of command shells](https://en.wikipedia.org/wiki/Comparison_of_command_shells)
+**お気に入りのツール**
+
+- `screen` - 無料のターミナルマルチプレクサーで、セッションを開始すると、接続が切断されてもターミナルが保存されるので、後で再開したり、自宅から再開できます。
+- `ssh` - 学ぶべき最も価値のあるコマンドで、次のような驚くべきことができます:
+  * `sshfs` を使用してインターネット経由でファイルシステムをマウント
+  * コマンドを転送：`rsync` デーモンがないサーバーで、ssh経由で自分で開始して実行
+  * バッチファイルで実行：リモートコマンドの出力をリダイレクトしてローカルバッチファイル内で使用
+- `vi/vim` - 最も人気があり強力なテキストエディタで、汎用性が高く、大きなファイルでも非常に高速に動作します。
+- `bash-completion` - シェルのためのいくつかの事前定義された補完ルールを含んでいます。
+
+**ヒント & ハック**
+
+- `CTRL + R` でコマンド履歴を検索
+- ディレクトリスタックを操作できる `popd/pushd` などのシェル組み込みコマンド
+- `CTRL + U`、`CTRL + E` などの編集キーボードショートカット
+- 組み合わせが自動展開されます:
+  * `!*` - 最後のコマンドのすべての引数
+  * `!!` - 最後のコマンド全体
+  * `!ssh` - sshで始まる最後のコマンド
+
+役立つリソース:
+
+- [コマンドラインインターフェースの定義](http://www.linfo.org/command_line_interface.html)
+- [Bashを使用したお気に入りのコマンドライントリックは何ですか？](https://stackoverflow.com/questions/68372/what-is-your-single-most-favorite-command-line-trick-using-bash/69716)
+- [お気に入りのコマンドライン機能やトリックは何ですか？](https://unix.stackexchange.com/questions/6/what-are-your-favorite-command-line-features-or-tricks)
 
 </details>
 
 <details>
-<summary><b>How do you get help on the command line? ***</b></summary><br>
+<summary><b>お気に入りのシェルは何ですか？その理由は？</b></summary><br>
 
-- `man` [commandname] can be used to see a description of a command (ex.: `man less`, `man cat`)
+**BASH** が私のお気に入りです。これは個人的な好みの問題で、シンタックスが好きで、自分にとってしっくりくるからです。入力/出力のリダイレクトシンタックス（`>>`、`<< 2>&1`、`2>`、`1>` など）はC++に似ているので、認識しやすいです。
 
-- `-h` or `--help` some programs will implement printing instructions when passed this parameter (ex.: `python -h` and `python --help`)
+また、**ZSH** シェルも好きです。**BASH** よりもはるかにカスタマイズ性が高いからです。Oh-My-Zshフレームワーク、強力なコンテキストベースのタブ補完、パターンマッチング/グロービングの強化、ロード可能なモジュールなどがあります。
+
+役立つリソース:
+
+- [コマンドシェルの比較](https://en.wikipedia.org/wiki/Comparison_of_command_shells)
+
+</details>
+
+
+<details>
+<summary><b>コマンドラインでヘルプを得るにはどうすればよいですか？***</b></summary><br>
+
+- `man` [コマンド名] を使用して、コマンドの説明を見ることができます（例: `man less`、`man cat`）
+
+- `-h` または `--help` 一部のプログラムでは、このパラメータを渡すと使い方の説明が表示されます（例: `python -h` や `python --help`）
 
 </details>
 
 <details>
-<summary><b>Your first 5 commands on a *nix server after login.</b></summary><br>
+<summary><b>ログイン後に*nixサーバーで最初に実行する5つのコマンド</b></summary><br>
 
-- `w` - a lot of great information in there with the server uptime
-- `top` - you can see all running processes, then order them by CPU, memory utilization and more
-- `netstat` - to know on what port and IP your server is listening on and what processes are using those
-- `df` - reports the amount of available disk space being used by file systems
-- `history` - tell you what was previously run by the user you are currently connected to
+- `w` - サーバーの稼働時間などの多くの有用な情報が表示されます
+- `top` - 実行中のすべてのプロセスを確認し、CPUやメモリの使用量などで並べ替えることができます
+- `netstat` - サーバーがどのポートとIPでリッスンしているか、およびそれを使用しているプロセスを確認できます
+- `df` - ファイルシステムによって使用されているディスクスペースの利用状況を報告します
+- `history` - 現在接続しているユーザーが以前に実行したコマンドを表示します
 
-Useful resources:
+役立つリソース:
 
-- [First 5 Commands When I Connect on a Linux Server (original)](https://www.linux.com/blog/first-5-commands-when-i-connect-linux-server)
+- [Linuxサーバーに接続した際の最初の5つのコマンド (オリジナル)](https://www.linux.com/blog/first-5-commands-when-i-connect-linux-server)
 
 </details>
 
