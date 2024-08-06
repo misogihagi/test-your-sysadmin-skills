@@ -223,121 +223,123 @@ Unixのようなシステムでは、**CLI** はユーザーがシステムに�
 </details>
 
 <details>
-<summary><b>What do the fields in <code>ls -al</code> output mean?</b></summary><br>
+<summary><b><code>ls -al</code>の出力におけるフィールドの意味は何ですか？</b></summary><br>
 
-In the order of output:
+出力の順序は以下の通りです:
 
 ```bash
 -rwxrw-r--    1    root   root 2048    Jan 13 07:11 db.dump
 ```
 
-- file permissions,
-- number of links,
-- owner name,
-- owner group,
-- file size,
-- time of last modification,
-- file/directory name
+- ファイルのアクセス権限、
+- リンクの数、
+- 所有者の名前、
+- 所有者のグループ、
+- ファイルサイズ、
+- 最終更新時刻、
+- ファイル/ディレクトリ名
 
-File permissions is displayed as following:
+ファイルのアクセス権限は以下のように表示されます:
 
-- first character is `-` or `l` or `d`, `d` indicates a directory, a `-` represents a file, `l` is a symlink (or soft link) - special type of file
-- three sets of characters, three times, indicating permissions for owner, group and other:
-  - `r` = readable
-  - `w` = writable
-  - `x` = executable
+- 最初の文字は `-`、`l`、または `d` で、`d` はディレクトリ、`-` はファイル、`l` はシンボリックリンク（またはソフトリンク） - 特殊なファイルタイプを示します
+- 3セットの文字が3回表示され、所有者、グループ、その他のアクセス権限を示します:
+  - `r` = 読み取り可能
+  - `w` = 書き込み可能
+  - `x` = 実行可能
 
-In your example `-rwxrw-r--`, this means the line displayed is:
+あなたの例では `-rwxrw-r--` は以下を意味します:
 
-- a regular file (displayed as `-`)
-- readable, writable and executable by owner (`rwx`)
-- readable, writable, but not executable by group (`rw-`)
-- readable but not writable or executable by other (`r--`)
+- 通常のファイル（`-` と表示される）
+- 所有者によって読み取り、書き込み、実行が可能 (`rwx`)
+- グループによって読み取り、書き込みが可能、実行は不可 (`rw-`)
+- その他のユーザーによって読み取り可能で、書き込みや実行は不可 (`r--`)
 
-Useful resources:
+役立つリソース:
 
-- [What do the fields in ls -al output mean? (original)](https://unix.stackexchange.com/questions/103114/what-do-the-fields-in-ls-al-output-mean)
+- [<code>ls -al</code>の出力におけるフィールドの意味は何ですか？（オリジナル）](https://unix.stackexchange.com/questions/103114/what-do-the-fields-in-ls-al-output-mean)
 
 </details>
 
 <details>
-<summary><b>How do you get a list of logged-in users?</b></summary><br>
+<summary><b>ログインしているユーザーのリストを取得するにはどうすればよいですか？</b></summary><br>
 
-For a summary of logged-in users, including each login of a username, the terminal users are attached to, the date/time they logged in, and possibly the computer from which they are making the connection, enter:
+ログインしているユーザーの概要、各ユーザーのログイン、端末、ログイン日時、および接続元のコンピュータ（可能な場合）を含む情報を表示するには、次のコマンドを入力します：
 
 ```bash
-# It uses /var/run/utmp and /var/log/wtmp files to get the details.
+# これには、/var/run/utmp および /var/log/wtmp ファイルを使用して詳細情報を取得します。
 who
 ```
 
-For extensive information, including username, terminal, IP number of the source computer, the time the login began, any idle time, process CPU cycles, job CPU cycles, and the currently running command, enter:
+より詳細な情報、例えばユーザー名、端末、ソースコンピュータのIP番号、ログインが開始された時間、アイドル時間、プロセスのCPUサイクル、ジョブのCPUサイクル、現在実行中のコマンドなどを含む情報を取得するには、次のコマンドを入力します：
 
 ```bash
-# It uses /var/run/utmp, and their processes /proc.
+# それには、/var/run/utmp および /proc のプロセスが使用されます。
 w
 ```
 
-Also important for displays a list of last logged in users, enter:
+最後にログインしたユーザーのリストを表示するには、次のコマンドを入力します：
 
 ```bash
-# It uses /var/log/wtmp.
+# /var/log/wtmpを使用します。
 last
 ```
 
-Useful resources:
+役立つリソース：
 
 - [4 Ways to Identify Who is Logged-In on Your Linux System](https://www.thegeekstuff.com/2009/03/4-ways-to-identify-who-is-logged-in-on-your-linux-system/)
 
 </details>
 
 <details>
-<summary><b>What is the advantage of executing the running processes in the background? How can you do that?</b></summary><br>
+<summary><b>バックグラウンドでプロセスを実行する利点は何ですか？どうやってそれを行うことができますか？</b></summary><br>
 
-The most significant advantage of executing the running process in the background is that you can do any other task simultaneously while other processes are running in the background. So, more processes can be completed in the background while you are working on different processes. It can be achieved by adding a special character `&` at the end of the command.
+バックグラウンドでプロセスを実行する最も大きな利点は、他のプロセスがバックグラウンドで実行されている間に、同時に他のタスクを実行できることです。これにより、他のプロセスを作業しながらバックグラウンドでより多くのプロセスを完了できます。これは、コマンドの最後に特別な文字 `&` を追加することで実現できます。
 
-Generally applications that take too long to execute and doesn't require user interaction are sent to background so that we can continue our work in terminal.
+一般的に、実行に時間がかかり、ユーザーの操作を必要としないアプリケーションは、バックグラウンドに送信され、ターミナルでの作業を続けることができます。
 
-For example if you want to download something in background, you can:
+たとえば、バックグラウンドで何かをダウンロードしたい場合、次のように実行できます：
 
 ```bash
 wget https://url-to-download.com/download.tar.gz &
 ```
 
-When you run the above command you get the following output:
+
+コマンドを実行すると、次のような出力が得られます：
 
 ```bash
 [1] 2203
 ```
 
-Here 1 is the serial number of job and 2203 is PID of the job.
+ここで、1はジョブのシリアル番号で、2203はジョブのPIDです。
 
-You can see the jobs running in background using the following command:
+バックグラウンドで実行中のジョブを確認するには、次のコマンドを使用します：
 
 ```bash
 jobs
 ```
 
-When you execute job in background it give you a PID of job, you can kill the job running in background using the following command:
+バックグラウンドで実行中のジョブに対してPIDが表示され、ジョブを終了するには次のコマンドを使用します：
 
 ```bash
 kill PID
 ```
 
-Replace the PID with the PID of the job. If you have only one job running you can bring it to foreground using:
+PIDはジョブのPIDに置き換えてください。バックグラウンドで1つのジョブのみが実行されている場合、次のコマンドでそれを前面に持ってくることができます：
 
 ```bash
 fg
 ```
 
-If you have multiple jobs running in background you can bring any job in foreground using:
+バックグラウンドで複数のジョブが実行されている場合、次のコマンドを使用して任意のジョブを前面に持ってくることができます：
 
 ```bash
 fg %#
 ```
 
-Replace the `#` with serial number of the job.
+<details>
+<summary><b>ジョブのシリアル番号を `#` に置き換えてください。</b></summary><br>
 
-Useful resources:
+有用なリソース：
 
 - [How do I run a Unix process in the background?](https://kb.iu.edu/d/afnz)
 - [Job Control Commands](http://tldp.org/LDP/abs/html/x9644.html)
@@ -346,26 +348,26 @@ Useful resources:
 </details>
 
 <details>
-<summary><b>Before you can manage processes, you must be able to identify them. Which tools will you use? ***</b></summary><br>
+<summary><b>プロセスを管理する前に、それらを識別できる必要があります。どのツールを使用しますか？ ***</b></summary><br>
 
-To be completed.
+未完成です。
 
 </details>
 
 <details>
-<summary><b>Running the command as root user. It is a good or bad practices?</b></summary><br>
+<summary><b>rootユーザーとしてコマンドを実行することは良い習慣ですか、それとも悪い習慣ですか？</b></summary><br>
 
-Running (everything) as root is bad because:
+すべてをrootとして実行することは悪い習慣です。その理由は以下の通りです：
 
-- **Stupidity**: nothing prevents you from making a careless mistake. If you try to change the system in any potentially harmful way, you need to use sudo, which ensures a pause (while you're entering the password) to ensure that you aren't about to make a mistake.
+- **愚かさ**: 不注意なミスを防ぐものがありません。システムに潜在的に危害を加える変更を試みる場合は、`sudo` を使用する必要があります。これにより、パスワードを入力する際に一時停止があり、ミスを犯す可能性がないことを確認できます。
 
-- **Security**: harder to hack if you don't know the admin user's login account. root means you already have one half of the working set of admin credentials.
+- **セキュリティ**: 管理者ユーザーのログインアカウントを知らなければ、ハッキングが難しくなります。rootはすでに管理者の認証情報の半分を持っていることになります。
 
-- **You don't really need it**: if you need to run several commands as root, and you're annoyed by having to enter your password several times when `sudo` has expired, all you need to do is `sudo -i` and you are now root. Want to run some commands using pipes? Then use `sudo sh -c "command1 | command2"`.
+- **本当に必要ない**: 複数のコマンドをrootとして実行する必要があり、`sudo` が期限切れになるたびにパスワードを何度も入力するのが面倒な場合は、`sudo -i` を実行すればrootになります。パイプを使ってコマンドを実行したい場合は、`sudo sh -c "command1 | command2"` を使用してください。
 
-- **You can always use it in the recovery console**: the recovery console allows you to recover from a major mistake, or fix a problem caused by an app (which you still had to run as `sudo`). Ubuntu doesn't have a password for the root account in this case, but you can search online for changing that - this will make it harder for anyone that has physical access to your box to be able to do harm.
+- **リカバリコンソールで使用することができます**: リカバリコンソールを使用すると、大きなミスから回復することができるほか、アプリケーション（`sudo` として実行する必要があったもの）によって引き起こされた問題を修正できます。Ubuntuでは、rootアカウントにパスワードは設定されていませんが、変更方法をオンラインで検索することができます。これにより、物理的にアクセスできる人が損害を与えるのが難しくなります。
 
-Useful resources:
+有用なリソース：
 
 - [Why is it bad to log in as root? (original)](https://askubuntu.com/questions/16178/why-is-it-bad-to-log-in-as-root)
 - [What's wrong with always being root?](https://serverfault.com/questions/57962/whats-wrong-with-always-being-root)
@@ -374,11 +376,11 @@ Useful resources:
 </details>
 
 <details>
-<summary><b>How to check memory stats and CPU stats?</b></summary><br>
+<summary><b>メモリ統計とCPU統計を確認するにはどうすればよいですか？</b></summary><br>
 
-You'd use `top/htop` for both. Using `free` and `vmstat` command we can display the physical and virtual memory statistics respectively. With the help of `sar` command we see the CPU utilization & other stats (but `sar` isn't even installed in most systems).
+どちらも `top/htop` を使用します。物理メモリと仮想メモリの統計を表示するには、`free` と `vmstat` コマンドを使用します。CPUの使用率やその他の統計を確認するには、`sar` コマンドを使用します（ただし、`sar` は多くのシステムにはインストールされていません）。
 
-Useful resources:
+有用なリソース：
 
 - [How do I Find Out Linux CPU Utilization?](https://www.cyberciti.biz/tips/how-do-i-find-out-linux-cpu-utilization.html)
 - [16 Linux server monitoring commands you really need to know](https://www.hpe.com/us/en/insights/articles/16-linux-server-monitoring-commands-you-really-need-to-know-1703.html)
@@ -386,24 +388,24 @@ Useful resources:
 </details>
 
 <details>
-<summary><b>What is load average?</b></summary><br>
+<summary><b>ロードアベレージとは何ですか？</b></summary><br>
 
-Linux **load averages** are "system load averages" that show the running thread (task) demand on the system as an average number of running plus waiting threads. This measures demand, which can be greater than what the system is currently processing. Most tools show three averages, for 1, 5, and 15 minutes.
+Linuxの**ロードアベレージ**は、「システムロードアベレージ」を示し、システム上の実行中のスレッド（タスク）の要求を、実行中および待機中のスレッドの平均数として表示します。これは、システムが現在処理している以上の要求を測定します。ほとんどのツールでは、1分、5分、15分の3つの平均が表示されます。
 
-These 3 numbers are not the numbers for the different CPUs. These numbers are mean values of the load number for a given period of time (of the last 1, 5 and 15 minutes).
+これらの3つの数字は、異なるCPUの数字ではありません。これらの数字は、指定された期間（直近の1分、5分、15分）のロード数の平均値です。
 
-**Load average** is usually described as "average length of run queue". So few CPU-consuming processes or threads can raise **load average** above 1. There is no problem if **load average** is less than total number of CPU cores. But if it gets higher than number of CPUs, this means some threads/processes will stay in queue, ready to run, but waiting for free CPU.
+**ロードアベレージ**は通常「実行キューの平均長さ」として説明されます。したがって、少数のCPU消費プロセスやスレッドが**ロードアベレージ**を1を超えて上昇させる可能性があります。**ロードアベレージ**がCPUコアの総数未満であれば問題はありません。しかし、CPUの数を超えると、いくつかのスレッド/プロセスがキューに留まり、実行の準備が整っているが、空きCPUを待っていることを意味します。
 
-It is meant to give you an idea of the state of the system, averaged over several periods of time. Since it is averaged, it takes time for it to go back to 0 after a heavy load was placed on the system.
+これは、システムの状態をいくつかの期間にわたって平均化したものを示すためのものであり、平均化されているため、システムに重い負荷がかかった後は0に戻るのに時間がかかります。
 
-Some interpretations:
+いくつかの解釈：
 
-- if the averages are 0.0, then your system is idle
-- if the 1 minute average is higher than the 5 or 15 minute averages, then load is increasing
-- if the 1 minute average is lower than the 5 or 15 minute averages, then load is decreasing
-- if they are higher than your CPU count, then you might have a performance problem (it depends)
+- 平均が0.0の場合、システムはアイドル状態です。
+- 1分間の平均が5分または15分の平均より高い場合、負荷が増加しています。
+- 1分間の平均が5分または15分の平均より低い場合、負荷が減少しています。
+- これらの数値がCPUの数を超える場合、パフォーマンスに問題があるかもしれません（依存します）。
 
-Useful resources:
+有用なリソース：
 
 - [Linux Load Averages: Solving the Mystery (original)](http://www.brendangregg.com/blog/2017-08-08/linux-load-averages.html)
 - [Linux load average - the definitive summary](http://blog.angulosolido.pt/2015/04/linux-load-average-definitive-summary.html)
@@ -412,19 +414,19 @@ Useful resources:
 </details>
 
 <details>
-<summary><b>Where is my password stored on Linux/Unix?</b></summary><br>
+<summary><b>Linux/Unixでは、私のパスワードはどこに保存されていますか？</b></summary><br>
 
-The passwords are not stored anywhere on the system at all. What is stored in `/etc/shadow` are so called hashes of the passwords.
+パスワードはシステム上にはどこにも保存されていません。`/etc/shadow` に保存されているのは、いわゆるパスワードのハッシュです。
 
-A hash of some text is created by performing a so called one way function on the text (password), thus creating a string to check against. By design it is "impossible" (computationally infeasible) to reverse that process.
+テキスト（パスワード）のハッシュは、テキストに対していわゆる一方向関数を実行することで作成され、チェック用の文字列が生成されます。設計上、このプロセスを逆にすることは「不可能」（計算上困難）です。
 
-Older Unix variants stored the encrypted passwords in `/etc/passwd` along with other information about each account.
+古いUnixのバリアントでは、暗号化されたパスワードが `/etc/passwd` に保存されており、各アカウントに関するその他の情報も含まれていました。
 
-Newer ones simply have a `*` in the relevant field in `/etc/passwd` and use `/etc/shadow` to store the password, in part to ensure nobody gets read access to the passwords when they only need the other stuff (`shadow` is usually protected more strongly than `passwd`).
+新しいバリアントでは、関連するフィールドに `*` があり、パスワードを保存するために `/etc/shadow` を使用します。これは、他の情報だけが必要な場合にパスワードへの読み取りアクセスを誰も得られないようにするためです（`shadow` は通常、`passwd` よりも強く保護されています）。
 
-For more info consult `man crypt`, `man shadow`, `man passwd`.
+詳細については、`man crypt`、`man shadow`、`man passwd` を参照してください。
 
-Useful resources:
+有用なリソース：
 
 - [Where is my password stored on Linux?](https://security.stackexchange.com/questions/37050/where-is-my-password-stored-on-linux)
 - [Where are the passwords of the users located in Linux?](https://www.cyberciti.biz/faq/where-are-the-passwords-of-the-users-located-in-linux/)
@@ -433,146 +435,150 @@ Useful resources:
 </details>
 
 <details>
-<summary><b>How to recursively change permissions for all directories except files and for all files except directories?</b></summary><br>
+<summary><b>すべてのディレクトリのパーミッションを変更するにはどうすればよいですか？ファイルを除いてすべてのディレクトリに、ファイルを除いてすべてのファイルに適用するにはどうすればよいですか？</b></summary><br>
 
-To change all the directories e.g. to **755** (`drwxr-xr-x`):
+すべてのディレクトリのパーミッションを例えば **755**（`drwxr-xr-x`）に変更するには：
+
+```bash
+find /path/to/directory -type d -exec chmod 755 {} +
 
 ```bash
 find /opt/data -type d -exec chmod 755 {} \;
 ```
 
-To change all the files e.g. to **644** (`-rw-r--r--`):
+すべてのファイルのパーミッションを例えば **644**（`-rw-r--r--`）に変更するには：
 
 ```bash
 find /opt/data -type f -exec chmod 644 {} \;
 ```
 
-Useful resources:
+役立つリソース：
 
-- [How do I set chmod for a folder and all of its subfolders and files? (original)](https://stackoverflow.com/questions/3740152/how-do-i-set-chmod-for-a-folder-and-all-of-its-subfolders-and-files?rq=1)
+- [フォルダおよびそのサブフォルダとファイルすべてに対してchmodを設定するには？（原文）](https://stackoverflow.com/questions/3740152/how-do-i-set-chmod-for-a-folder-and-all-of-its-subfolders-and-files?rq=1)
 
 </details>
 
 <details>
-<summary><b>Every command fails with <code>command not found</code>. How to trace the source of the error and resolve it?</b></summary><br>
+<summary><b>すべてのコマンドが <code>command not found</code> で失敗します。エラーの原因を特定して解決するにはどうすればよいですか？</b></summary><br>
 
-It looks that at one point or another are overwriting the default `PATH` environment variable. The type of errors you have, indicates that `PATH` does not contain e.g. `/bin`, where the commands (including bash) reside.
+この問題は、`PATH` 環境変数がどこかで上書きされていることが原因です。エラーの内容から、`PATH` に `/bin` など、コマンド（bash を含む）が存在するディレクトリが含まれていないことが示唆されます。
 
-One way to begin debugging your bash script or command would be to start a subshell with the `-x` option:
+デバッグを始める一つの方法は、`-x` オプションを使ってサブシェルを起動することです：
 
 ```bash
 bash --login -x
 ```
 
-This will show you every command, and its arguments, which is executed when starting that shell.
+これにより、そのシェルを起動する際に実行されるすべてのコマンドとその引数が表示されます。
 
-Also very helpful is show `PATH` variable values:
+また、`PATH` 変数の値を表示することも非常に役立ちます：
 
 ```bash
 echo $PATH
 ```
 
-If you run this:
+次のコマンドを実行すると：
 
 ```bash
 PATH=/bin:/sbin:/usr/bin:/usr/sbin
 ```
 
-most commands should start working - and then you can edit `~/.bash_profile` instead of `~/.bashrc` and fix whatever is resetting `PATH` there. Default `PATH` variable values for **root** and other users is in `/etc/profile` file.
+ほとんどのコマンドが動作するようになります。その後、~/.bash_profile を編集し、~/.bashrc ではなく、PATH をリセットしている原因を修正します。root および他のユーザーのデフォルトの PATH 変数の値は /etc/profile ファイルに記載されています。
 
-Useful resource:
+有用なリソース：
 
-- [How to correctly add a path to PATH?](https://unix.stackexchange.com/questions/26047/how-to-correctly-add-a-path-to-path)
+- [PATHにパスを正しく追加するにはどうすればよいですか？](https://unix.stackexchange.com/questions/26047/how-to-correctly-add-a-path-to-path)
 
 </details>
 
 <details>
-<summary><b>You typing <code>CTRL + C</code> but your script still running. How do you stop it? </b></summary><br>
+<summary><b><code>CTRL + C</code> を押してもスクリプトがまだ実行中です。どうやって停止しますか？</b></summary><br>
 
-In most cases, you can stop a running script by using the `CTRL + C` keyboard combination. This sends an interrupt signal (SIGINT) to the script, which terminates its execution. If this does not work and the script is still running, you can try using the `CTRL + \` combination, which sends a quit signal (SIGQUIT) to the script, which may terminate it immediately.
+ほとんどの場合、スクリプトを停止するには `CTRL + C` キーボードコンビネーションを使用します。これにより、スクリプトに中断信号（SIGINT）が送信され、その実行が終了します。これが機能しない場合、スクリプトがまだ実行中である場合は、`CTRL + \` コンビネーションを使用してみてください。これにより、スクリプトに終了信号（SIGQUIT）が送信され、即座に終了する可能性があります。
 
-Alternatively, if you are using a terminal or command line interface, you can try using the `kill` command to send a signal to the script process. You can find the process ID (PID) of the script by using the `ps` or `top` command, and then use `kill` with the PID to stop the script.
+別の方法として、ターミナルやコマンドラインインターフェースを使用している場合は、`kill` コマンドを使ってスクリプトプロセスに信号を送信することもできます。`ps` または `top` コマンドを使用してスクリプトのプロセスID（PID）を見つけ、`kill` コマンドでそのPIDを指定してスクリプトを停止します。
 
-In some cases, you may need to use the `kill -9` command to force the script to stop, as the regular kill command may not work if the script is stuck or not responding. The `-9` option sends a SIGKILL signal, which forces the process to stop immediately.
+場合によっては、`kill -9` コマンドを使用してスクリプトを強制的に停止する必要があるかもしれません。通常の `kill` コマンドがスクリプトがスタックしている場合や応答していない場合に機能しないことがあります。`-9` オプションはSIGKILL信号を送信し、プロセスを即座に停止させます。
+
 </details>
 
 <details>
-<summary><b>What is <code>grep</code> command? How to match multiple strings in the same line?</b></summary><br>
+<summary><b><code>grep</code> コマンドとは何ですか？同じ行に複数の文字列を一致させるにはどうすればよいですか？</b></summary><br>
 
-The `grep` utilities are a family of Unix tools, including `egrep` and `fgrep`.
+`grep` ユーティリティは、`egrep` や `fgrep` を含むUnixツールのファミリーです。
 
-`grep` searches file patterns. If you are looking for a specific pattern in the output of another command, `grep` highlights the relevant lines. Use this grep command for searching log files, specific processes, and more.
+`grep` はファイルパターンを検索します。他のコマンドの出力の中から特定のパターンを探している場合、`grep` は関連する行を強調表示します。ログファイルや特定のプロセスなどを検索する際にこの `grep` コマンドを使用します。
 
-For match multiple strings:
+複数の文字列を一致させるには：
 
 ```bash
 grep -E "string1|string2" filename
 ```
 
-or
+または
 
 ```bash
 grep -e "string1" -e "string2" filename
 ```
 
-Useful resources:
+有用なリソース：
 
-- [What is grep, and how do I use it? (original)](https://kb.iu.edu/d/afiy)
-
-</details>
-
-<details>
-<summary><b>Explain the file content commands along with the description.</b></summary><br>
-
-- `head`: to check the starting of a file.
-- `tail`: to check the ending of the file. It is the reverse of head command.
-- `cat`: used to view, create, concatenate the files.
-- `more`: used to display the text in the terminal window in pager form.
-- `less`: used to view the text in the backward direction and also provides single line movement.
-
-Useful resources:
-
-- [Viewing text files from the shell prompt](https://access.redhat.com/documentation/en-US/Red_Hat_Enterprise_Linux/4/html/Step_by_Step_Guide/s1-viewingtext-terminal.html)
+- [grepとは何で、どうやって使うのか？](https://kb.iu.edu/d/afiy)
 
 </details>
 
 <details>
-<summary><b>SIGHUP, SIGINT, SIGKILL, and SIGTERM POSIX signals. Explain.</b></summary><br>
+<summary><b>ファイルコンテンツコマンドの説明とその説明をしてください。</b></summary><br>
 
-- **SIGHUP** - is sent to a process when its controlling terminal is closed. It was originally designed to notify the process of a serial line drop (a hangup). Many daemons will reload their configuration files and reopen their logfiles instead of exiting when receiving this signal.
-- **SIGINT** - is sent to a process by its controlling terminal when a user wishes to interrupt the process. This is typically initiated by pressing `Ctrl+C`, but on some systems, the "delete" character or "break" key can be used.
-- **SIGKILL** - is sent to a process to cause it to terminate immediately (kill). In contrast to **SIGTERM** and **SIGINT**, this signal cannot be caught or ignored, and the receiving process cannot perform any clean-up upon receiving this signal.
-- **SIGTERM** - is sent to a process to request its termination. Unlike the **SIGKILL** signal, it can be caught and interpreted or ignored by the process. This allows the process to perform nice termination releasing resources and saving state if appropriate. **SIGINT** is nearly identical to **SIGTERM**.
+- `head`: ファイルの先頭部分を確認するために使用します。
+- `tail`: ファイルの末尾部分を確認するために使用します。`head` コマンドの逆です。
+- `cat`: ファイルを表示、作成、結合するために使用します。
+- `more`: テキストを端末ウィンドウにページ形式で表示するために使用します。
+- `less`: テキストを逆方向に表示し、また単一行の移動も提供します。
 
-Useful resources:
+有用なリソース：
 
-- [POSIX signals](https://dsa.cs.tsinghua.edu.cn/oj/static/unix_signal.html)
-- [Introduction To Unix Signals Programming](http://titania.ctie.monash.edu.au/signals/)
-
-</details>
-
-<details>
-<summary><b>What does <code>kill</code> command do?</b></summary><br>
-
-In Unix and Unix-like operating systems, `kill` is a command used to send a signal to a process. By default, the message sent is the termination signal, which requests that the process exit. But `kill` is something of a misnomer; the signal sent may have nothing to do with process killing.
-
-Useful resources:
-
-- [Mastering the "Kill" Command in Linux](https://www.maketecheasier.com/kill-command-in-linux/)
+- [シェルプロンプトからテキストファイルを表示する方法](https://access.redhat.com/documentation/en-US/Red_Hat_Enterprise_Linux/4/html/Step_by_Step_Guide/s1-viewingtext-terminal.html)
 
 </details>
 
 <details>
-<summary><b>What is the difference between <code>rm</code> and <code>rm -rf</code>?</b></summary><br>
+<summary><b>SIGHUP、SIGINT、SIGKILL、および SIGTERM の POSIX シグナルについて説明してください。</b></summary><br>
 
-`rm` only deletes the named files (and not directories). With `-rf` as you say:
+- **SIGHUP** - 制御端末が閉じられたときにプロセスに送信されます。もともとはシリアルラインの切断（ハングアップ）をプロセスに通知するために設計されました。このシグナルを受け取ると、多くのデーモンは終了する代わりに設定ファイルを再読み込みし、ログファイルを再オープンします。
+- **SIGINT** - ユーザーがプロセスを中断したいときに、その制御端末からプロセスに送信されます。通常は `Ctrl+C` を押すことで開始されますが、一部のシステムでは「削除」文字や「ブレーク」キーも使用できます。
+- **SIGKILL** - プロセスを即座に終了させるために送信されます（強制終了）。**SIGTERM** や **SIGINT** とは異なり、このシグナルは捕捉または無視することができず、受信したプロセスはクリーンアップを行うことができません。
+- **SIGTERM** - プロセスに終了を要求するために送信されます。**SIGKILL** シグナルとは異なり、捕捉して解釈したり無視したりすることができます。これにより、プロセスはリソースを解放し、状態を保存するなどのクリーンな終了を行うことができます。**SIGINT** は **SIGTERM** にほぼ同じです。
 
-- `-r`, `-R`, `--recursive` recursively deletes content of a directory, including hidden files and sub directories
-- `-f`, `--force` ignore nonexistent files, never prompt
+有用なリソース：
 
-Useful resources:
+- [POSIXシグナル](https://dsa.cs.tsinghua.edu.cn/oj/static/unix_signal.html)
+- [UNIXシグナルプログラミングの紹介](http://titania.ctie.monash.edu.au/signals/)
 
-- [What is the difference between `rm -r` and `rm -f`?](https://superuser.com/questions/1126206/what-is-the-difference-between-rm-r-and-rm-f)
+</details>
+
+<details>
+<summary><b><code>kill</code> コマンドは何をするのですか？</b></summary><br>
+
+UNIX および UNIX 系オペレーティングシステムでは、`kill` はプロセスにシグナルを送信するためのコマンドです。デフォルトでは、送信されるメッセージは終了シグナルであり、プロセスに終了を要求します。しかし、`kill` という名前は誤解を招くことがあり、送信されるシグナルがプロセスの終了に関連していない場合もあります。
+
+有用なリソース：
+
+- [Linuxでの「kill」コマンドの習得](https://www.maketecheasier.com/kill-command-in-linux/)
+
+</details>
+
+<details>
+<summary><b><code>rm</code> と <code>rm -rf</code> の違いは何ですか？</b></summary><br>
+
+`rm` は指定されたファイルのみを削除します（ディレクトリは削除しません）。`-rf` を付けると、次のようになります：
+
+- `-r`、`-R`、`--recursive` はディレクトリの内容を再帰的に削除します。これには隠しファイルやサブディレクトリも含まれます。
+- `-f`、`--force` は存在しないファイルを無視し、確認を行いません。
+
+有用なリソース：
+
+- [`rm -r` と `rm -f` の違いは何ですか？](https://superuser.com/questions/1126206/what-is-the-difference-between-rm-r-and-rm-f)
 
 </details>
 
