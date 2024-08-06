@@ -1,6 +1,6 @@
 <p align="center">
   <a href="https://github.com/trimstray/test-your-sysadmin-skills">
-    <img src="https://github.com/trimstray/test-your-sysadmin-skills/blob/master/static/img/sysadmin_preview.png" alt="Master">
+    <img src="https://github.com/trimstray/test-your-sysadmin-skills/blob/master/static/img/sysadmin_preview.png" alt="マスター">
   </a>
 </p>
 
@@ -8,33 +8,31 @@
 
 <p align="center">:star:</p>
 
-<p align="center">"<i>A great Admin doesn't need to know everything, but they should be able to come up with amazing solutions to impossible projects.</i>" - cwheeler33 (ServerFault)</p>
+<p align="center">"<i>優れた管理者はすべてを知る必要はないが、不可能なプロジェクトに対して驚くべき解決策を考え出すことができるべきだ。</i>" - cwheeler33 (ServerFault)</p>
 
 <p align="center">:star:</p>
 
-<p align="center">"<i>My skills are making things work, not knowing a billion facts. [...] If I need to fix a system I’ll identify the problem, check the logs and look up the errors. If I need to implement a solution I’ll research the right solution, implement and document it, the later on only really have a general idea of how it works unless I interact with it frequently... it’s why it’s documented.</i>" - Sparcrypt (Reddit)</p>
+<p align="center">"<i>私のスキルは物事を動かすことであり、無数の事実を知っていることではありません。[…] システムを修正する必要がある場合は、問題を特定し、ログを確認し、エラーを調べます。解決策を実装する必要がある場合は、正しい解決策を調査し、それを実装し、文書化します。その後、それに頻繁に触れることがなければ、大まかな理解にとどまることが多いですが、それゆえに文書化されているのです。</i>" - Sparcrypt (Reddit)</p>
 
 <br>
 
 <p align="center">
   <a href="https://github.com/trimstray/test-your-sysadmin-skills/pulls">
-    <img src="https://img.shields.io/badge/PRs-welcome-brightgreen.svg?longCache=true" alt="Pull Requests">
+    <img src="https://img.shields.io/badge/PRs-welcome-brightgreen.svg?longCache=true" alt="プルリクエスト歓迎">
   </a>
   <a href="LICENSE.md">
-    <img src="https://img.shields.io/badge/License-MIT-lightgrey.svg?longCache=true" alt="MIT License">
+    <img src="https://img.shields.io/badge/License-MIT-lightgrey.svg?longCache=true" alt="MITライセンス">
   </a>
 </p>
 
 <p align="center">
   <a href="https://twitter.com/trimstray" target="_blank">
-    <img src="https://img.shields.io/twitter/follow/trimstray.svg?logo=twitter">
+    <img src="https://img.shields.io/twitter/follow/trimstray.svg?logo=twitter" alt="Twitterフォロー">
   </a>
 </p>
 
 <div align="center">
-  <sub>Created by
-  <a href="https://twitter.com/trimstray">trimstray</a> and
-  <a href="https://github.com/trimstray/test-your-sysadmin-skills/graphs/contributors">contributors</a>
+  <sub>作成者: <a href="https://twitter.com/trimstray">trimstray</a> と <a href="https://github.com/trimstray/test-your-sysadmin-skills/graphs/contributors">コントリビューター</a>
 </div>
 
 <br>
@@ -43,63 +41,63 @@
 
 <br>
 
-:information_source: &nbsp;This project contains **284** test questions and answers that can be used as a test your knowledge or during an interview/exam for position such as **Linux (\*nix) System Administrator**.
+:information_source: &nbsp;このプロジェクトには、**Linux (\*nix) システム管理者**のポジションに関する知識をテストしたり、面接や試験で使用できる**284**のテスト問題と回答が含まれています。
 
-:heavy_check_mark: &nbsp;The answers are only **examples** and do not exhaust the whole topic. Most of them contains **useful resources** for a deeper understanding.
+:heavy_check_mark: &nbsp;回答はあくまで**一例**であり、全てのトピックを網羅しているわけではありません。ほとんどの回答には、より深い理解のための**有用なリソース**が含まれています。
 
-:warning: &nbsp;Questions marked **`***`** don't have answer yet or answer is incomplete - **make a pull request to add them**!
+:warning: &nbsp;**`***`**でマークされた質問にはまだ回答がないか、回答が不完全です。**プルリクエストを送って追加してください**！
 
-:traffic_light: &nbsp;If you find something which doesn't make sense, or something doesn't seem right, **please make a pull request** and please add valid and well-reasoned explanations about your changes or comments.
+:traffic_light: &nbsp;何かおかしい点があったり、何かが正しくないように見える場合は、**ぜひプルリクエストを送ってください**。変更やコメントについて、正当でよく考えられた説明を追加してください。
 
-:books: &nbsp;In order to improve your knowledge/skills please see [devops-interview-questions](https://github.com/bregman-arie/devops-interview-questions). It looks really interesting.
+:books: &nbsp;知識やスキルを向上させるために、[devops-interview-questions](https://github.com/bregman-arie/devops-interview-questions)を参照してください。とても興味深い内容です。
 
 <br>
 
 <p align="center">
-  » <b><code><a href="https://github.com/trimstray/test-your-sysadmin-skills/issues">All suggestions are welcome</a></code></b> «
+  » <b><code><a href="https://github.com/trimstray/test-your-sysadmin-skills/issues">すべての提案を歓迎します</a></code></b> «
 </p>
 
 <br>
 
-## Table of Contents
+## 目次
 
-| <b><u>The type of chapter</u></b> | <b><u>Number of questions</u></b> | <b><u>Short description</u></b> |
+| <b><u>チャプターの種類</u></b> | <b><u>質問数</u></b> | <b><u>簡単な説明</u></b> |
 | :---         | :---         | :---         |
-| <b>[Introduction](#introduction)</b> |||
-| :small_orange_diamond: [Simple Questions](#simple-questions) | 14 questions | Relaxed, fun and simple - are great for starting everything. |
-| <b>[General Knowledge](#general-knowledge)</b> |||
-| :small_orange_diamond: [Junior Sysadmin](#junior-sysadmin) | 65 questions | Reasonably simple and straight based on basic knowledge. |
-| :small_orange_diamond: [Regular Sysadmin](#regular-sysadmin) | 94 questions | The mid level of questions if that you have sound knowledge. |
-| :small_orange_diamond: [Senior Sysadmin](#senior-sysadmin) | 99 questions | Hard questions and riddles. Check it if you want to be good. |
-| <b>[Secret Knowledge](#secret-knowledge)</b> ||
-| :small_orange_diamond: [Guru Sysadmin](#guru-sysadmin) | 12 questions | Really deep questions are to get to know Guru Sysadmin. |
+| <b>[はじめに](#introduction)</b> |||
+| :small_orange_diamond: [シンプルな質問](#simple-questions) | 14の質問 | リラックスした、楽しい、そしてシンプルな質問です。すべてを始めるのに最適です。 |
+| <b>[一般的な知識](#general-knowledge)</b> |||
+| :small_orange_diamond: [ジュニアシステム管理者](#junior-sysadmin) | 65の質問 | 基本的な知識に基づいた比較的簡単でストレートな質問です。 |
+| :small_orange_diamond: [レギュラーシステム管理者](#regular-sysadmin) | 94の質問 | しっかりとした知識があれば解ける中級レベルの質問です。 |
+| :small_orange_diamond: [シニアシステム管理者](#senior-sysadmin) | 99の質問 | 難しい質問や謎解きです。良くなりたいなら挑戦してください。 |
+| <b>[秘密の知識](#secret-knowledge)</b> ||
+| :small_orange_diamond: [グルシステム管理者](#guru-sysadmin) | 12の質問 | 本当に深い質問です。グルシステム管理者になるための知識を得るためのものです。 |
 
 <br>
 
-## <a name="introduction">Introduction</a>
+## <a name="introduction">はじめに</a>
 
-### :diamond_shape_with_a_dot_inside: <a name="simple-questions">Simple Questions</a>
+### :diamond_shape_with_a_dot_inside: <a name="simple-questions">シンプルな質問</a>
 
-- <b>What did you learn this week?</b>
-- <b>What excites or interests you about the sysadmin world?</b>
-- <b>What is a recent technical challenge you experienced and how did you solve it?</b>
-- <b>Tell me about the last major project you finished.</b>
-- <b>Do you contribute to any open source projects?</b>
-- <b>Describe the setup of your homelab.</b>
-- <b>What personal achievement are you most proud of?</b>
-- <b>Tell me about the biggest mistake you've made. How would you do it differently today?</b>
-- <b>What software tools are you going to install on the first day at a new job?</b>
-- <b>Tell me about how you manage your knowledge database (e.g. wikis, files, portals).</b>
-- <b>What news sources do you check daily? (sysadmin, security-related or other)</b>
-- <b>Your NOC team has a new budget for sysadmin certifications. What certificate would you like and why?</b>
-- <b>How do you interact with developers: *us vs. them* or *all pulling together with a different approach*?</b>
-- <b>Which sysadmin question would you ask, if you were interviewing me, to know, how good I'm with non-standard situations?</b>
+- <b>今週学んだことは何ですか？</b>
+- <b>システム管理の世界で何に興奮や興味を感じますか？</b>
+- <b>最近経験した技術的な課題とその解決方法を教えてください。</b>
+- <b>最後に完了した大きなプロジェクトについて教えてください。</b>
+- <b>オープンソースプロジェクトに貢献していますか？</b>
+- <b>自分のホームラボのセットアップについて説明してください。</b>
+- <b>最も誇りに思っている個人的な達成は何ですか？</b>
+- <b>これまでに犯した最大のミスは何ですか？今ならどのように対処しますか？</b>
+- <b>新しい仕事の初日にインストールするソフトウェアツールは何ですか？</b>
+- <b>自分の知識データベース（例：ウィキ、ファイル、ポータル）の管理方法について教えてください。</b>
+- <b>毎日確認するニュースソースは何ですか？（システム管理、セキュリティ関連、その他）</b>
+- <b>NOCチームがシステム管理者の認証のための新しい予算を持っています。どの認証を取得したいですか、そしてその理由は何ですか？</b>
+- <b>開発者とのやり取りはどうしていますか？「彼ら対私たち」か、それとも「異なるアプローチで協力し合う」？</b>
+- <b>もし私が面接をしていて、非標準的な状況に対する私の能力を知るためにどの質問をしますか？</b>
 
-## <a name="general-knowledge">General Knowledge</a>
+## <a name="general-knowledge">一般的な知識</a>
 
-### :diamond_shape_with_a_dot_inside: <a name="junior-sysadmin">Junior Sysadmin</a>
+### :diamond_shape_with_a_dot_inside: <a name="junior-sysadmin">ジュニアシステム管理者</a>
 
-###### System Questions (37)
+###### システムに関する質問 (37)
 
 <details>
 <summary><b>Give some examples of Linux distribution. What is your favorite distro and why?</b></summary><br>
