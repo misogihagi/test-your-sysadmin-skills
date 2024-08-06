@@ -1761,75 +1761,75 @@ drwxrwxrwt. 168 root root 28672 Jun 14 08:36 tmp
 </details>
 
 <details>
-<summary><b>What does <code>LC_ALL=C</code> before command do? In what cases it will be useful?</b></summary><br>
+<summary><b><code>LC_ALL=C</code> をコマンドの前に置くと何が起こりますか？どのような場合に有用ですか？</b></summary><br>
 
-`LC_ALL` is the environment variable that overrides all the other localisation settings. This sets all `LC_` type variables at once to a specified locale.
+`LC_ALL` は、他のローカリゼーション設定を上書きする環境変数です。これにより、すべての `LC_` タイプの変数が一度に指定されたロケールに設定されます。
 
-The main reason to set `LC_ALL=C` before command is that fine to simply get English output (general change the locale used by the command).
+コマンドの前に `LC_ALL=C` を設定する主な理由は、単純に英語の出力を得るためです（コマンドによって使用されるロケールを一般的に変更します）。
 
-On the other hand, also important is to increase the speed of command execution with `LC_ALL=C` e.g. `grep` or `fgrep`. Using the `LC_ALL=C` locale increased our performance and brought command execution time down.
+一方で、`LC_ALL=C` を使用することでコマンドの実行速度が向上することも重要です。例えば、`grep` や `fgrep` でのパフォーマンスが向上し、コマンドの実行時間が短縮されました。
 
-For example, if you set `LC_ALL=en_US.utf8` your system opened multiple files from the `/usr/lib/locale` directory. For `LC_ALL=C` a minimum amount of open and read operations is performed.
+例えば、`LC_ALL=en_US.utf8` を設定すると、システムは `/usr/lib/locale` ディレクトリから複数のファイルを開きます。しかし、`LC_ALL=C` では最小限のオープンおよび読み取り操作が行われます。
 
-If you want to restore all your normal (original) locale settings for the session:
+セッションのためにすべての通常の（元の）ロケール設定を復元したい場合は、次のようにします：
 
 ```bash
 LC_ALL=
 ```
 
-If `LC_ALL` does not work, try using `LANG` (if that still does not work, try `LANGUAGE`):
+`LC_ALL` が機能しない場合は、`LANG` を試してみてください（それでも機能しない場合は `LANGUAGE` を試してみてください）：
 
 ```bash
 LANG=C date +%A
 Monday
 ```
 
-Useful resources:
+役立つリソース:
 
-- [What does LC_ALL=C do? (original)](https://unix.stackexchange.com/questions/87745/what-does-lc-all-c-do)
-- [Speed up grep searches with LC_ALL=C](https://www.inmotionhosting.com/support/website/ssh/speed-up-grep-searches-with-lc-all)
-
-</details>
-
-<details>
-<summary><b>How to make high availability of web application? ***</b></summary>
-
-To be completed.
+- [LC_ALL=C は何をするのか？（原文）](https://unix.stackexchange.com/questions/87745/what-does-lc-all-c-do)
+- [LC_ALL=C で grep 検索を高速化する](https://www.inmotionhosting.com/support/website/ssh/speed-up-grep-searches-with-lc-all)
 
 </details>
 
 <details>
-<summary><b>You are configuring a new server. One of the steps is setting the permissions to the app directories. What steps will you take and what mistakes to avoid?</b></summary><br>
+<summary><b>ウェブアプリケーションの高可用性を実現するにはどうすればよいですか？ ***</b></summary>
 
-**1) Main requirements - remember about this**
+完了予定です。
 
-- which users have access to the app filesystem
-- permissions for web servers, e.g. Apache and app servers e.g. uwsgi
-- permissions for specific directories like a **uploads**, **cache** and main app directory like a `/var/www/app01/html`
-- correct `umask` value for users and **suid**/**sgid** (only for specific situations)
-- permissions for all future files and directories
-- permissions for cron jobs and scripts
+</details>
 
-**2) Application directories**
+<details>
+<summary><b>新しいサーバーを設定しています。手順の一つとしてアプリケーションディレクトリの権限設定があります。どのような手順を踏み、どのようなミスを避けるべきですか？</b></summary><br>
 
-`/var/www` contains a directory for each website (isolation of the apps), e.g. `/var/www/app01`, `/var/www/app02`
+**1) 主な要件 - これを覚えておくこと**
+
+- アプリケーションファイルシステムへのアクセス権を持つユーザー
+- ウェブサーバー（例：Apache）やアプリサーバー（例：uwsgi）のための権限
+- **uploads**、**cache**、および主なアプリディレクトリ（例：`/var/www/app01/html`）のような特定のディレクトリの権限
+- ユーザーおよび **suid**/**sgid**（特定の状況のみ）のための正しい `umask` 値
+- 将来のファイルおよびディレクトリの権限
+- cronジョブおよびスクリプトのための権限
+
+**2) アプリケーションディレクトリ**
+
+`/var/www` には各ウェブサイトのディレクトリが含まれています（アプリの隔離）、例：`/var/www/app01`、`/var/www/app02`
 
 ```bash
 mkdir /var/www/{app01,app02}
 ```
 
-**3) Application owner and group**
+**3) アプリケーションの所有者とグループ**
 
-Each application has a designated **owner** (e.g. **u01-prod**, **u02-prod**) and **group** (e.g. **g01-prod**, **g02-prod**) which are set as the owner of all files and directories in the website's directory:
+各アプリケーションには、**所有者**（例：**u01-prod**、**u02-prod**）と**グループ**（例：**g01-prod**、**g02-prod**）が指定されており、これらがウェブサイトのディレクトリ内のすべてのファイルとディレクトリの所有者として設定されています。
 
 ```bash
 chown -R u01-prod:g01-prod /var/www/app01
 chown -R u02-prod:g02-prod /var/www/app02
 ```
 
-**4) Developers owner and group**
+**4) 開発者の所有者とグループ**
 
-All of the users that maintain the website have own groups and they're attach to application group:
+ウェブサイトを管理するすべてのユーザーは、自分のグループを持っており、それらはアプリケーショングループに関連付けられています：
 
 ```bash
 id alice
@@ -1838,17 +1838,17 @@ id bob
 uid=2001(bob) gid=4001(bob) groups=8000(g01-prod),8001(g02-prod)
 ```
 
-So **alice** user has standard privileges for `/var/www/app01` and **bob** user has standard privileges for `/var/www/app01` and `/var/www/app02`.
+例えば、**alice** ユーザーは `/var/www/app01` に対する標準的な権限を持ち、**bob** ユーザーは `/var/www/app01` および `/var/www/app02` に対する標準的な権限を持っています。
 
-**5) Web server owner and group**
+**5) ウェブサーバーの所有者とグループ**
 
-Any files or directories that need to be written by the webserver have their owner. If the web servers is Apache, default owner/group are **apache:apache** or **www-data:www-data** and for Nginx it will be **nginx:nginx**. Don't change these settings.
+ウェブサーバーによって書き込む必要があるファイルやディレクトリには、適切な所有者が設定されています。ウェブサーバーが Apache の場合、デフォルトの所有者/グループは **apache:apache** または **www-data:www-data** であり、Nginx の場合は **nginx:nginx** です。これらの設定は変更しないでください。
 
-If applications works with app servers like a **uwsgi** or **php-fpm** should set the appropriate user and group (e.g. for **app01** it will be **u01-prod:g01-prod**) in specific config files.
+アプリケーションが **uwsgi** や **php-fpm** のようなアプリサーバーと連携している場合は、特定の設定ファイルで適切なユーザーとグループ（例：**app01** の場合は **u01-prod:g01-prod**）を設定する必要があります。
 
-**6) Permissions**
+**6) 権限**
 
-Set properly permissions with **Access Control Lists**:
+**アクセス制御リスト**を使用して権限を適切に設定します：
 
 ```bash
 # For web server
@@ -1860,68 +1860,68 @@ setfacl -Rdm "g:g01-prod:rwx" /var/www/app01
 setfacl -Rm "g:g01-prod:rwx" /var/www/app01
 ```
 
-If you use **SELinux** remember about security context:
+**SELinux** を使用する場合は、セキュリティコンテキストについても考慮してください：
 
 ```bash
 chcon -R system_u:object_r:httpd_sys_content_t /var/www/app01
 ```
 
-**7) Security mistakes**
+**7) セキュリティの誤り**
 
-- **root** owner for files and directories
-- **root** never executes any files in website directory, and shouldn't be creating files in there
-- to wide permissions like a **777** so some critical files may be world-writable and world-readable
-- avoid creating maintenance scripts or other critical files with suid root
+- **root** がファイルやディレクトリの所有者である
+- **root** はウェブサイトのディレクトリ内のファイルを実行せず、そこにファイルを作成すべきではない
+- **777** のような広すぎる権限設定により、重要なファイルが世界中の誰でも書き込みおよび読み取り可能になる
+- suid root を持つメンテナンススクリプトやその他の重要なファイルの作成を避ける
 
-If you allow your site to modify the files which form the code running your site, you make it much easier for someone to take over your server.
+サイトのコードを構成するファイルを修正できるようにすると、誰かがサーバーを乗っ取るのを非常に簡単にしてしまいます。
 
-A file upload tool allows users to upload a file with any name and any contents. This allows a user to upload a mail relay PHP script to your site, which they can place wherever they want to turn your server into a machine to forward unsolicited commercial email. This script could also be used to read every email address out of your database, or other personal information.
+ファイルアップロードツールにより、ユーザーは任意の名前と内容のファイルをアップロードできます。これにより、ユーザーはメールリレーPHPスクリプトをサイトにアップロードし、それを任意の場所に配置してサーバーを商用メールの中継機にすることができます。このスクリプトは、データベースからすべてのメールアドレスやその他の個人情報を読み取るためにも使用される可能性があります。
 
-If the malicious user can upload a file with any name but not control the contents, then they could easily upload a file which overwrites your `index.php` (or another critical file) and breaks your site.
+もし悪意のあるユーザーが任意の名前でファイルをアップロードできるが、内容を制御できない場合、`index.php`（または他の重要なファイル）を上書きするファイルを簡単にアップロードし、サイトを壊す可能性があります。
 
-Useful resources:
+有用なリソース：
 
-- [How to setup linux permissions for the WWW folder?](https://serverfault.com/questions/124800/how-to-setup-linux-permissions-for-the-www-folder)
-- [What permissions should my website files/folders have on a Linux webserver?](https://serverfault.com/questions/357108/what-permissions-should-my-website-files-folders-have-on-a-linux-webserver)
-- [Security Pitfalls of setgid Programs](https://www.agwa.name/blog/post/security_pitfalls_of_setgid_programs)
-
-</details>
-
-<details>
-<summary><b>What steps will be taken by init when you run <code>telinit 1</code> from run level 3? What will be the final result of this? If you use <code>telinit 6</code> instead of <code>reboot</code> command your server will be restarted? ***</b></summary><br>
-
-To be completed.
-
-Useful resources:
-
-- [What differences it will make, if i use “telinit 6” instead of “reboot” command to restart my computer?](https://unix.stackexchange.com/questions/434560/what-differences-it-will-make-if-i-use-telinit-6-instead-of-reboot-command)
+- [LinuxのWWWフォルダの権限を設定する方法](https://serverfault.com/questions/124800/how-to-setup-linux-permissions-for-the-www-folder)
+- [Linuxウェブサーバーでのウェブサイトファイル/フォルダーに必要な権限は何ですか？](https://serverfault.com/questions/357108/what-permissions-should-my-website-files-folders-have-on-a-linux-webserver)
+- [setgidプログラムのセキュリティの落とし穴](https://www.agwa.name/blog/post/security_pitfalls_of_setgid_programs)
 
 </details>
 
 <details>
-<summary><b>I have forgotten the root password! What do I do in BSD? What is the purpose of booting into single user mode?</b></summary><br>
+<summary><b>`telinit 3`から`telinit 1`を実行すると、initはどのような手順を踏みますか？最終的にどのような結果になりますか？`reboot`コマンドの代わりに`telinit 6`を使用するとサーバーは再起動しますか？***</b></summary><br>
 
-Restart the system, type `boot -s` at the `Boot:` prompt to enter **single-user mode**.
+未完了です。
 
-At the question about the shell to use, hit `Enter` which will display a `#` prompt.
+有用なリソース：
 
-Enter `mount -urw /` to remount the root file system read/write, then run `mount -a` to remount all the file systems.
-
-Run `passwd root` to change the root password then run `exit` to continue booting.
-
-**Single user mode** should basically let you log in with root access & change just about anything. For example, you might use single-user mode when you are restoring a damaged master database or a system database, or when you are changing server configuration options (e.g. password recovery).
-
-Useful resources:
-
-- [FreeBSD Reset or Recover Root Password](https://www.cyberciti.biz/tips/howto-freebsd-reset-recover-root-password.html)
-- [Single User Mode Definition](http://www.linfo.org/single_user_mode.html)
+- [コンピュータを再起動するために「telinit 6」を使用した場合と「reboot」コマンドを使用した場合の違いは何ですか？](https://unix.stackexchange.com/questions/434560/what-differences-it-will-make-if-i-use-telinit-6-instead-of-reboot-command)
 
 </details>
 
 <details>
-<summary><b>How could you modify a text file without invoking a text editor?</b></summary><br>
+<summary><b>rootパスワードを忘れてしまいました！BSDでどうすればいいですか？シングルユーザーモードで起動する目的は何ですか？</b></summary><br>
 
-For example:<br>
+システムを再起動し、`Boot:`プロンプトで`boot -s`と入力して**シングルユーザーモード**に入ります。
+
+使用するシェルを尋ねられたら、`Enter`キーを押して`#`プロンプトを表示します。
+
+`mount -urw /`と入力してルートファイルシステムを読み書きモードで再マウントし、次に`mount -a`を実行してすべてのファイルシステムを再マウントします。
+
+`passwd root`を実行してrootパスワードを変更し、`exit`を実行してブートを続行します。
+
+**シングルユーザーモード**では、基本的にrootアクセスでログインし、ほぼすべての設定を変更できるようになります。例えば、破損したマスターデータベースやシステムデータベースの修復、サーバー設定オプションの変更（例：パスワードリカバリー）などの際にシングルユーザーモードを使用します。
+
+有用なリソース：
+
+- [FreeBSDでのrootパスワードのリセットまたは回復](https://www.cyberciti.biz/tips/howto-freebsd-reset-recover-root-password.html)
+- [シングルユーザーモードの定義](http://www.linfo.org/single_user_mode.html)
+
+</details>
+
+<details>
+<summary><b>テキストエディタを使用せずにテキストファイルを修正するにはどうすればよいですか？</b></summary><br>
+
+例:<br>
 
 ```bash
 # cat  >filename ... - overwrite file
@@ -1934,87 +1934,87 @@ __EOF__
 </details>
 
 <details>
-<summary><b>How to change the kernel parameters? What kernel options might you need to tune? ***</b></summary><br>
+<summary><b>カーネルパラメータを変更するにはどうすればよいですか？調整が必要なカーネルオプションにはどのようなものがありますか？***</b></summary><br>
 
-To set the kernel parameters in Unix-like, first edit the file `/etc/sysctl.conf` after making the changes save the file and run the command `sysctl -p`, this command will make the changes permanently without rebooting the machine.
+Unix系システムでカーネルパラメータを設定するには、まず`/etc/sysctl.conf`ファイルを編集します。変更を保存した後、`sysctl -p`コマンドを実行すると、再起動せずに変更が永続的に適用されます。
 
-Useful resources:
+有用なリソース：
 
-- [How to Change Kernel Runtime Parameters in a Persistent and Non-Persistent Way](https://www.tecmint.com/change-modify-linux-kernel-runtime-parameters/)
-
-</details>
-
-<details>
-<summary><b>Explain the <code>/proc</code> filesystem.</b></summary><br>
-
-`/proc` is a virtual file system that provides detailed information about kernel, hardware and running processes.
-
-Since `/proc` contains virtual files, it is called virtual file system. These virtual files have unique qualities. Most of them are listed as zero bytes in size.
-
-Virtual files such as `/proc/interrupts`, `/proc/meminfo`, `/proc/mounts` and `/proc/partitions` provide an up-to-the-moment glimpse of the system’s hardware. Others: `/proc/filesystems` file and the `/proc/sys/` directory provide system configuration information and interfaces.
-
-Useful resources:
-
-- [Linux Filesystem Hierarchy - /proc](https://www.tldp.org/LDP/Linux-Filesystem-Hierarchy/html/proc.html)
+- [カーネルランタイムパラメータを永続的かつ非永続的に変更する方法](https://www.tecmint.com/change-modify-linux-kernel-runtime-parameters/)
 
 </details>
 
 <details>
-<summary><b>Describe your data backup process. How often should you test your backups? ***</b></summary><br>
+<summary><b>`/proc`ファイルシステムについて説明してください。</b></summary><br>
 
-To be completed.
+`/proc`は、カーネル、ハードウェア、実行中のプロセスに関する詳細情報を提供する仮想ファイルシステムです。
 
-</details>
+`/proc`には仮想ファイルが含まれているため、仮想ファイルシステムと呼ばれます。これらの仮想ファイルは独自の特性を持ち、ほとんどのファイルはサイズがゼロバイトとして表示されます。
 
-<details>
-<summary><b>Explain three types of journaling in ext3/ext4.</b></summary><br>
+`/proc/interrupts`、`/proc/meminfo`、`/proc/mounts`、`/proc/partitions`などの仮想ファイルは、システムのハードウェアの瞬時の状態を提供します。他には、`/proc/filesystems`ファイルや`/proc/sys/`ディレクトリが、システムの設定情報やインターフェースを提供します。
 
-There are three types of journaling available in **ext3/ext4** file systems:
+有用なリソース：
 
-- **Journal** - metadata and content are saved in the journal
-- **Ordered** - only metadata is saved in the journal. Metadata are  journaled only after writing the content to disk. This is the default
-- **Writeback** - only metadata is saved in the journal. Metadata might be  journaled either before or after the content is written to the disk
+- [Linuxファイルシステム階層 - /proc](https://www.tldp.org/LDP/Linux-Filesystem-Hierarchy/html/proc.html)
 
 </details>
 
 <details>
-<summary><b>What is an inode? How to find file's inode number and how can you use it?</b></summary><br>
+<summary><b>データバックアッププロセスについて説明してください。バックアップをテストする頻度はどのくらいが理想ですか？***</b></summary><br>
 
-An **inode** is a data structure on a filesystem on Linux and other Unix-like operating systems that stores all the information about a file except its name and its actual data. A data structure is a way of storing data so that it can be used efficiently.
+未完了です。
 
-A Unix file is stored in two different parts of the disk - the data blocks and the inodes. I won't get into superblocks and other esoteric information. The data blocks contain the "contents" of the file. The information about the file is stored elsewhere - in the inode.
+</details>
 
-A file's inode number can easily be found by using the `ls` command, which by default lists the objects (i.e. files, links and directories) in the current directory (i.e. the directory in which the user is currently working), with its `-i` option. Thus, for example, the following will show the name of each object in the current directory together with its inode number:
+<details>
+<summary><b>ext3/ext4のジャーナリングの3つのタイプを説明してください。</b></summary><br>
+
+**ext3/ext4**ファイルシステムには、3つのジャーナリングタイプがあります：
+
+- **ジャーナル** - メタデータとコンテンツがジャーナルに保存されます
+- **オーダー** - メタデータのみがジャーナルに保存されます。メタデータは、コンテンツがディスクに書き込まれた後にジャーナルされます。これがデフォルトです
+- **ライトバック** - メタデータのみがジャーナルに保存されます。メタデータは、コンテンツがディスクに書き込まれる前または後にジャーナルされる場合があります
+
+</details>
+
+<details>
+<summary><b>inodeとは何ですか？ファイルのinode番号をどうやって調べ、どのように使用しますか？</b></summary><br>
+
+**inode**は、Linuxやその他のUnix系オペレーティングシステムのファイルシステム上にあるデータ構造で、ファイルの名前と実際のデータを除くすべての情報を保存します。データ構造とは、データを効率的に使用できるように保存する方法です。
+
+Unixファイルは、ディスクの2つの異なる部分に保存されます - データブロックとinodeです。スーパーブロックや他の難解な情報については触れません。データブロックにはファイルの「内容」が含まれています。ファイルに関する情報は別の場所、すなわちinodeに保存されます。
+
+ファイルのinode番号は、`ls`コマンドを使用して簡単に見つけることができます。`-i`オプションを使用することで、現在のディレクトリ内の各オブジェクト（ファイル、リンク、ディレクトリ）の名前とinode番号を表示できます。例えば、次のコマンドは現在のディレクトリ内の各オブジェクトの名前とinode番号を表示します：
 
 ```bash
 ls -i
 ```
 
-`df's` `-i` option instructs it to supply information about inodes on each filesystem rather than about available space. Specifically, it tells df to return for each mounted filesystem the total number of inodes, the number of free inodes, the number of used inodes and the percentage of inodes used. This option can be used together with the `-h` option as follows to make the output easier to read:
+`df`の`-i`オプションは、使用可能なスペースではなく、各ファイルシステムのinodeに関する情報を提供するように指示します。具体的には、dfに対してマウントされた各ファイルシステムについて、inodeの総数、空きinodeの数、使用中のinodeの数、および使用されているinodeの割合を返すように指示します。このオプションは、出力を見やすくするために`-h`オプションと一緒に使用できます。
 
 ```bash
 df -hi
 ```
 
-**Finding files by inodes**
+**inodeによるファイルの検索**
 
-If you know the inode, you can find it using the find command:
+inodeがわかっている場合は、findコマンドを使用して検索できます。
 
 ```bash
 find . -inum 435304 -print
 ```
 
-**Deleting files with strange names**
+**奇妙な名前のファイルの削除**
 
-Sometimes files are created with strange characters in the filename. The Unix file system will allow any character as part of a filename except for a null (ASCII 000) or a "/". Every other character is allowed.
+時には、ファイル名に奇妙な文字が含まれることがあります。Unixファイルシステムでは、ファイル名の一部として許可される文字は、ヌル文字（ASCII 000）や「/」以外のすべての文字です。他のすべての文字は許可されています。
 
-Users can create files with characters that make it difficult to see the directory or file. They can create the directory ".. " with a space at the end, or create a file that has a backspace in the name, using:
+ユーザーは、ディレクトリやファイルの表示が難しくなるような文字を使ってファイルを作成することがあります。たとえば、末尾に空白を付けた「.. 」というディレクトリを作成したり、名前にバックスペースを含むファイルを作成することができます。
 
 ```bash
 touch `printf "aa\bb"`
 ```
 
-Now what what happens when you use the `ls` command:
+さて、`ls`コマンドを使用するとどうなるでしょうか：
 
 ```bash
 ls
@@ -2023,9 +2023,9 @@ ls | grep 'a'
 ab
 ```
 
-Note that when `ls` sends the result to a terminal, it places a "**?**" in the filename to show an unprintable character.
+`ls`が結果をターミナルに送信するとき、印刷できない文字を示すためにファイル名に「**?**」を表示することに注意してください。
 
-You can get rid of this file by using `rm -i *` and it will prompt you before it deletes each file. But you can also use `find` to remove the file, once you know the inode number.
+このファイルを削除するには、`rm -i *`を使用すると、各ファイルを削除する前に確認を求められます。ただし、inode番号がわかっていれば、`find`を使ってファイルを削除することもできます。
 
 ```bash
 ls -i
@@ -2033,57 +2033,57 @@ ls -i
 find . -inum 435304 -delete
 ```
 
-Useful resources:
+役立つリソース：
 
-- [Understand UNIX/Linux Inodes Basics with Examples](https://www.thegeekstuff.com/2012/01/linux-inodes/)
-- [What is an inode as defined by POSIX?](https://unix.stackexchange.com/questions/387087/what-is-an-inode-as-defined-by-posix/387093)
+- [UNIX/Linuxのinodeの基本を例を使って理解する](https://www.thegeekstuff.com/2012/01/linux-inodes/)
+- [POSIXで定義されているinodeとは？](https://unix.stackexchange.com/questions/387087/what-is-an-inode-as-defined-by-posix/387093)
 
 </details>
 
 <details>
-<summary><b><code>ls -l</code> shows file attributes as question marks. What this means and what steps will you take to remove unused "zombie" files?</b></summary><br>
+<summary><b><code>ls -l</code> コマンドがファイル属性をクエスチョンマークとして表示します。これは何を意味し、不要な「ゾンビ」ファイルを削除するためにどのような手順を取りますか？</b></summary><br>
 
-This problem may be more difficult to solve because several steps may be required - sometimes you have get `test/file: Permission denied`, `test/file: No such file or directory` or `test/file: Input/output error`.
+この問題は解決が難しい場合があり、いくつかの手順が必要になることがあります。時には `test/file: Permission denied`、`test/file: No such file or directory`、または `test/file: Input/output error` のエラーメッセージが表示されることがあります。
 
-That happens when the user can't do a `stat()` on the files (which requires execute permissions), but can read the directory entries (which requires read access on the directory). So you get a list of files in the directory, but can't get any information on the files because they can't be read. If you have a directory which has read permission but not execute, you'll see this.
+これは、ユーザーがファイルに対して `stat()` を実行できない（実行権限が必要）が、ディレクトリエントリを読み取ることができる（ディレクトリに対する読み取りアクセスが必要）場合に発生します。そのため、ディレクトリ内のファイルのリストは取得できても、ファイルの情報を取得できません。ディレクトリに読み取り権限はあっても実行権限がない場合にこの現象が見られます。
 
-Some processes like a `rsync` generates temporary files that get created and dropped fast which will cause errors if you try to call other simple file management commands like `rm`, `mv` etc.
+`rsync` のようなプロセスは、作成と削除が非常に速い一時ファイルを生成することがあり、これが原因で `rm`、`mv` などの簡単なファイル管理コマンドでエラーが発生することがあります。
 
-Example of output:
+出力の例：
 
 ```bash
 ?????????? ? ?        ?               ?            ? sess_kee6fu9ag7tiph2jae
 ```
 
-1) change permissions: `chmod 0777 sess_kee6fu9ag7tiph2jae` and try remove
-2) change owner: `chown root:root sess_kee6fu9ag7tiph2jae` and try remove
-3) change permissions and owner for directory: `chmod -R 0777 dir/ && chown -R root:root dir/` and try remove
-4) recreate file: `touch sess_kee6fu9ag7tiph2jae` and try remove
-5) watch out for other running processes on the server for example `rsync`, sometimes you can see this as a transient error when an NFS server is heavily overloaded
-6) find file inode: `ls -i`, and try remove: `find . -inum <inode_num> -delete`
-7) remount (if possible) your filesystem
-8) boot system into single-user mode and repair your filesystem with `fsck`
+1) パーミッションを変更する: `chmod 0777 sess_kee6fu9ag7tiph2jae` して削除を試みる
+2) 所有者を変更する: `chown root:root sess_kee6fu9ag7tiph2jae` して削除を試みる
+3) ディレクトリのパーミッションと所有者を変更する: `chmod -R 0777 dir/ && chown -R root:root dir/` して削除を試みる
+4) ファイルを再作成する: `touch sess_kee6fu9ag7tiph2jae` して削除を試みる
+5) サーバー上の他の実行中のプロセスに注意する。例えば `rsync`。NFSサーバーが過負荷になっているときに一時的なエラーとして表示されることがあります
+6) ファイルのiノードを見つける: `ls -i` し、削除を試みる: `find . -inum <inode_num> -delete`
+7) （可能であれば）ファイルシステムを再マウントする
+8) シングルユーザーモードでシステムを起動し、`fsck` でファイルシステムを修復する
 
-Useful resources:
+有用なリソース:
 
-- [Question marks showing in ls of directory. IO errors too.](https://serverfault.com/questions/65616/question-marks-showing-in-ls-of-directory-io-errors-too)
+- [ls コマンドでディレクトリにクエスチョンマークが表示される。IOエラーも発生する。](https://serverfault.com/questions/65616/question-marks-showing-in-ls-of-directory-io-errors-too)
 
 </details>
 
 <details>
-<summary><b>To LVM or not to LVM. What benefits does it provide?</b></summary><br>
+<summary><b>LVM（論理ボリュームマネージャ）を使用するべきか、それとも使用しないべきか。LVMが提供する利点は何ですか？</b></summary><br>
 
-- LVM makes it quite easy to move file systems around
-- you can extend a volume group onto a new physical volume
-- move any number of logical volumes of an old physical one
-- remove that volume from the volume group without needing to unmount any partitions
-- you can also make snapshots of logical volumes for making backups
-- LVM has built in mirroring support so you can have a logical volume mirrored across multiple physical volumes
-- LVM even supports TRIM
+- LVMを使うことでファイルシステムの移動が非常に簡単になります
+- 新しい物理ボリュームにボリュームグループを拡張することができます
+- 古い物理ボリュームから任意の数の論理ボリュームを移動することができます
+- パーティションをアンマウントすることなく、そのボリュームをボリュームグループから削除することができます
+- 論理ボリュームのスナップショットを作成してバックアップを作成することもできます
+- LVMにはミラーリング機能が組み込まれており、複数の物理ボリュームにわたって論理ボリュームをミラーリングすることができます
+- LVMはTRIMにも対応しています
 
-Useful resources:
+有用なリソース:
 
-- [What is LVM and what is it used for?](https://askubuntu.com/questions/3596/what-is-lvm-and-what-is-it-used-for)
+- [LVMとは何か、何に使われるのか？](https://askubuntu.com/questions/3596/what-is-lvm-and-what-is-it-used-for)
 
 </details>
 
