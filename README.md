@@ -1341,288 +1341,288 @@ HTTPS接続を処理し、リクエストを復号化して、暗号化されて
 
 </details>
 
-### :diamond_shape_with_a_dot_inside: <a name="regular-sysadmin">Regular Sysadmin</a>
+### :diamond_shape_with_a_dot_inside: <a name="regular-sysadmin">普通のシステム管理者</a>
 
 ###### System Questions (60)
 
 <details>
-<summary><b>Tell me about your experience with the production environments? ***</b></summary><br>
+<summary><b>本番環境での経験について教えてください。***</b></summary><br>
 
-To be completed.
-
-</details>
-
-<details>
-<summary><b>Which distribution would you select for running a major web server? ***</b></summary><br>
-
-To be completed.
+未完了です。
 
 </details>
 
 <details>
-<summary><b>Explain in a few points the boot process of the Linux system.</b></summary><br>
+<summary><b>主要なウェブサーバーを運用するためにどのディストリビューションを選びますか？***</b></summary><br>
 
-**BIOS**: Full form of BIOS is Basic Input or Output System that performs integrity checks and it will search and load and then it will execute the bootloader.
-
-**Bootloader**: Since the earlier phases are not specific to the operating system, the BIOS-based boot process for x86 and x86-64 architectures is considered to start when the master boot record (MBR) code is executed in real mode and the first-stage boot loader is loaded. In UEFI systems, a payload, such as the Linux kernel, can be executed directly. Thus no boot loader is necessary. Some popular bootloaders: **GRUB**, **Syslinux/Isolinux** or **Lilo**.
-
-**Kernel**: The kernel in Linux handles all operating system processes, such as memory management, task scheduling, I/O, interprocess communication, and overall system control. This is loaded in two stages - in the first stage, the kernel (as a compressed image file) is loaded into memory and decompressed, and a few fundamental functions such as basic memory management are set up.
-
-**Init**: Is the parent of all processes on the system, it is executed by the kernel and is responsible for starting all other processes.
-
-- `SysV init` - init's job is "to get everything running the way it should be once the kernel is fully running. Essentially it establishes and operates the entire user space. This includes checking and mounting file systems, starting up necessary user services, and ultimately switching to a user-environment when system startup is completed.
-- `systemd` - the developers of systemd aimed to replace the Linux init system inherited from Unix System V. Like init, systemd is a daemon that manages other daemons. All daemons, including systemd, are background processes. Systemd is the first daemon to start (during booting) and the last daemon to terminate (during shutdown).
-- `runinit` - runinit is an init scheme for Unix-like operating systems that initializes, supervises, and ends processes throughout the operating system. It is a reimplementation of the daemontools process supervision toolkit that runs on the Linux, Mac OS X, \*BSD, and Solaris operating systems.
-
-Useful resources:
-
-- [Analyzing the Linux boot process](https://opensource.com/article/18/1/analyzing-linux-boot-process)
-- [Systemd Boot Process a Close Look in Linux](https://linoxide.com/linux-how-to/systemd-boot-process/)
+未完了です。
 
 </details>
 
 <details>
-<summary><b>How and why Linux daemons drop privileges? Why some daemons need root permissions to start? Explain. ***</b></summary>
+<summary><b>Linuxシステムのブートプロセスをいくつかのポイントで説明してください。</b></summary><br>
 
-To be completed.
+**BIOS**: BIOSのフルフォームは「Basic Input or Output System」で、整合性チェックを実行し、ブートローダーを検索してロードし、その後実行します。
 
-</details>
+**ブートローダー**: 初期段階はオペレーティングシステムに特有のものではないため、x86およびx86-64アーキテクチャのBIOSベースのブートプロセスは、マスターブートレコード（MBR）コードがリアルモードで実行され、第一段階のブートローダーがロードされると始まります。UEFIシステムでは、Linuxカーネルなどのペイロードが直接実行されることがあります。そのため、ブートローダーは必要ありません。一般的なブートローダーには、**GRUB**、**Syslinux/Isolinux**、または**Lilo**があります。
 
-<details>
-<summary><b>Why is a load of 1.00 not ideal on a single-core machine?</b></summary><br>
+**カーネル**: Linuxのカーネルは、メモリ管理、タスクスケジューリング、I/O、プロセス間通信、システム全体の制御など、すべてのオペレーティングシステムのプロセスを処理します。これは2段階でロードされます。最初の段階では、カーネル（圧縮されたイメージファイル）がメモリにロードされ、解凍され、基本的なメモリ管理などのいくつかの基本的な機能が設定されます。
 
-The problem with a load of 1.00 is that you have no headroom. In practice, many sysadmins will draw a line at 0.70.
+**Init**: システム上のすべてのプロセスの親であり、カーネルによって実行され、他のすべてのプロセスを起動する責任があります。
 
-The "Need to Look into it" Rule of Thumb: 0.70 If your load average is staying above > 0.70, it's time to investigate before things get worse.
+- `SysV init` - initの役割は「カーネルが完全に動作するようになると、すべてが正しく動作するようにすること」です。基本的には、ユーザー空間全体を確立し運営します。これには、ファイルシステムのチェックとマウント、必要なユーザーサービスの起動、そしてシステム起動が完了した後にユーザー環境に切り替えることが含まれます。
+- `systemd` - systemdの開発者は、Unix System Vから受け継いだLinux initシステムを置き換えることを目指しました。initと同様に、systemdも他のデーモンを管理するデーモンです。すべてのデーモン（systemdを含む）はバックグラウンドプロセスです。systemdは最初に起動し（ブート時）、最後に終了します（シャットダウン時）。
+- `runinit` - runinitは、Unixライクなオペレーティングシステムのためのinitスキームで、オペレーティングシステム全体でプロセスを初期化、監視、終了させます。これは、Linux、Mac OS X、*BSD、およびSolarisオペレーティングシステムで実行されるdaemontoolsプロセス監視ツールキットの再実装です。
 
-The "Fix this now" Rule of Thumb: 1.00. If your load average stays above 1.00, find the problem and fix it now. Otherwise, you're going to get woken up in the middle of the night, and it's not going to be fun.
+役立つリソース:
 
-Rule of Thumb: 5.0. If your load average is above 5.00, you could be in serious trouble, your box is either hanging or slowing way down, and this will (inexplicably) happen in the worst possible time like in the middle of the night or when you're presenting at a conference. Don't let it get there.
-
-Useful resources:
-
-- [Proper way of interpreting system load on a 4 core 8 thread processor](https://serverfault.com/questions/618130/proper-way-of-interpreting-system-load-on-a-4-core-8-thread-processor)
-- [Understanding Linux CPU Load - when should you be worried?](http://blog.scoutapp.com/articles/2009/07/31/understanding-load-averages)
+- [Linuxブートプロセスの分析](https://opensource.com/article/18/1/analyzing-linux-boot-process)
+- [Linuxにおけるsystemdブートプロセスの詳細](https://linoxide.com/linux-how-to/systemd-boot-process/)
 
 </details>
 
 <details>
-<summary><b>What does it mean when the effective user is root, but the real user ID is still your name?</b></summary><br>
+<summary><b>Linuxデーモンが権限を下げる方法と理由は何ですか？なぜ一部のデーモンは起動するためにroot権限が必要なのですか？説明してください。***</b></summary>
 
-The **real user ID** is who you really are (the user who owns the process), and the **effective user ID** is what the operating system looks at to make a decision whether or not you are allowed to do something (most of the time, there are some exceptions).
+未完了です。
 
-When you log in, the login shell sets both the **real and effective user ID** to the same value (your **real user ID**) as supplied by the password file.
+</details>
 
-If, for instance, you execute setuid, and besides running as another user (e.g. **root**) the setuid program is also supposed to do something on your behalf.
+<details>
+<summary><b>なぜシングルコアマシンでの1.00のロードは理想的ではないのですか？</b></summary><br>
 
-After executing setuid, it will have your **real ID** (since you're the process owner) and the effective user id of the file owner (for example **root**) since it is setuid.
+1.00のロードの問題は、余裕がないことです。実際には、多くのシステム管理者は0.70を超えた場合に線を引きます。
 
-Let's use the case of `passwd`:
+「調べる必要がある」ルールオブサム: 0.70 ロードアベレージが0.70を超えている場合は、事態が悪化する前に調査する時期です。
+
+「今すぐ修正する」ルールオブサム: 1.00 ロードアベレージが1.00を超えた場合は、問題を見つけて今すぐ修正してください。さもないと、夜中に起こされることになり、それは楽しいことではありません。
+
+ルールオブサム: 5.0 ロードアベレージが5.00を超えると、深刻な問題に直面している可能性があり、マシンがハングするか、非常に遅くなる可能性があります。そして、これが最悪のタイミングで発生します。例えば夜中やカンファレンスでプレゼンをしているときなどです。そこまで行かせないようにしましょう。
+
+役立つリソース:
+
+- [4コア8スレッドプロセッサのシステムロードの正しい解釈方法](https://serverfault.com/questions/618130/proper-way-of-interpreting-system-load-on-a-4-core-8-thread-processor)
+- [Linux CPUロードの理解 - いつ心配すべきか？](http://blog.scoutapp.com/articles/2009/07/31/understanding-load-averages)
+
+</details>
+
+<details>
+<summary><b>実効ユーザーがrootで、実際のユーザーIDがまだあなたの名前である場合、何を意味しますか？</b></summary><br>
+
+**実際のユーザーID**はあなた自身（プロセスを所有するユーザー）であり、**実効ユーザーID**はオペレーティングシステムがあなたが何かをする権限があるかどうかを決定するために見るものです（通常はそうですが、例外もあります）。
+
+ログインすると、ログインシェルは**実際のユーザーID**と**実効ユーザーID**の両方をパスワードファイルにより提供された同じ値（あなたの**実際のユーザーID**）に設定します。
+
+例えば、setuidを実行し、別のユーザー（例: **root**）として実行する場合、setuidプログラムはあなたの代わりに何かを実行することが想定されています。
+
+setuidを実行した後、そのプロセスはあなたの**実際のID**（プロセスの所有者として）を持ち、ファイル所有者の実効ユーザーID（例えば**root**）を持ちます。これはsetuidによるものです。
+
+`passwd`のケースを考えてみましょう:
 
 ```bash
 -rwsr-xr-x 1 root root 45396 may 25  2012 /usr/bin/passwd
 ```
 
-When user2 wants to change their password, they execute `/usr/bin/passwd`.
+ユーザー2が自分のパスワードを変更したい場合、`/usr/bin/passwd`を実行します。
 
-The **RUID** will be user2 but the **EUID** of that process will be root.
+この場合、**RUID**はユーザー2ですが、そのプロセスの**EUID**はrootになります。
 
-user2 can use only passwd to change their own password, because internally passwd checks the **RUID** and, if it is not root, its actions will be limited to real user's password.
+ユーザー2は自分のパスワードを変更するためにのみpasswdを使用できます。なぜなら、内部的にpasswdは**RUID**をチェックし、それがrootでない場合、アクションは実際のユーザーのパスワードに限定されるからです。
 
-It's necessary that the **EUID** becomes root in the case of passwd because the process needs to write to `/etc/passwd` and/or `/etc/shadow`.
+passwdのプロセスが`/etc/passwd`および/または`/etc/shadow`に書き込む必要があるため、**EUID**がrootである必要があります。
 
-Useful resources:
+役立つリソース:
 
-- [Difference between Real User ID, Effective User ID and Saved User ID? (original)](https://stackoverflow.com/questions/30493424/what-is-the-difference-between-a-process-pid-ppid-uid-euid-gid-and-egid)
-- [What is the difference between a pid, ppid, uid, euid, gid and egid?](https://stackoverflow.com/questions/30493424/what-is-the-difference-between-a-process-pid-ppid-uid-euid-gid-and-egid)
+- [Real User ID、Effective User ID、およびSaved User IDの違いは何ですか？（原文）](https://stackoverflow.com/questions/30493424/what-is-the-difference-between-a-process-pid-ppid-uid-euid-gid-and-egid)
+- [pid、ppid、uid、euid、gid、egidの違いは何ですか？](https://stackoverflow.com/questions/30493424/what-is-the-difference-between-a-process-pid-ppid-uid-euid-gid-and-egid)
 
 </details>
 
 <details>
-<summary><b>Developer added cron job which generate massive log files. How do you prevent them from getting so big?</b></summary><br>
+<summary><b>開発者が大量のログファイルを生成するcronジョブを追加しました。それらが非常に大きくなるのを防ぐにはどうすればよいですか？</b></summary><br>
 
-Using `logrotate` is the usual way of dealing with logfiles. But instead of adding content to `/etc/logrotate.conf` you should add your own job to `/etc/logrotate.d/`, otherwise you would have to look at more diffs of configuration files during release upgrades.
+ログファイルを扱う一般的な方法は`logrotate`を使用することです。しかし、`/etc/logrotate.conf`に内容を追加する代わりに、`/etc/logrotate.d/`に自分のジョブを追加するべきです。そうしないと、リリースアップグレード時に設定ファイルの差分をより多く確認する必要があります。
 
-If it's actively being written to you don't really have much you can do by way of truncate. Your only options are to truncate the file:
+ファイルがアクティブに書き込まれている場合、トランケート（切り捨て）による対処はあまりできません。唯一の選択肢は、ファイルをトランケートすることです：
 
 ```bash
 : >/var/log/massive-logfile
 ```
 
-It's very helpful, because it's truncate the file without disrupting the processes.
+これは、プロセスを中断することなくファイルをトランケートできるため、とても役立ちます。
 
-Useful resources:
+役立つリソース:
 
-- [How to Use logrotate to Manage Log Files](https://www.linode.com/docs/uptime/logs/use-logrotate-to-manage-log-files/)
-- [System logging](https://www.ibm.com/developerworks/library/l-lpic1-108-2/index.html)
-
-</details>
-
-<details>
-<summary><b>How the Linux kernel creates, manages and deletes the processes in the system? ***</b></summary><br>
-
-To be completed.
-
-Useful resources:
-
-- [Linux Processes](https://www.tldp.org/LDP/tlk/kernel/processes.html)
+- [ログファイルを管理するためのlogrotateの使用方法](https://www.linode.com/docs/uptime/logs/use-logrotate-to-manage-log-files/)
+- [システムログ](https://www.ibm.com/developerworks/library/l-lpic1-108-2/index.html)
 
 </details>
 
 <details>
-<summary><b>Explain the selected information you can see in <code>top</code> and <code>htop</code>. How to diagnose load, high user time and out-of-memory problems with these tools? ***</b></summary><br>
+<summary><b>Linuxカーネルはシステム内でプロセスをどのように作成、管理、削除しますか？ ***</b></summary><br>
 
-To be completed.
+未完了です。
 
-Useful resources:
+役立つリソース:
 
-- [top explained visually](https://www.svennd.be/top-explained-visually/)
-- [htop Explained Visually](https://codeahoy.com/2017/01/20/hhtop-explained-visually/)
-- [Explanation of everything you can see in htop/top on Linux](https://peteris.rocks/blog/htop/)
+- [Linuxプロセス](https://www.tldp.org/LDP/tlk/kernel/processes.html)
 
 </details>
 
 <details>
-<summary><b>How would you recognize a process that is hogging resources? </b></summary><br>
+<summary><b><code>top</code>や<code>htop</code>で見ることができる選択した情報を説明してください。これらのツールを使ってロード、高いユーザー時間、メモリ不足の問題を診断する方法は？ ***</b></summary><br>
 
-`top` works reasonably well, as long as you look at the right numbers.
-- **M** Sorts by current resident memory usage
-- **T** Sorts by total ( or cummulative) CPU usage
-- **P** Sorts by current CPU usage (this is the default refresh)
-- **?** Displays a usage summary for all top commands
+未完了です。
 
-This is very important information to obtain when problem solving why a computer process is running slowly and making decisions on what processes to kill/software to uninstall.
+役立つリソース:
 
-Useful resources:
-
-- [How to find the process(es) which are hogging the machine](https://superuser.com/questions/326300/how-to-find-the-processes-which-are-hogging-the-machine)
+- [topを視覚的に説明](https://www.svennd.be/top-explained-visually/)
+- [htopを視覚的に説明](https://codeahoy.com/2017/01/20/hhtop-explained-visually/)
+- [Linuxにおけるhtop/topのすべての情報の説明](https://peteris.rocks/blog/htop/)
 
 </details>
 
 <details>
-<summary><b>You need to upgrade <code>ntpd</code> service at 200 servers. What is the best way to go about upgrading all of these to the latest?</b></summary><br>
+<summary><b>リソースを大量に消費しているプロセスをどのように認識しますか？</b></summary><br>
 
-By using **Infrastructure as a Code** approach, there are multiple good ways:
+`top`は、正しい数字を見ていればかなり効果的です。
+- **M** 現在の常駐メモリ使用量でソート
+- **T** 総CPU使用量（または累積CPU使用量）でソート
+- **P** 現在のCPU使用量でソート（これがデフォルトのリフレッシュです）
+- **?** すべてのtopコマンドの使用概要を表示
 
-1. **Configuration Synchronization Change Management Model**:
+これは、コンピュータプロセスが遅く動作している理由を解決し、どのプロセスを終了させるか、またはソフトウェアをアンインストールするかを決定する際に非常に重要な情報です。
 
-There are Configuration Management Tools (Ansible, Chef, Puppet, Saltstack, ...), that can be used to automatically update `ntpd` service on all servers. To keep systems stable, system packages on servers are usually auto-updated with only security updates. Major or minor versions of packages are usually version locked in configuration definitions to prevent misconfiguration of the service. Change is then deployed by changing `ntpd` version in configuration definition.
+役立つリソース:
 
-With this approach, it is important to be careful when deploying changes into infrastructure massively. The pipeline of deployment should include Unit, Integration and System tests, and eventually be first deployed into Staging environment to prove configuration. If tests prove configuration correctness, deployment should be done by incremental rollout with ability to rollback in case of errors or failure.
-
-2. **Immutable Servers Model**:
-
-In Immutable Server model, whole unit (server, container) is replaced by new updated image rather than making changes to running server (this eliminates configuration drift). With this approach you usually build server image with tools like Packer or Docker with Dockerfile. This image is then tested and deployed similarly as in option above (1.), but now using techniques such as Canary Release, which also has ability to incremental rollout and rollback.
-
-Useful resources:
-
-- [Infrastructure as a Code - Chapter 8: Patterns for Updating and Changing Servers](http://shop.oreilly.com/product/0636920039297.do)
+- [マシンのリソースを大量に消費しているプロセスを見つける方法](https://superuser.com/questions/326300/how-to-find-the-processes-which-are-hogging-the-machine)
 
 </details>
 
 <details>
-<summary><b>How to permanently set <code>$PATH</code> on Linux/Unix? Why is this variable so important? ***</b></summary>
+<summary><b><code>ntpd</code>サービスを200台のサーバーでアップグレードする必要があります。これらすべてを最新にするための最良の方法は何ですか？</b></summary><br>
 
-To be completed.
+**Infrastructure as Code**アプローチを使用することで、複数の良い方法があります：
 
-</details>
+1. **設定同期変更管理モデル**：
 
-<details>
-<summary><b>When your server is booting up some errors appears on the console. How to examine boot messages and where are they stored?</b></summary><br>
+Ansible、Chef、Puppet、Saltstackなどの設定管理ツールを使用して、すべてのサーバーで`ntpd`サービスを自動的に更新できます。システムの安定性を保つために、サーバー上のシステムパッケージは通常、セキュリティ更新のみが自動的に行われます。パッケージのメジャーまたはマイナーなバージョンは、サービスの誤設定を防ぐために通常、設定定義でバージョンがロックされています。そのため、`ntpd`のバージョンを設定定義で変更することで、変更が展開されます。
 
-Your console has two types of messages:
+このアプローチでは、大規模にインフラストラクチャに変更を展開する際に注意が必要です。展開のパイプラインには、ユニットテスト、統合テスト、システムテストが含まれ、最初にステージング環境に展開して設定を確認する必要があります。テストで設定の正確性が確認された場合は、エラーや失敗の際にロールバック可能なインクリメンタルローアウトで展開を行います。
 
-- **generated by the kernel** (via printk)
-- **generated by userspace** (usually your init system)
+2. **イミュータブルサーバーモデル**：
 
-Kernel messages are always stored in the **kmsg** buffer, visible via `dmesg` command. They're also often copied to your **syslog**. This also applies to userspace messages written to `/dev/kmsg`, but those are fairly rare.
+イミュータブルサーバーモデルでは、実行中のサーバーに変更を加える代わりに、新しい更新済みイメージで全体のユニット（サーバー、コンテナ）を置き換えます（これにより設定のドリフトが排除されます）。このアプローチでは、通常、PackerやDockerといったツールを使ってサーバーイメージを作成します。このイメージはテストされ、上記のオプション（1.）と同様に展開されますが、Canary Releaseなどの技術を使用して、インクリメンタルローアウトとロールバックが可能です。
 
-Meanwhile, when userspace writes its fancy boot status text to `/dev/console` or `/dev/tty1`, it's not stored anywhere at all. It just goes to the screen and that's it.
+役立つリソース:
 
-`dmesg` is used to review boot messages contained in the kernel ring buffer. A ring buffer is a buffer of fixed size for which any new data added to it overwrites the oldest data in it.
-
-It shows operations once the boot process has completed, such as command line options passed to the kernel; hardware components detected, events when a new USB device is added, or errors like NIC (Network Interface Card) failure and the drivers report no link activity detected on the network and so much more.
-
-If system logging is done via the journal component you should use `journalctl`. It shows messages include kernel and boot messages; messages from syslog or various services.
-
-Boot issues/errors calls for a system administrator to look into certain important files in conjunction with particular commands (handled differently by different versions of Linux):
-
-- `/var/log/boot.log` - system boot log, it contains all that unfolded during the system boot
-- `/var/log/messages` - stores global system messages, including the messages that are logged during system boot
-- `/var/log/dmesg` - contains kernel ring buffer information
-
-Useful resources:
-
-- [How to view all boot messages in Linux after booting? (original)](https://superuser.com/questions/1188407/how-to-view-all-boot-messages-in-linux-after-booting)
-- [Differences in /var/log/{syslog,dmesg,messages} log files](https://superuser.com/questions/565927/differences-in-var-log-syslog-dmesg-messages-log-files)
-- [How can the messages that scroll by when booting a Debian system be reviewed later?](https://serverfault.com/questions/516411/all-debian-boot-messages)
+- [Infrastructure as Code - 第8章: サーバーの更新と変更のパターン](http://shop.oreilly.com/product/0636920039297.do)
 
 </details>
 
 <details>
-<summary><b>Swap usage too high. What are the reasons for this and how to resolve swapping problems?</b></summary><br>
+<summary><b><code>$PATH</code>をLinux/Unixで永続的に設定する方法は？この変数はなぜ重要なのですか？ ***</b></summary>
 
-**Swap** space is a restricted amount of physical memory that is allocated for use by the operating system when available memory has been fully utilized. It is memory management that involves swapping sections of memory to and from physical storage.
+未完了です。
 
-If the system needs more memory resources and the RAM is full, inactive pages in memory are moved to the swap space. While swap space can help machines with a small amount of RAM, it should not be considered a replacement for more RAM. **Swap** space is located on hard drives, which have a slower access time than physical memory.
+</details>
 
-Workload increases your RAM demand. You are running a workload that requires more memory. Usage of the entire swap indicates that. Also, changing `swappiness` to **1** might not be a wise decision. Setting `swappiness` to **1** does not indicate that swapping will not be done. It just indicates how aggressive kernel will be in respect of swapping, it does not eliminate swapping. Swapping will happen if needs to be done.
+<details>
+<summary><b>サーバーが起動する際にコンソールにエラーが表示されます。ブートメッセージを調べる方法と、それらがどこに保存されているかは？</b></summary><br>
 
-- **Increasing the size of the swap space** - firstly, you'd have increased disk use. If your disks aren't fast enough to keep up, then your system might end up thrashing, and you'd experience slowdowns as data is swapped in and out of memory. This would result in a bottleneck.
+コンソールには2種類のメッセージがあります：
 
-- **Adding more RAM** - the real solution is to add more memory. There's no substitute for RAM, and if you have enough memory, you'll swap less.
+- **カーネルによって生成されたもの**（`printk`を通じて）
+- **ユーザー空間によって生成されたもの**（通常はinitシステム）
 
-For monitoring swap space usage:
+カーネルメッセージは常に**kmsg**バッファに保存され、`dmesg`コマンドで表示できます。また、しばしば**syslog**にもコピーされます。これは、`/dev/kmsg`に書き込まれるユーザー空間のメッセージにも適用されますが、これらは比較的まれです。
 
-- `cat /proc/swaps` - to see total and used swap size
-- `grep SwapTotal /proc/meminfo` - to show total swap space
-- `free` - to display the amount of free and used system memory (also swap)
-- `vmstat` - to check swapping statistics
-- `top`, `htop`- to check swap space usage
-- `atop` - to show is that your system is overcommitting memory
-- or use one-liner shell command to list all applications with how much swap space search is using in kilobytes:
+一方で、ユーザー空間が`/dev/console`や`/dev/tty1`に fancyなブートステータステキストを書き込むと、それはどこにも保存されません。単に画面に表示されるだけです。
+
+`dmesg`はカーネルリングバッファに含まれるブートメッセージを確認するために使用されます。リングバッファは固定サイズのバッファで、新しいデータが追加されると古いデータが上書きされます。
+
+ブートプロセスが完了すると、カーネルに渡されたコマンドラインオプション、検出されたハードウェアコンポーネント、新しいUSBデバイスが追加されたイベント、NIC（ネットワークインターフェースカード）障害やネットワーク上でリンクアクティビティが検出されないなどのエラーが表示されます。
+
+システムログがジャーナルコンポーネントを介して行われている場合は、`journalctl`を使用するべきです。これにはカーネルメッセージやブートメッセージ、syslogやさまざまなサービスからのメッセージが含まれます。
+
+ブートの問題やエラーには、システム管理者が特定の重要なファイルとコマンド（Linuxの異なるバージョンで異なる方法で扱われます）を確認する必要があります：
+
+- `/var/log/boot.log` - システムブートログで、システムブート中に展開されたすべての内容が含まれています。
+- `/var/log/messages` - システムブート中にログされたメッセージを含むグローバルなシステムメッセージを保存します。
+- `/var/log/dmesg` - カーネルリングバッファの情報を含みます。
+
+役立つリソース:
+
+- [Linuxブート後のすべてのブートメッセージを表示する方法（原文）](https://superuser.com/questions/1188407/how-to-view-all-boot-messages-in-linux-after-booting)
+- [/var/log/{syslog,dmesg,messages}ログファイルの違い](https://superuser.com/questions/565927/differences-in-var-log-syslog-dmesg-messages-log-files)
+- [Debianシステムをブートするときにスクロールするメッセージを後で確認する方法は？](https://serverfault.com/questions/516411/all-debian-boot-messages)
+
+</details>
+
+<details>
+<summary><b>スワップ使用量が高すぎる。これにはどのような理由があり、スワッピングの問題を解決するにはどうすればよいですか？</b></summary><br>
+
+**スワップ**領域は、利用可能なメモリが完全に使用されたときにオペレーティングシステムによって使用される制限された物理メモリの量です。これは、メモリのセクションを物理ストレージにスワップするメモリ管理です。
+
+システムがより多くのメモリリソースを必要とし、RAMが満杯の場合、メモリ内の非アクティブなページがスワップ領域に移動されます。スワップ領域はRAMが少ないマシンに役立ちますが、より多くのRAMの代わりとして考えるべきではありません。**スワップ**領域はハードドライブに存在し、物理メモリよりもアクセス時間が遅いです。
+
+ワークロードがRAMの需要を増加させます。より多くのメモリを必要とするワークロードを実行しています。全スワップ使用量はそれを示しています。また、`swappiness`を**1**に変更するのは賢明な決定ではないかもしれません。`swappiness`を**1**に設定しても、スワッピングが行われないわけではありません。それはカーネルがスワッピングに対してどれほど攻撃的になるかを示すだけで、スワッピングを排除するわけではありません。必要があればスワッピングは行われます。
+
+- **スワップ領域のサイズを増やす** - まず、ディスクの使用量が増加します。ディスクが十分に速くない場合、システムがスラッシングを起こす可能性があり、メモリ内のデータがスワップインおよびスワップアウトされる際に遅延を経験するでしょう。これがボトルネックを引き起こします。
+
+- **RAMを追加する** - 真の解決策はメモリを追加することです。RAMの代替はありません。十分なメモリがあれば、スワップは少なくなります。
+
+スワップ領域の使用状況を監視するためには：
+
+- `cat /proc/swaps` - 総スワップサイズと使用量を確認する
+- `grep SwapTotal /proc/meminfo` - 総スワップ領域を表示する
+- `free` - システムメモリの使用可能量と使用量を表示する（スワップも含む）
+- `vmstat` - スワッピング統計を確認する
+- `top`, `htop` - スワップ領域の使用状況を確認する
+- `atop` - システムがメモリを過剰にコミットしているかどうかを示す
+- または、スワップ領域を使用しているアプリケーションをキロバイト単位でリストするワンライナーシェルコマンドを使用する：
 ```bash
 for _fd in /proc/*/status ; do
   awk '/VmSwap|Name/{printf $2 " " $3}END{ print ""}' $_fd
 done | sort -k 2 -n -r | less
 ```
 
-Useful resources:
+役立つリソース:
 
-- [Linux ate my ram!](https://www.linuxatemyram.com/)
-- [How to find out which processes are using swap space in Linux?](https://stackoverflow.com/questions/479953/how-to-find-out-which-processes-are-using-swap-space-in-linux)
-- [8 Useful Commands to Monitor Swap Space Usage in Linux](https://www.tecmint.com/commands-to-monitor-swap-space-usage-in-linux/)
-- [What is the danger in having a fully used SWAP in an Ubuntu server?](https://serverfault.com/questions/499301/what-is-the-danger-in-having-a-fully-used-swap-in-an-ubuntu-server)
-- [How to empty swap if there is free RAM?](https://askubuntu.com/questions/1357/how-to-empty-swap-if-there-is-free-ram)
+- [Linuxは私のRAMを食べました！](https://www.linuxatemyram.com/)
+- [Linuxでどのプロセスがスワップ領域を使用しているかを確認する方法](https://stackoverflow.com/questions/479953/how-to-find-out-which-processes-are-using-swap-space-in-linux)
+- [Linuxでスワップ領域の使用状況を監視するための8つの有用なコマンド](https://www.tecmint.com/commands-to-monitor-swap-space-usage-in-linux/)
+- [Ubuntuサーバーでスワップが完全に使用されている場合の危険性は？](https://serverfault.com/questions/499301/what-is-the-danger-in-having-a-fully-used-swap-in-an-ubuntu-server)
+- [無料のRAMがある場合にスワップを空にする方法](https://askubuntu.com/questions/1357/how-to-empty-swap-if-there-is-free-ram)
 
 </details>
 
 <details>
-<summary><b>What is umask? How to set it permanently for a user?</b></summary><br>
+<summary><b>umaskとは何ですか？ユーザーのために永続的に設定するにはどうすればよいですか？</b></summary><br>
 
-On Linux and other Unix-like operating systems, new files are created with a default set of permissions. Specifically, a new file's permissions may be restricted in a specific way by applying a permissions "mask" called the `umask`. The `umask` command is used to set this mask, or to show you its current value.
+Linuxやその他のUnix系オペレーティングシステムでは、新しいファイルがデフォルトのパーミッションセットで作成されます。具体的には、新しいファイルのパーミッションは、`umask`というパーミッション「マスク」を適用することで特定の方法で制限されることがあります。`umask`コマンドは、このマスクを設定するために使用されるか、現在の値を表示するために使用されます。
 
-Permanently change (set e.g. `umask 02`):
+永続的に変更するには（例: `umask 02`）:
 
 - `~/.profile`
 - `~/.bashrc`
 - `~/.zshrc`
 - `~/.cshrc`
 
-Useful resources:
+役立つリソース:
 
-- [What is Umask and How To Setup Default umask Under Linux?](https://www.cyberciti.biz/tips/understanding-linux-unix-umask-value-usage.html)
+- [Umaskとは何か、およびLinuxでのデフォルトumaskの設定方法](https://www.cyberciti.biz/tips/understanding-linux-unix-umask-value-usage.html)
 
 </details>
 
 <details>
-<summary><b>Explain the differences among the following umask values: 000, 002, 022, 027, 077, and 277.</b></summary><br>
+<summary><b>以下のumask値の違いを説明してください: 000, 002, 022, 027, 077, および 277。</b></summary><br>
 
 <table style="width:100%">
   <tr>
     <th>Umask</th>
-    <th>File result</th>
-    <th>Directory result</th>
+    <th>ファイルの結果</th>
+    <th>ディレクトリの結果</th>
   </tr>
   <tr>
     <td>000</td>
@@ -1656,62 +1656,62 @@ Useful resources:
   </tr>
 </table>
 
-Useful resources:
+役立つリソース:
 
-- [What is Umask and How To Setup Default umask Under Linux?](https://www.cyberciti.biz/tips/understanding-linux-unix-umask-value-usage.html)
-
-</details>
-
-<details>
-<summary><b>What is the difference between a symbolic link and a hard link?</b></summary><br>
-
-Underneath the file system files are represented by inodes (or is it multiple inodes not sure)
-
-- a file in the file system is basically a link to an inode
-- a hard link then just creates another file with a link to the same underlying inode
-
-When you delete a file it removes one link to the underlying inode. The inode is only deleted (or deletable/over-writable) when all links to the inode have been deleted.
-
-- a symbolic link is a link to another name in the file system
-
-Once a hard link has been made the link is to the inode. deleting renaming or moving the original file will not affect the hard link as it links to the underlying inode. Any changes to the data on the inode is reflected in all files that refer to that inode.
-
-Note: Hard links are only valid within the same file system. Symbolic links can span file systems as they are simply the name of another file.
-
-Differences:
-
-- **Hardlink** cannot be created for directories. Hard link can only be created for a file
-- **Softlink** also termed a symbolic links or symlinks can link to a directory
-
-Useful resources:
-
-- [What is the difference between a hard link and a symbolic link?](https://medium.com/@wendymayorgasegura/what-is-the-difference-between-a-hard-link-and-a-symbolic-link-8c0493041b62)
+- [Umaskとは何か、およびLinuxでのデフォルトumaskの設定方法](https://www.cyberciti.biz/tips/understanding-linux-unix-umask-value-usage.html)
 
 </details>
 
 <details>
-<summary><b>How does the sticky bit work? The <code>SUID/GUID</code> is the same?</b></summary><br>
+<summary><b>シンボリックリンクとハードリンクの違いは何ですか？</b></summary><br>
 
-This is probably one of my most irksome things that people mess up all the time. The **SUID/GUID** bit and the **sticky-bit** are 2 completely different things.
+ファイルシステムの下では、ファイルはinodeによって表されます（複数のinodeかもしれませんが、確かではありません）。
 
-If you do a `man chmod` you can read about the **SUID** and **sticky-bits**.
+- ファイルシステム内のファイルは基本的にinodeへのリンクです。
+- ハードリンクは、同じ基盤となるinodeへのリンクを持つ別のファイルを作成します。
+
+ファイルを削除すると、基盤となるinodeへのリンクの1つが削除されます。inodeは、すべてのリンクが削除されるまで削除（または削除可能/上書き可能）されません。
+
+- シンボリックリンクは、ファイルシステム内の別の名前へのリンクです。
+
+ハードリンクが作成されると、そのリンクはinodeに対するものです。元のファイルを削除、名前変更、または移動しても、ハードリンクには影響しません。ハードリンクは基盤となるinodeにリンクしているためです。inode上のデータに対する変更は、そのinodeを参照するすべてのファイルに反映されます。
+
+注意: ハードリンクは同じファイルシステム内でのみ有効です。シンボリックリンクは、ファイルシステムを跨ることができるため、単に別のファイルの名前です。
+
+違い:
+
+- **ハードリンク**はディレクトリに対して作成することはできません。ハードリンクはファイルに対してのみ作成できます。
+- **ソフトリンク**（シンボリックリンクまたはsymlinkとも呼ばれる）はディレクトリにリンクすることができます。
+
+役立つリソース:
+
+- [ハードリンクとシンボリックリンクの違いは何ですか？](https://medium.com/@wendymayorgasegura/what-is-the-difference-between-a-hard-link-and-a-symbolic-link-8c0493041b62)
+
+</details>
+
+<details>
+<summary><b>スティッキービット（sticky bit）はどのように機能しますか？<code>SUID/GUID</code>と同じですか？</b></summary><br>
+
+これは多くの人がしばしば混乱する非常に厄介な問題の1つです。**SUID/GUID**ビットと**スティッキービット**は全く異なるものです。
+
+`man chmod` を実行すれば、**SUID**と**スティッキービット**についての説明を読むことができます。
 
 **SUID/GUID**
 
-What the above man page is trying to say is that the position that the x bit takes in the rwxrwxrwx for the user octal (1st group of rwx) and the group octal (2nd group of rwx) can take an additional state where the x becomes an s. When this occurs this file when executed (if it's a program and not just a shell script) will run with the permissions of the owner or the group of the file.
+上記のマニュアルページが言おうとしているのは、xビットが rwxrwxrwx のユーザーオクタル（最初のrwグループ）およびグループオクタル（2番目のrwグループ）で占める位置が、xがsになる追加の状態を取ることができるということです。これが発生すると、ファイルが実行されると（プログラムであり、単なるシェルスクリプトではない場合）、ファイルの所有者またはグループの権限で実行されます。
 
-So if the file is owned by root and the **SUID** bit is turned on, the program will run as root. Even if you execute it as a regular user. The same thing applies to the **GUID** bit.
+したがって、ファイルがrootによって所有されていて、**SUID**ビットがオンになっていると、プログラムはrootとして実行されます。たとえ通常のユーザーとして実行してもです。同様のことが**GUID**ビットにも当てはまります。
 
-Examples:
+例:
 
-**no suid/guid** - just the bits `rwxr-xr-x` are set.
+**SUID/GUIDなし** - ビット `rwxr-xr-x` が設定されています。
 
 ```bash
 ls -lt b.pl
 -rwxr-xr-x 1 root root 179 Jan  9 01:01 b.pl
 ```
 
-**suid & user's executable bit enabled (lowercase s)** - the bits `rwsr-x-r-x` are set.
+**SUID & ユーザーの実行ビットが有効（小文字のs）** - ビット `rwsr-xr-x` が設定されています。
 
 ```bash
 chmod u+s b.pl
@@ -1719,7 +1719,7 @@ ls -lt b.pl
 -rwsr-xr-x 1 root root 179 Jan  9 01:01 b.pl
 ```
 
-**suid enabled & executable bit disabled (uppercase S)** - the bits `rwSr-xr-x` are set.
+**SUID有効 & 実行ビット無効（大文字のS）** - ビット `rwSr-xr-x` が設定されています。
 
 ```bash
 chmod u-x b.pl
@@ -1727,7 +1727,7 @@ ls -lt b.pl
 -rwSr-xr-x 1 root root 179 Jan  9 01:01 b.pl
 ```
 
-**guid & group's executable bit enabled (lowercase s)** - the bits `rwxr-sr-x` are set.
+**GUID & グループの実行ビットが有効（小文字のs）** - ビット `rwxr-sr-x` が設定されています。
 
 ```bash
 chmod g+s b.pl
@@ -1735,7 +1735,7 @@ ls -lt b.pl
 -rwxr-sr-x 1 root root 179 Jan  9 01:01 b.pl
 ```
 
-**guid enabled & executable bit disabled (uppercase S)** - the bits `rwxr-Sr-x` are set.
+**GUID有効 & 実行ビット無効（大文字のS）** - ビット `rwxr-Sr-x` が設定されています。
 
 ```bash
 chmod g-x b.pl
@@ -1743,20 +1743,20 @@ ls -lt b.pl
 -rwxr-Sr-x 1 root root 179 Jan  9 01:01 b.pl
 ```
 
-**sticky bit**
+**スティッキービット**
 
-The sticky bit on the other hand is denoted as `t`, such as with the `/tmp` directory:
+一方、スティッキービットは `t` で示されます。たとえば `/tmp` ディレクトリで:
 
 ```bash
 ls -l /|grep tmp
 drwxrwxrwt. 168 root root 28672 Jun 14 08:36 tmp
 ```
 
-This bit should have always been called the _restricted deletion bit_ given that's what it really connotes. When this mode bit is enabled, it makes a directory such that users can only delete files & directories within it that they are the owners of.
+このビットは、実際には「制限付き削除ビット」と呼ばれるべきです。スティッキービットが有効になっていると、ユーザーは自分が所有するファイルおよびディレクトリのみを削除できるようになります。
 
-Useful resources:
+役立つリソース:
 
-- [How does the sticky bit work? (original)](https://unix.stackexchange.com/questions/79395/how-does-the-sticky-bit-work)
+- [スティッキービットはどのように機能しますか？（原文）](https://unix.stackexchange.com/questions/79395/how-does-the-sticky-bit-work)
 
 </details>
 
