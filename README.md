@@ -582,50 +582,50 @@ UNIX および UNIX 系オペレーティングシステムでは、`kill` は�
 </details>
 
 <details>
-<summary><b>How do I <code>grep</code> recursively? Explain on several examples. ***</b></summary>
+<summary><b><code>grep</code> を再帰的に実行する方法は？いくつかの例で説明してください。</b></summary>
 
-To be completed.
+完了次第追加します。
 
 </details>
 
 <details>
-<summary><b><code>archive.tgz</code> has ~30 GB. How do you list content of it and extract only one file?</b></summary><br>
+<summary><b><code>archive.tgz</code> は約 30 GB です。このファイルの内容をリスト表示し、特定のファイルだけを抽出するにはどうすればよいですか？</b></summary><br>
 
 ```bash
-# list of content
+# 内容のリスト表示
 tar tf archive.tgz
 
-# extract file
+# ファイルの解凍
 tar xf archive.tgz filename
 ```
 
-Useful resources:
+有用なリソース：
 
-- [List the contents of a tar or tar.gz file](https://www.cyberciti.biz/faq/list-the-contents-of-a-tar-or-targz-file/)
-- [How to extract specific file(s) from tar.gz](https://unix.stackexchange.com/questions/61461/how-to-extract-specific-files-from-tar-gz)
+- [tar または tar.gz ファイルの内容をリストする方法](https://www.cyberciti.biz/faq/list-the-contents-of-a-tar-or-targz-file/)
+- [tar.gz から特定のファイルを抽出する方法](https://unix.stackexchange.com/questions/61461/how-to-extract-specific-files-from-tar-gz)
 
 </details>
 
 <details>
-<summary><b>Execute combine multiple shell commands in one line.</b></summary><br>
+<summary><b>複数のシェルコマンドを1行で実行する</b></summary><br>
 
-If you want to execute each command only if the previous one succeeded, then combine them using the `&&` operator:
+前のコマンドが成功した場合にのみ次のコマンドを実行したい場合は、`&&`演算子を使用して結合します：
 
 ```bash
 cd /my_folder && rm *.jar && svn co path to repo && mvn compile package install
 ```
 
-If one of the commands fails, then all other commands following it won't be executed.
+コマンドのうち1つが失敗すると、それに続く他のすべてのコマンドは実行されません。
 
-If you want to execute all commands regardless of whether the previous ones failed or not, separate them with semicolons:
+前のコマンドが失敗したかどうかに関係なく、すべてのコマンドを実行したい場合は、セミコロンで区切ります：
 
 ```bash
 cd /my_folder; rm *.jar; svn co path to repo; mvn compile package install
 ```
 
-In your case, I think you want the first case where execution of the next command depends on the success of the previous one.
+この場合、次のコマンドの実行が前のコマンドの成功に依存する最初のケースが望ましいと思われます。
 
-You can also put all commands in a script and execute that instead:
+また、すべてのコマンドをスクリプトにまとめて、それを実行することもできます：
 
 ```bash
 #! /bin/sh
@@ -635,246 +635,246 @@ cd /my_folder \
 && mvn compile package install
 ```
 
-Useful resources:
+有用なリソース:
 
-- [Execute combine multiple linux commands in one line (original)](https://stackoverflow.com/questions/13077241/execute-combine-multiple-linux-commands-in-one-line)
+- [複数のLinuxコマンドを1行で結合して実行する方法（オリジナル）](https://stackoverflow.com/questions/13077241/execute-combine-multiple-linux-commands-in-one-line)
 
 </details>
 
 <details>
-<summary><b>What symbolic representation can you pass to <code>chmod</code> to give all users execute access to a file without affecting other permissions?</b></summary><br>
+<summary><b>他の権限に影響を与えずに、すべてのユーザーにファイルの実行アクセスを付与するために <code>chmod</code> に渡すことができる記号表現は何ですか？</b></summary><br>
 
 ```bash
 chmod a+x /path/to/file
 ```
 
-- `a` - for all users
-- `x` - for execution permission
-- `r` - for read permission
-- `w` - for write permission
+- `a` - すべてのユーザーに適用
+- `x` - 実行権限
+- `r` - 読み取り権限
+- `w` - 書き込み権限
 
-Useful resources:
-- [How to Set File Permissions Using chmod](https://www.washington.edu/computing/unix/permissions.html)
-- [What does "chmod +x your_file_name" do and how do I use it?](https://askubuntu.com/questions/443789/what-does-chmod-x-filename-do-and-how-do-i-use-it)
+有用なリソース:
+- [chmod を使用してファイル権限を設定する方法](https://www.washington.edu/computing/unix/permissions.html)
+- [「chmod +x your_file_name」とは何をするコマンドで、どのように使用するのですか？](https://askubuntu.com/questions/443789/what-does-chmod-x-filename-do-and-how-do-i-use-it)
 
 </details>
 
 <details>
-<summary><b>How can I sync two local directories?</b></summary><br>
+<summary><b>2つのローカルディレクトリを同期するにはどうすればよいですか？</b></summary><br>
 
-To sync the contents of **dir1** to **dir2** on the same system, type:
+同じシステム上で **dir1** の内容を **dir2** に同期するには、次のコマンドを入力します:
 
 ```bash
 rsync -av --progress --delete dir1/ dir2
 ```
 
-- `-a`, `--archive` - archive mode
-- `--delete` - delete extraneous files from dest dirs
-- `-v`, `--verbose` - verbose mode (increase verbosity)
-- `--progress` - show progress during transfer
+- `-a`, `--archive` - アーカイブモード
+- `--delete` - 余分なファイルを宛先ディレクトリから削除
+- `-v`, `--verbose` - 詳細モード（冗長性を高める）
+- `--progress` - 転送中に進行状況を表示
 
-Useful resources:
+参考資料:
 
-- [How can I sync two local directories? (original](https://unix.stackexchange.com/questions/392536/how-can-i-sync-two-local-directories)
-- [Synchronizing folders with rsync](https://www.jveweb.net/en/archives/2010/11/synchronizing-folders-with-rsync.html)
-
-</details>
-
-<details>
-<summary><b>Many basic maintenance tasks require you to edit config files. Explain ways to undo the changes you make.</b></summary><br>
-
-- manually backup of a file before editing (with brace expansion like this: `cp filename{,.orig}`)
-- manual copy of the directory structure where file is stored (e.g. `cp`, `rsync` or `tar`)
-- make a backup of original file in your editor (e.g. set rules in your editor configuration file)
-- the best solution is to use `git` (or any other version control) to keep track of configuration files (e.g. `etckeeper` for `/etc` directory)
-
-Useful resources:
-
-- [Backup file with .bak before filename extension](https://unix.stackexchange.com/questions/66376/backup-file-with-bak-before-filename-extension)
-- [Is it a good idea to use git for configuration file version controlling?](https://superuser.com/questions/1037211/is-it-a-good-idea-to-use-git-for-configuration-file-version-controlling)
+- [ローカルディレクトリを同期する方法 (オリジナル)](https://unix.stackexchange.com/questions/392536/how-can-i-sync-two-local-directories)
+- [rsyncでフォルダを同期する](https://www.jveweb.net/en/archives/2010/11/synchronizing-folders-with-rsync.html)
 
 </details>
 
 <details>
-<summary><b>You have to find all files larger than 20MB. How you do it?</b></summary><br>
+<summary><b>多くの基本的なメンテナンスタスクでは、設定ファイルの編集が必要です。変更を元に戻す方法を説明してください。</b></summary><br>
+
+- 編集前にファイルを手動でバックアップする（このようにブレース展開を使用: `cp filename{,.orig}`）
+- ファイルが保存されているディレクトリ構造を手動でコピーする（例: `cp`、`rsync`、または `tar` を使用）
+- 使用しているエディターで元のファイルをバックアップする（例: エディターの設定ファイルにルールを設定する）
+- 最良の解決策は、`git`（または他のバージョン管理ツール）を使用して設定ファイルを管理することです（例: `/etc` ディレクトリに `etckeeper` を使用）
+
+参考資料:
+
+- [拡張子の前に .bak でファイルをバックアップする](https://unix.stackexchange.com/questions/66376/backup-file-with-bak-before-filename-extension)
+- [設定ファイルのバージョン管理に git を使用するのは良い考えですか？](https://superuser.com/questions/1037211/is-it-a-good-idea-to-use-git-for-configuration-file-version-controlling)
+
+</details>
+
+<details>
+<summary><b>20MBを超えるすべてのファイルを見つける必要があります。どうやってやりますか？</b></summary><br>
 
 ```bash
 find / -type f -size +20M
 ```
 
-Useful resources:
+参考資料:
 
-- [How can I find files that are bigger/smaller than x bytes?](https://superuser.com/questions/204564/how-can-i-find-files-that-are-bigger-smaller-than-x-bytes)
+- [xバイトより大きい/小さいファイルを見つけるにはどうすればよいですか？](https://superuser.com/questions/204564/how-can-i-find-files-that-are-bigger-smaller-than-x-bytes)
 
 </details>
 
 <details>
-<summary><b>Why do we use <code>sudo su -</code> and not just <code>sudo su</code>?</b></summary><br>
+<summary><b>なぜ <code>sudo su -</code> を使うのか、ただの <code>sudo su</code> ではない理由は？</b></summary><br>
 
-`sudo` is in most modern Linux distributions where (but not always) the root user is disabled and has no password set. Therefore you cannot switch to the root user with `su` (you can try). You have to call `sudo` with root privileges: `sudo su`.
+`sudo` はほとんどの最新のLinuxディストリビューションで使用されており、（常にではありませんが）rootユーザーが無効化され、パスワードが設定されていません。そのため、`su` でrootユーザーに切り替えることはできません（試してみてもよいでしょう）。root権限で `sudo` を呼び出す必要があります：`sudo su`。
 
-`su` just switches the user, providing a normal shell with an environment nearly the same as with the old user.
+`su` は単にユーザーを切り替えるだけで、通常のシェルが起動し、以前のユーザーとほぼ同じ環境が提供されます。
 
-`su -` invokes a login shell after switching the user. A login shell resets most environment variables, providing a clean base.
+`su -` は、ユーザーを切り替えた後にログインシェルを起動します。ログインシェルは、ほとんどの環境変数をリセットし、クリーンな状態を提供します。
 
-Useful resources:
+参考資料:
 
 - [su vs sudo -s vs sudo -i vs sudo bash](https://unix.stackexchange.com/questions/35338/su-vs-sudo-s-vs-sudo-i-vs-sudo-bash)
-- [Why do we use su - and not just su? (original)](https://unix.stackexchange.com/questions/7013/why-do-we-use-su-and-not-just-su)
+- [なぜ su - を使い、ただの su を使わないのか？(オリジナル)](https://unix.stackexchange.com/questions/7013/why-do-we-use-su-and-not-just-su)
 
 </details>
 
 <details>
-<summary><b>How to find files that have been modified on your system in the past 60 minutes?</b></summary><br>
+<summary><b>過去60分以内にシステム上で変更されたファイルを見つける方法は？</b></summary><br>
 
 ```bash
 find / -mmin -60 -type f
 ```
 
-Useful resources:
+参考資料:
 
-- [Get all files modified in last 30 days in a directory (orignal)](https://stackoverflow.com/questions/23070245/get-all-files-modified-in-last-30-days-in-a-directory)
-
-</details>
-
-<details>
-<summary><b>What are the main reasons for keeping old log files?</b></summary><br>
-
-They are essential to investigate issues on the system. **Log management** is absolutely critical for IT security.
-
-Servers, firewalls, and other IT equipment keep log files that record important events and transactions. This information can provide important clues about hostile activity affecting your network from within and without. Log data can also provide information for identifying and troubleshooting equipment problems including configuration problems and hardware failure.
-
-It’s your server’s record of who’s come to your site, when, and exactly what they looked at. It’s incredibly detailed, showing:
-
-- where folks came from
-- what browser they were using
-- exactly which files they looked at
-- how long it took to load each file
-- and a whole bunch of other nerdy stuff
-
-Factors to consider:
-
-- legal requirements for retention or destruction
-- company policies for retention and destruction
-- how long the logs are useful
-- what questions you're hoping to answer from the logs
-- how much space they take up
-
-By collecting and analyzing logs, you can understand what transpires within your network. Each log file contains many pieces of information that can be invaluable, especially if you know how to read them and analyze them.
-
-Useful resources:
-
-- [How long do you keep log files?](https://serverfault.com/questions/135365/how-long-do-you-keep-log-files)
+- [ディレクトリ内で過去30日間に変更されたすべてのファイルを取得する（オリジナル）](https://stackoverflow.com/questions/23070245/get-all-files-modified-in-last-30-days-in-a-directory)
 
 </details>
 
 <details>
-<summary><b>What is an incremental backup?</b></summary><br>
+<summary><b>古いログファイルを保持する主な理由は何ですか？</b></summary><br>
 
-An incremental backup is a type of backup that only copies files that have changed since the previous backup.
+それらは、システム上の問題を調査するために不可欠です。**ログ管理**は、ITセキュリティにとって非常に重要です。
 
-Useful resources:
+サーバー、ファイアウォール、その他のIT機器は、重要なイベントや取引を記録するログファイルを保持します。この情報は、内部および外部からのネットワークに影響を与える敵対的な活動に関する重要な手がかりを提供する可能性があります。ログデータは、構成問題やハードウェアの故障などの機器の問題を特定し、トラブルシューティングするための情報も提供できます。
 
-- [What Is Incremental Backup?](https://www.nakivo.com/blog/what-is-incremental-backup/)
+これは、誰があなたのサイトに来て、いつ、そして正確に何を見たかを記録するサーバーの記録です。それは非常に詳細で、以下の内容を示します。
+
+- 訪問者の出身地
+- 使用しているブラウザ
+- 正確にどのファイルを見たか
+- 各ファイルの読み込みにかかった時間
+- その他多くの技術的な情報
+
+考慮すべき要素:
+
+- 保持や破棄に関する法的要件
+- 会社の保持および破棄に関するポリシー
+- ログの有用性の期間
+- ログから解決したい質問
+- ログが占めるスペースの量
+
+ログを収集して分析することで、ネットワーク内で何が起こっているかを理解できます。各ログファイルには、多くの情報が含まれており、それを読み取り、分析する方法を知っていれば非常に貴重です。
+
+参考資料:
+
+- [ログファイルをどのくらいの期間保持しますか？](https://serverfault.com/questions/135365/how-long-do-you-keep-log-files)
 
 </details>
 
 <details>
-<summary><b>What is RAID? What is RAID0, RAID1, RAID5, RAID6, RAID10? </b></summary><br>
+<summary><b>増分バックアップとは何ですか？</b></summary><br>
 
-A **RAID** (Redundant Array of Inexpensive Disks) is a technology that is used to increase the performance and/or reliability of data storage.
+増分バックアップは、前回のバックアップ以降に変更されたファイルのみをコピーするバックアップの一種です。
 
-- **RAID0**: Also known as disk **striping**, is a technique that breaks up a file and spreads the data across all the disk drives in a RAID group. There are no safeguards against failure
-- **RAID1**: A popular disk subsystem that increases safety by writing the same data on two drives. Called "**mirroring**," RAID 1 does not increase write performance, but read performance may equal up to the sum of each disks' performance. However, if one drive fails, the second drive is used, and the failed drive is manually replaced. After replacement, the RAID controller duplicates the contents of the working drive onto the new one
-- **RAID5**: It is disk subsystem that increases safety by computing parity data and increasing speed by interleaving data across three or more drives (**striping**). Upon failure of a single drive, subsequent reads can be calculated from the distributed parity such that no data is lost
-- **RAID6**: RAID 6 extends RAID 5 by adding another parity block. It requires a minimum of four disks and can continue to execute read and write of any two concurrent disk failures. RAID 6 does not have a performance penalty for read operations, but it does have a performance penalty on write operations because of the overhead associated with parity calculations
-- **RAID10**: Also known as **RAID 1+0**, is a RAID configuration that combines disk mirroring and disk striping to protect data. It requires a minimum of four disks, and stripes data across mirrored pairs. As long as one disk in each mirrored pair is functional, data can be retrieved. If two disks in the same mirrored pair fail, all data will be lost because there is no parity in the striped sets
+参考資料:
 
-Useful resources:
+- [増分バックアップとは？](https://www.nakivo.com/blog/what-is-incremental-backup/)
+
+</details>
+
+<details>
+<summary><b>RAIDとは何ですか？RAID0、RAID1、RAID5、RAID6、RAID10とは？</b></summary><br>
+
+**RAID**（Redundant Array of Inexpensive Disks）は、データストレージのパフォーマンスや信頼性を向上させるための技術です。
+
+- **RAID0**: ディスクの**ストライピング**とも呼ばれ、ファイルを分割してRAIDグループ内のすべてのディスクドライブにデータを分散させる技術です。故障に対する保護はありません。
+- **RAID1**: 安全性を高めるために、同じデータを2つのドライブに書き込む一般的なディスクサブシステムです。**ミラーリング**とも呼ばれ、書き込みパフォーマンスの向上はありませんが、読み取りパフォーマンスは各ディスクのパフォーマンスの合計に匹敵する場合があります。ただし、1つのドライブが故障した場合、2番目のドライブが使用され、故障したドライブは手動で交換されます。交換後、RAIDコントローラが作業中のドライブの内容を新しいドライブに複製します。
+- **RAID5**: パリティデータを計算し、安全性を高めると同時に、データを3つ以上のドライブにインターリーブして速度を向上させるディスクサブシステムです（**ストライピング**）。1つのドライブが故障した場合、分散パリティから計算され、データが失われることはありません。
+- **RAID6**: RAID 6は、RAID 5を拡張し、もう1つのパリティブロックを追加します。最小4つのディスクが必要で、2つのディスクが同時に故障しても読み書きが継続できます。RAID 6は、読み取り操作にはパフォーマンスのペナルティがありませんが、パリティ計算に関連するオーバーヘッドのため、書き込み操作にはパフォーマンスのペナルティがあります。
+- **RAID10**: **RAID 1+0**とも呼ばれ、ディスクのミラーリングとストライピングを組み合わせてデータを保護するRAID構成です。最小4つのディスクが必要で、ミラーリングされたペアにデータをストライプします。各ミラーリングペアのうち1つのディスクが機能していれば、データを取り出すことができます。ただし、同じミラーリングペアの2つのディスクが故障した場合、ストライプセットにはパリティがないため、すべてのデータが失われます。
+
+参考資料:
 
 - [RAID](https://www.prepressure.com/library/technology/raid)
 
 </details>
 
 <details>
-<summary><b>How is a user’s default group determined? How would you change it? </b></summary><br>
+<summary><b>ユーザーのデフォルトグループはどのように決定されますか？また、それをどのように変更しますか？</b></summary><br>
 
 ```bash
 useradd -m -g initial_group username
 ```
 
-`-g/--gid`: defines the group name or number of the user's initial login group. If specified, the group name must exist; if a group number is provided, it must refer to an already existing group.
+`-g/--gid`: ユーザーの初期ログイングループのグループ名または番号を定義します。指定されている場合、グループ名は存在する必要があり、グループ番号が提供される場合は、既存のグループを指している必要があります。
 
-If not specified, the behaviour of useradd will depend on the `USERGROUPS_ENAB` variable contained in `/etc/login.defs`. The default behaviour (`USERGROUPS_ENAB yes`) is to create a group with the same name as the username, with **GID** equal to **UID**.
+指定されていない場合、`useradd`の動作は`/etc/login.defs`に含まれる`USERGROUPS_ENAB`変数に依存します。デフォルトの動作（`USERGROUPS_ENAB yes`）は、ユーザー名と同じ名前のグループを作成し、**GID**を**UID**と同じにします。
 
-Useful resources:
+参考資料:
 
-- [How can I change a user's default group in Linux?](https://unix.stackexchange.com/questions/26675/how-can-i-change-a-users-default-group-in-linux)
-
-</details>
-
-<details>
-<summary><b>What is your best command line text editor for daily working and scripting? ***</b></summary><br>
-
-To be completed.
+- [Linuxでユーザーのデフォルトグループを変更する方法](https://unix.stackexchange.com/questions/26675/how-can-i-change-a-users-default-group-in-linux)
 
 </details>
 
 <details>
-<summary><b>Why would you want to mount servers in a rack?</b></summary><br>
+<summary><b>日常作業やスクリプト作成に最適なコマンドラインテキストエディタは何ですか？</b></summary><br>
 
-- Protecting Hardware
-- Proper Cooling
-- Organized Workspace
-- Better Power Management
-- Cleaner Environment
+未完成です。
 
-Useful resources:
+</details>
+
+<details>
+<summary><b>サーバーをラックにマウントする理由は何ですか？</b></summary><br>
+
+- ハードウェアの保護
+- 適切な冷却
+- 整理された作業スペース
+- より良い電力管理
+- クリーンな環境
+
+参考資料:
 
 - [5 Reasons to Rackmount Your PC](https://www.racksolutions.com/news/custom-projects/5-reasons-to-rackmount-pc/)
 
 </details>
 
-###### Network Questions (23)
+###### ネットワークの質問 (23)
 
 <details>
-<summary><b>Draw me a simple network diagram: you have 20 systems, 1 router, 4 switches, 5 servers, and a small IP block. ***</b></summary><br>
+<summary><b>シンプルなネットワーク図を描いてください: 20台のシステム、1台のルーター、4台のスイッチ、5台のサーバー、小さなIPブロックがあります。</b></summary><br>
 
-To be completed.
+未完成です。
 
 </details>
 
 <details>
-<summary><b>What are the most important things to understand about the OSI (or any other) model?</b></summary><br>
+<summary><b>OSIモデル（または他のモデル）について理解しておくべき最も重要なことは何ですか？</b></summary><br>
 
-The most important things to understand about the **OSI** (or any other) model are:
+**OSI**（または他の）モデルについて理解しておくべき最も重要なことは以下です：
 
-- we can divide up the protocols into layers
-- layers provide encapsulation
-- layers provide abstraction
-- layers decouple functions from others
+- プロトコルを層に分けることができる
+- 層がカプセル化を提供する
+- 層が抽象化を提供する
+- 層が他の機能からの分離を提供する
 
-Useful resources:
+参考資料:
 
-- [OSI Model and Networking Protocols Relationship](https://networkengineering.stackexchange.com/questions/6380/osi-model-and-networking-protocols-relationship)
+- [OSIモデルとネットワーキングプロトコルの関係](https://networkengineering.stackexchange.com/questions/6380/osi-model-and-networking-protocols-relationship)
 
 </details>
 
 <details>
-<summary><b>What is the difference between a VLAN and a subnet? Do you need a VLAN to setup a subnet?</b></summary><br>
+<summary><b>VLANとサブネットの違いは何ですか？サブネットを設定するにはVLANが必要ですか？</b></summary><br>
 
-**VLANs** and **subnets** solve different problems. **VLANs** work at Layer 2, thereby altering broadcast domains (for instance). Whereas **subnets** are Layer 3 in the current context.
+**VLAN**と**サブネット**は異なる問題を解決します。**VLAN**はレイヤー2で動作し、例えばブロードキャストドメインを変更します。一方、**サブネット**は現在の文脈ではレイヤー3です。
 
-**Subnet** - is a range of IP addresses determined by part of an address (often called the network address) and a subnet mask (netmask). For example, if the netmask is `255.255.255.0` (or `/24` for short), and the network address is `192.168.10.0`, then that defines a range of IP addresses `192.168.10.0` through `192.168.10.255`. Shorthand for writing that is `192.168.10.0/24`.
+**サブネット** - IPアドレスの範囲で、アドレスの一部（通常「ネットワークアドレス」と呼ばれる）とサブネットマスク（ネットマスク）によって決まります。例えば、ネットマスクが `255.255.255.0`（または短縮形で `/24`）で、ネットワークアドレスが `192.168.10.0` の場合、それはIPアドレスの範囲 `192.168.10.0` から `192.168.10.255` を定義します。これを短縮形で書くと `192.168.10.0/24` です。
 
-**VLAN** - a good way to think of this is "switch partitioning." Let's say you have an 8 port switch that is VLAN-able. You can assign 4 ports to one **VLAN** (say `VLAN 1`) and 4 ports to another **VLAN** (say `VLAN 2`). `VLAN 1` won't see any of `VLAN 2's` traffic and vice versa, logically, you now have two separate switches. Normally on a switch, if the switch hasn't seen a MAC address it will "flood" the traffic to all other ports. **VLANs** prevent this.
+**VLAN** - これを「スイッチの分割」と考えると良いでしょう。例えば、VLAN対応の8ポートスイッチがあるとします。4つのポートを1つの**VLAN**（例えば `VLAN 1`）に割り当て、残りの4つのポートを別の**VLAN**（例えば `VLAN 2`）に割り当てます。`VLAN 1`は`VLAN 2`のトラフィックを見ず、逆も同様です。論理的には、2つの別々のスイッチがあります。通常、スイッチがMACアドレスを見ていない場合、そのトラフィックは他のすべてのポートに「フラッディング」されます。**VLAN**はこれを防ぎます。
 
-Subnet is nothing more than an IP address range of IP addresses that help hosts communicate over layer 2 and 3. Each subnet does not require its own **VLAN**. **VLANs** are implemented for isolation (are sandbox for layer two communication, no 2 systems of 2 different **VLANs** may communicate but it can be done through **Inter VLAN routing**), ease of management and security.
+サブネットは、レイヤー2とレイヤー3でホストが通信するのを助けるIPアドレスの範囲に過ぎません。各サブネットは独自の**VLAN**を必要としません。**VLAN**は隔離（レイヤー2通信のサンドボックスであり、異なる**VLAN**の2つのシステムが通信できないが、**インターヴィLANルーティング**を通じて通信できる）、管理の容易さ、セキュリティのために実装されます。
 
-Useful resources:
+参考資料:
 
-- [What is the difference between a VLAN and a subnet? (original)](https://superuser.com/questions/353664/what-is-the-difference-between-a-vlan-and-a-subnet)
-- [VLANS vs. subnets for network security and segmentation](https://networkengineering.stackexchange.com/questions/46899/vlans-vs-subnets-for-network-security-and-segmentation)
+- [VLANとサブネットの違いは何ですか？](https://superuser.com/questions/353664/what-is-the-difference-between-a-vlan-and-a-subnet)
+- [ネットワークセキュリティとセグメンテーションのためのVLANSとサブネット](https://networkengineering.stackexchange.com/questions/46899/vlans-vs-subnets-for-network-security-and-segmentation)
 
 </details>
 
