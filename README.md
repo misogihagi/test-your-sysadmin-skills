@@ -879,12 +879,12 @@ useradd -m -g initial_group username
 </details>
 
 <details>
-<summary><b>List 5 common network ports you should know.</b></summary><br>
+<summary><b>知っておくべき一般的なネットワークポートを5つ挙げてください。</b></summary><br>
 
 <table style="width:100%">
   <tr>
-    <th>SERVICE</th>
-    <th>PORT</th>
+    <th>サービス</th>
+    <th>ポート</th>
   </tr>
   <tr>
     <td>SMTP</td>
@@ -892,7 +892,7 @@ useradd -m -g initial_group username
   </tr>
   <tr>
     <td>FTP</td>
-    <td>20 for data transfer and 21 for connection established</td>
+    <td>データ転送用が20、接続確立用が21</td>
   </tr>
   <tr>
     <td>DNS</td>
@@ -900,7 +900,7 @@ useradd -m -g initial_group username
   </tr>
   <tr>
     <td>DHCP</td>
-    <td>67/UDP for DHCP server, 68/UDP for DHCP client</td>
+    <td>DHCPサーバー用が67/UDP、DHCPクライアント用が68/UDP</td>
   </tr>
   <tr>
     <td>SSH</td>
@@ -908,437 +908,436 @@ useradd -m -g initial_group username
   </tr>
 </table>
 
-Useful resources:
+参考資料:
 
-- [Red Hat Enterprise Linux 4: Security Guide - Common Ports](https://web.mit.edu/rhel-doc/4/RH-DOCS/rhel-sg-en-4/ch-ports.html)
-
-</details>
-
-<details>
-<summary><b>What POP and IMAP are, and how to choose which of them you should implement?</b></summary><br>
-
-POP and IMAP are both protocols for retrieving messages from a mail server to a mail client.
-
-**POP** (_Post Office Protocol_) uses a one way push from mail server to client. By default this will send messages to the POP mail client and remove them from the mail server, though it is possible to configure the mail server to retain all messages. Any actions you take on the message in your mail client (labeling, deleting, moving to a folder) will not be reflected on the mail server, and thus inaccessible to other mail clients pulling from the mail server. POP uses little storage space on the mail server and can be seen as more secure since messages only exist on one mail client instead of the mail server and multiple clients.
-
-**IMAP** (_Internet Message Access Protocol_) uses two way communication between mail server and client. Deleting or labeling a message in your mail client configured with IMAP will also delete or label the message on the mail server. IMAP allows for a similar experience when accessing mail across different clients or devices since messages can existing in the same state across multiple devices. IMAP can also save disk space on the mail client by selectively syncing messages, deleting older messages from the mail client since it can sync them from the mail server later as needed.
-
-Choose IMAP if you need to access messages across multiple devices and you want to save disk space on your client device. Choose POP if you want to save disk space on your mail server, only access messages from one client device, and ensure that messages do not exist on multiple systems.
+- [Red Hat Enterprise Linux 4: セキュリティガイド - 一般的なポート](https://web.mit.edu/rhel-doc/4/RH-DOCS/rhel-sg-en-4/ch-ports.html)
 
 </details>
 
 <details>
-<summary><b>How to check default route and routing table?</b></summary><br>
+<summary><b>POPとIMAPとは何ですか？また、どちらを実装すべきかの選び方は？</b></summary><br>
 
-Using the commands `netstat -nr`, `route -n` or `ip route show` we can see the default route and routing tables.
+POPとIMAPは、メールサーバーからメールクライアントにメッセージを取得するためのプロトコルです。
 
-Useful resources:
+**POP** (_Post Office Protocol_) は、メールサーバーからクライアントへの一方向のプッシュを使用します。デフォルトでは、メッセージはPOPメールクライアントに送信され、メールサーバーからは削除されますが、メールサーバーがすべてのメッセージを保持するように設定することも可能です。メールクライアントでメッセージに対して行った操作（ラベル付け、削除、フォルダへの移動）は、メールサーバーには反映されず、他のメールクライアントからはアクセスできません。POPはメールサーバーのストレージスペースをほとんど使用せず、メッセージがメールサーバーや複数のクライアントではなく、1つのメールクライアントにのみ存在するため、より安全と見なされることがあります。
 
-- [How to check routes (routing table) in linux](https://howto.lintel.in/how-to-check-routes-routing-table-in-linux/)
-- [FreeBSD Set a Default Route/Gateway](https://www.cyberciti.biz/faq/freebsd-setup-default-routing-with-route-command/)
+**IMAP** (_Internet Message Access Protocol_) は、メールサーバーとクライアント間で双方向の通信を使用します。IMAPで設定されたメールクライアントでメッセージを削除またはラベル付けすると、その操作はメールサーバーにも反映されます。IMAPは、メッセージが複数のデバイスで同じ状態で存在できるため、異なるクライアントやデバイスでのメールアクセス時に似たような体験を提供します。また、IMAPはメッセージを選択的に同期させることができ、クライアントから古いメッセージを削除し、必要に応じてメールサーバーから再同期できます。
 
-</details>
-
-<details>
-<summary><b>What is the difference between 127.0.0.1 and localhost?</b></summary><br>
-
-Well, the most likely difference is that you still have to do an actual lookup of localhost somewhere.
-
-If you use `127.0.0.1`, then (intelligent) software will just turn that directly into an IP address and use it. Some implementations of `gethostbyname` will detect the dotted format (and presumably the equivalent IPv6 format) and not do a lookup at all.
-
-Otherwise, the name has to be resolved. And there's no guarantee that your hosts file will actually be used for that resolution (first, or at all) so `localhost` may become a totally different IP address.
-
-By that I mean that, on some systems, a local hosts file can be bypassed. The `host.conf` file controls this on Linux (and many other Unices).
-
-If you use a Unix domain socket it'll be slightly faster than using TCP/IP (because of the less overhead you have). Windows is using TCP/IP as a default, whereas Linux tries to use a Unix Domain Socket if you choose localhost and TCP/IP if you take `127.0.0.1`.
-
-Useful resources:
-
-- [What is the difference between 127.0.0.1 and localhost?](https://stackoverflow.com/questions/7382602/what-is-the-difference-between-127-0-0-1-and-localhost)
-- [localhost vs. 127.0.0.1](https://stackoverflow.com/questions/3715925/localhost-vs-127-0-0-1)
+複数のデバイスでメッセージにアクセスする必要があり、クライアントデバイスのディスクスペースを節約したい場合はIMAPを選択してください。メールサーバーのディスクスペースを節約し、1つのクライアントデバイスからのみメッセージにアクセスし、メッセージが複数のシステムに存在しないことを確認したい場合はPOPを選択してください。
 
 </details>
 
 <details>
-<summary><b>Which port is used for <code>ping</code> command?</b></summary><br>
+<summary><b>デフォルトルートとルーティングテーブルを確認する方法は？</b></summary><br>
 
-`ping` uses **ICMP**, specifically **ICMP echo request** and **ICMP echo reply** packets. There is no 'port' associated with **ICMP**. Ports are associated with the two IP transport layer protocols, TCP and UDP. **ICMP**, TCP, and UDP are "siblings"; they are not based on each other, but are three separate protocols that run on top of IP.
+`netstat -nr`、`route -n`、または `ip route show` コマンドを使用することで、デフォルトルートとルーティングテーブルを確認できます。
 
-**ICMP** packets are identified by the 'protocol' field in the IP datagram header. **ICMP** does not use either UDP or TCP communications services, it uses raw IP communications services. This means that the **ICMP** message is carried directly in an IP datagram data field. `raw` comes from how this is implemented in software, to create and send an **ICMP** message, one opens a `raw` socket, builds a buffer containing the **ICMP** message, and then writes the buffer containing the message to the raw socket.
+参考資料:
 
-The IP protocol value for **ICMP** is 1. The protocol field is part of the IP header and identifies what is in the data portion of the IP datagram.
+- [Linuxでのルート（ルーティングテーブル）の確認方法](https://howto.lintel.in/how-to-check-routes-routing-table-in-linux/)
+- [FreeBSDのデフォルトルート/ゲートウェイの設定](https://www.cyberciti.biz/faq/freebsd-setup-default-routing-with-route-command/)
 
-However, you could use `nmap` to see whether ports are open or not:
+</details>
+
+<details>
+<summary><b>127.0.0.1とlocalhostの違いは何ですか？</b></summary><br>
+
+最も可能性の高い違いは、`localhost` の実際のルックアップがどこかで行われる必要があるということです。
+
+`127.0.0.1` を使用する場合、（知能を持った）ソフトウェアはそれを直接IPアドレスに変換して使用します。`gethostbyname` の実装によっては、ドット形式（およびおそらく同等のIPv6形式）を検出し、ルックアップを行わないこともあります。
+
+それ以外の場合、名前の解決が必要です。そして、ホストファイルがその解決に実際に使用される保証はありません（最初に、またはまったく）。そのため、`localhost` がまったく異なるIPアドレスになる可能性があります。
+
+つまり、いくつかのシステムでは、ローカルホストファイルがバイパスされることがあります。Linuxでは、`host.conf` ファイルがこれを制御します（および多くの他のUnix系システムでも）。
+
+Unixドメインソケットを使用すると、TCP/IPを使用するよりもわずかに高速になります（オーバーヘッドが少ないため）。WindowsはデフォルトでTCP/IPを使用しますが、Linuxは `localhost` を選択した場合にUnixドメインソケットを使用し、`127.0.0.1` を選択した場合にTCP/IPを使用しようとします。
+
+参考資料:
+
+- [127.0.0.1とlocalhostの違いは？](https://stackoverflow.com/questions/7382602/what-is-the-difference-between-127-0-0-1-and-localhost)
+- [localhostと127.0.0.1](https://stackoverflow.com/questions/3715925/localhost-vs-127-0-0-1)
+
+</details>
+
+<details>
+<summary><b><code>ping</code> コマンドに使用されるポートはどれですか？</b></summary><br>
+
+`ping` は **ICMP** を使用します。具体的には **ICMPエコーリクエスト** と **ICMPエコーリプライ** パケットです。**ICMP** にはポートが関連付けられていません。ポートは、TCP と UDP という二つの IP トランスポート層プロトコルに関連しています。**ICMP**、TCP、UDP は「兄弟」であり、互いに基づいているわけではなく、IP の上で動作する三つの異なるプロトコルです。
+
+**ICMP** パケットは、IP データグラムヘッダー内の「プロトコル」フィールドによって識別されます。**ICMP** は UDP や TCP の通信サービスを使用せず、生の IP 通信サービスを使用します。これは、**ICMP** メッセージが IP データグラムのデータフィールド内に直接運ばれることを意味します。`raw` という用語は、この処理がソフトウェアでどのように実装されているかに由来します。**ICMP** メッセージを作成して送信するためには、`raw` ソケットを開き、**ICMP** メッセージを含むバッファを構築し、そのバッファを `raw` ソケットに書き込みます。
+
+**ICMP** の IP プロトコル値は 1 です。プロトコルフィールドは IP ヘッダーの一部で、IP データグラムのデータ部分に何が含まれているかを識別します。
+
+ただし、ポートが開いているかどうかを確認するには、`nmap` を使用することができます：
 
 ```bash
 nmap -p 80 example.com
 ```
 
-Useful resources:
+参考資料:
 
-- [Ping Port Number](https://networkengineering.stackexchange.com/questions/42463/ping-port-number)
-- [Is it possible to ping an address:port?](https://superuser.com/questions/769541/is-it-possible-to-ping-an-addressport)
-
-</details>
-
-<details>
-<summary><b>Server A can't talk to Server B. Describe possible reasons in a few steps.</b></summary><br>
-
-To troubleshoot communication problems between servers, it is better to ideally follow the TCP/IP stack:
-
-1. **Application Layer**: are the services up and running on both servers? Are they correctly configured (eg. bind the correct IP and correct port)? Do application and system logs show meaningful errors?
-
-2. **Transport Layer**: are the ports used by the application open (try telnet!)? Is it possible to ping the server?
-
-3. **Network Layer**: is there a firewall on the network or on the OS correctly configured? Is the IP stack correctly configured (IP, routes, dns, etc.)? Are switches and routers working (check the ARP table!)?
-
-4. **Physical Layer**: are the servers connected to a network? Are packets being lost?
+- [Pingのポート番号](https://networkengineering.stackexchange.com/questions/42463/ping-port-number)
+- [アドレス:ポートをpingすることは可能か？](https://superuser.com/questions/769541/is-it-possible-to-ping-an-addressport)
 
 </details>
 
 <details>
-<summary><b>Why won’t the hostnames resolve on your server? Fix this issue. ***</b></summary><br>
+<summary><b>サーバーAがサーバーBと通信できない場合、考えられる原因をいくつかのステップで説明してください。</b></summary><br>
 
-To be completed.
+サーバー間の通信問題をトラブルシューティングするためには、TCP/IPスタックに従うのが理想的です：
+
+1. **アプリケーション層**: 両方のサーバーでサービスは稼働していますか？サービスは正しく設定されていますか（例: 正しいIPアドレスとポートにバインドされているか）？アプリケーションおよびシステムログに意味のあるエラーが表示されていますか？
+
+2. **トランスポート層**: アプリケーションが使用しているポートは開いていますか（telnetで確認してみてください）？サーバーにpingを送ることは可能ですか？
+
+3. **ネットワーク層**: ネットワークまたはOSにファイアウォールが適切に設定されていますか？IPスタックが正しく設定されていますか（IPアドレス、ルート、DNSなど）？スイッチやルーターは正常に動作していますか（ARPテーブルを確認してください）？
+
+4. **物理層**: サーバーはネットワークに接続されていますか？パケットが失われていませんか？
 
 </details>
 
 <details>
-<summary><b>How to resolve the domain name (using external dns) with CLI? Can IPs be resolved to domain names?</b></summary><br>
+<summary><b>ホスト名がサーバー上で解決されないのはなぜですか？この問題を解決してください。***</b></summary><br>
 
-Examples for resolve IP address to domain name:
+詳細は未完成です。
+
+</details>
+
+<details>
+<summary><b>ドメイン名をCLIで解決する方法（外部DNSを使用）と、IPアドレスをドメイン名に解決できるかどうか？</b></summary><br>
+
+IPアドレスをドメイン名に解決する例:
 
 ```bash
-# with host command:
+# host コマンドを使用する場合:
 host domain.com 8.8.8.8
 
-# with dig command:
+# dig コマンドを使用する場合:
 dig @9.9.9.9 google.com
 
-# with nslookup command:
+# nslookup コマンドを使用する場合:
 nslookup domain.com 8.8.8.8
 ```
 
-You can (sometimes) resolve an IP Address back to a hostname. IP Address can be stored against a **PTR** record. You can then do:
+IPアドレスをホスト名に解決できる場合があります。IPアドレスは**PTR**レコードに格納されていることがあります。その場合、次のコマンドを使用できます:
 
 ```bash
 dig A <hostname>
 ```
 
-To lookup the IPv4 address for a host, or:
+ホストのIPv4アドレスを調べるには、次のコマンドを使用します:
 
 ```bash
 dig AAAA <hostname>
 ```
 
-To lookup the IPv6 address for a host, or:
+ホストのIPv6アドレスを調べるには、次のコマンドを使用します:
 
 ```bash
 dig PTR ZZZ.YYY.XXX.WWW.in-addr.arpa.
 ```
 
-To lookup the hostname for IPv4 address `WWW.XXX.YYY.ZZZ` (note the octets are reversed), or:
+IPv4アドレス WWW.XXX.YYY.ZZZ のホスト名を調べるには（オクテットが逆順になっている点に注意）、次のようにします:
 
 ```bash
 dig PTR b.a.9.8.7.6.5.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.8.b.d.0.1.0.0.2.ip6.arpa.
 ```
 
-Useful resources:
+役立つリソース
 
-- [How can I resolve a hostname to an IP address in a Bash script?](https://unix.stackexchange.com/questions/20784/how-can-i-resolve-a-hostname-to-an-ip-address-in-a-bash-script)
-- [How To Resolve IP Addresses To Domain Names?](https://superuser.com/questions/315687/how-to-resolve-ip-addresses-to-domain-names)
+- [Bashスクリプトでホスト名をIPアドレスに解決する方法](https://unix.stackexchange.com/questions/20784/how-can-i-resolve-a-hostname-to-an-ip-address-in-a-bash-script)
+- [IPアドレスをドメイン名に解決する方法](https://superuser.com/questions/315687/how-to-resolve-ip-addresses-to-domain-names)
 
 </details>
 
 <details>
-<summary><b>How to test port connectivity with <code>telnet</code> or <code>nc</code>?</b></summary><br>
+<summary><b>ポートの接続性を<code>telnet</code>または<code>nc</code>でテストする方法は？</b></summary><br>
 
 ```bash
-# with telnet command:
+# telnetコマンドを使用する場合：
 telnet code42.example.com 5432
 
-# with nc (netcat) command:
+# nc (netcat)コマンドを使用する場合：
 nc -vz code42.example.com 5432
 ```
+</details>
+
+<details>
+<summary><b>なぜリモートでシステムを管理する際に<code>telnet</code>を避けるべきですか？</b></summary><br>
+
+現代のオペレーティングシステムは、デフォルトで潜在的に安全でないサービスをすべてオフにしています。一方で、ネットワーク機器の一部のベンダーは、telnetプロトコルを使用して通信を確立することを許可しています。
+
+**Telnet** は、最も安全でない通信方法を使用します。ネットワーク上でデータをプレーンテキスト形式で送信し、誰でもネットワークツールを使ってパスワードを簡単に見つけることができます。
+
+**Telnet** の場合、ログイン認証情報がプレーンテキストで送信されるため、ネットワーク上でスニファーを実行している誰でも、**Telnet** のログインセッションを傍受することで数秒でデバイスを制御するために必要な情報を見つけることができます。
+
+有用なリソース：
+
+- [TelnetとSSHのセキュアな代替手段](https://www.ssh.com/ssh/telnet)
+- [特定のポートでIPアドレスにtelnetする方法](https://superuser.com/questions/339107/how-to-telnet-to-an-ip-address-on-a-specific-port)
 
 </details>
 
 <details>
-<summary><b>Why should you avoid <code>telnet</code> to administer a system remotely?</b></summary><br>
+<summary><b><code>wget</code>と<code>curl</code>の違いは何ですか？</b></summary><br>
 
-Modern operating systems have turned off all potentially insecure services by default. On the other hand, some vendors of network devices still allow to establish communication using the telnet protocol.
+主な違いは次の通りです：`wget` の大きな強みは、再帰的にダウンロードできることです。`wget` はコマンドライン専用です。`curl` はFTP、FTPS、HTTP、HTTPS、SCP、SFTP、TFTP、TELNET、DICT、LDAP、LDAPS、FILE、POP3、IMAP、SMTP、RTMP、RTSPをサポートしています。
 
-**Telnet** uses most insecure method for communication. It sends data across the network in plain text format and anybody can easily find out the password using the network tool.
+有用なリソース：
 
-In the case of **Telnet**, these include the passing of login credentials in plain text, which means anyone running a sniffer on your network can find the information he needs to take control of a device in a few seconds by eavesdropping on a **Telnet** login session.
-
-Useful resources:
-
-- [Telnet and SSH as a secure alternative](https://www.ssh.com/ssh/telnet)
-- [How to telnet to an IP address on a specific port?](https://superuser.com/questions/339107/how-to-telnet-to-an-ip-address-on-a-specific-port)
+- [curlとwgetの違いは？ (原文)](https://unix.stackexchange.com/questions/47434/what-is-the-difference-between-curl-and-wget)
 
 </details>
 
 <details>
-<summary><b>What is the difference between <code>wget</code> and <code>curl</code>?</b></summary><br>
+<summary><b>SSHとは何ですか？どのように動作しますか？</b></summary><br>
 
-The main differences are: `wget's` major strong side compared to `curl` is its ability to download recursively. `wget` is command line only. `curl` supports FTP, FTPS, HTTP, HTTPS, SCP, SFTP, TFTP, TELNET, DICT, LDAP, LDAPS, FILE, POP3, IMAP, SMTP, RTMP and RTSP.
+**SSH** は **Secure Shell** の略です。サーバー「A」からサーバー「B」へのシェルセッションを開始するためのプロトコルです。サーバー「B」と対話することができます。
 
-Useful resources:
+**SSH** 接続を確立するには、リモートマシン（サーバーA）が **SSH** デーモンというソフトウェアを実行している必要があり、ユーザーのコンピュータ（サーバーB）には **SSH** クライアントが必要です。
 
-- [What is the difference between curl and wget? (original)](https://unix.stackexchange.com/questions/47434/what-is-the-difference-between-curl-and-wget)
+**SSH** デーモンと **SSH** クライアントは、特定のネットワークポート（デフォルトは22）で接続を待ち受け、接続要求を認証し、ユーザーが正しい認証情報を提供した場合に適切な環境を生成します。
 
-</details>
+有用なリソース：
 
-<details>
-<summary><b>What is SSH and how does it work?</b></summary><br>
-
-**SSH** stands for **Secure Shell**. It is a protocol that lets you drop from a server "A" into a shell session to a server "B". It allows you interact with your server "B".
-
-An **SSH** connection to be established, the remote machine (server A) must be running a piece of software called an **SSH** daemon and the user's computer (server B) must have an **SSH** client.
-
-The **SSH** daemon and **SSH** client listen for connections on a specific network port (default 22), authenticates connection requests, and spawns the appropriate environment if the user provides the correct credentials.
-
-Useful resources:
-
-- [Understanding the SSH Encryption and Connection Process](https://www.digitalocean.com/community/tutorials/understanding-the-ssh-encryption-and-connection-process)
+- [SSHの暗号化と接続プロセスの理解](https://www.digitalocean.com/community/tutorials/understanding-the-ssh-encryption-and-connection-process)
 
 </details>
 
 <details>
-<summary><b>Most tutorials suggest using SSH key authentication rather than password authentication. Why it is considered more secure?</b></summary><br>
+<summary><b>ほとんどのチュートリアルは、パスワード認証よりもSSHキー認証を使用することを推奨しています。なぜそれがより安全とされるのでしょうか？</b></summary><br>
 
-An **SSH key** is an access credential in the SSH protocol. Its function is similar to that of user names and passwords, but the keys are primarily used for automated processes and for implementing single sign-on by system administrators and power users.
+**SSHキー** は、SSHプロトコルでのアクセス認証情報です。その機能はユーザー名やパスワードに似ていますが、キーは主に自動化プロセスやシステム管理者、パワーユーザーによるシングルサインオンの実装に使用されます。
 
-Instead of requiring a user's password, it is possible to confirm the client's identity by using asymmetric cryptography algorithms, with public and private keys.
+ユーザーのパスワードを要求する代わりに、公開鍵と秘密鍵を使用して非対称暗号化アルゴリズムでクライアントの識別を確認することができます。
 
-If your SSH service only allows public-key authentication, an attacker needs a copy of a private key corresponding to a public key stored on the server.
+SSHサービスが公開鍵認証のみを許可する場合、攻撃者はサーバーに保存されている公開鍵に対応する秘密鍵のコピーが必要です。
 
-If your SSH service allows password based authentication, then your Internet connected SSH server will be hammered day and night by bot-nets trying to guess user-names and passwords. The bot net needs no information, it can just try popular names and popular passwords. Apart from anything else this clogs your logs.
+SSHサービスがパスワードベースの認証を許可する場合、インターネットに接続されたSSHサーバーは、ユーザー名やパスワードを推測しようとするボットネットに昼夜問わず攻撃されます。ボットネットは情報を必要とせず、人気のある名前やパスワードを試すだけで済みます。これにより、ログが詰まることもあります。
 
-Useful resources:
+有用なリソース：
 
-- [Key-Based Authentication (Public Key Authentication)](http://www.crypto-it.net/eng/tools/key-based-authentication.html)
-- [SSH password vs. key authentication](https://security.stackexchange.com/questions/33381/ssh-password-vs-key-authentication)
-
-</details>
-
-<details>
-<summary><b>What is a packet filter and how does it work?</b></summary><br>
-
-**Packet filtering** is a firewall technique used to control network access by monitoring outgoing and incoming packets and allowing them to pass or halt based on the source and destination Internet Protocol (IP) addresses, protocols and ports.
-
-Packet filtering is appropriate where there are modest security requirements. The internal (private) networks of many organizations are not highly segmented. Highly sophisticated firewalls are not necessary for isolating one part of the organization from another.
-
-However it is prudent to provide some sort of protection of the production network from a lab or experimental network. A packet filtering device is a very appropriate measure for providing isolation of one subnet from another.
-
-Operating at the network layer and transport layer of the TCP/IP protocol stack, every packet is examined as it enters the protocol stack. The network and transport headers are examined closely for the following information:
-
-- **protocol (IP header, network layer)** - in the IP header, byte 9 (remember the byte count begins with zero) identifies the protocol of the packet. Most filter devices have the capability to differentiate between TCP, UPD, and ICMP.
-- **source address (IP header, network layer)** - the source address is the 32-bit IP address of the host which created the packet.
-- **destination address (IP header, network layer)** - the destination address is the 32-bit IP address of the host the packet is destined for.
-- **source port (TCP or UDP header, transport layer)** - each end of a TCP or UDP network connection is bound to a port. TCP ports are separate and distinct from UDP ports. Ports numbered below 1024 are reserved – they have a specifically defined use. Ports numbered above 1024 (inclusive) are known as ephemeral ports. They can be used however a vendor chooses. For a list of "well known" ports, refer to RFP1700. The source port is a pseudo-randomly assigned ephemeral port number. Thus it is often not very useful to filter on the source port.
-- **destination port (TCP or UDP header, transport layer)** - the destination port number indicates a port that the packet is sent to. Each service on the destination host listens to a port. Some well-known ports that might be filtered are 20/TCP and 21/TCP - ftp connection/data, 23/TCP - telnet, 80/TCP - http, and 53/TCP - DNS zone transfers.
-- **connection status (TCP header, transport layer)** - the connection status tells whether the packet is the first packet of the network session. The ACK bit in the TCP header is set to “false” or 0 if this is the first packet in the session. It is simple to disallow a host from establishing a connection by rejecting or discarding any packets which have the ACK bit set to "false" or 0.
-
-Useful resources:
-
-- [Building Internet Firewalls - Packet Filtering](http://web.deu.edu.tr/static/oreily/networking/firewall/ch06_01.htm)
+- [鍵ベース認証（公開鍵認証）](http://www.crypto-it.net/eng/tools/key-based-authentication.html)
+- [SSHのパスワード認証と鍵認証](https://security.stackexchange.com/questions/33381/ssh-password-vs-key-authentication)
 
 </details>
 
 <details>
-<summary><b>What are the advantages of using a reverse proxy server?</b></summary><br>
+<summary><b>パケットフィルタとは何ですか？どのように機能しますか？</b></summary><br>
 
-**Hide the topology and characteristics of your back-end servers**
+**パケットフィルタリング** は、ネットワークアクセスを制御するためのファイアウォール技術で、送信および受信するパケットを監視し、ソースおよびデスティネーションのインターネットプロトコル（IP）アドレス、プロトコル、ポートに基づいて通過させるか停止させるかを決定します。
 
-The **reverse proxy server** can hide the presence and characteristics of the origin server. It acts as an intermediate between internet cloud and web server. It is good for security reason especially when you are using web hosting services.
+パケットフィルタリングは、セキュリティ要件がそれほど高くない場合に適しています。多くの組織の内部（プライベート）ネットワークは、あまりセグメント化されていません。一部の組織から他の部分を分離するために高度に洗練されたファイアウォールは必要ありません。
 
-**Allows transparent maintenance of backend servers**
+ただし、実験ネットワークやラボから本番ネットワークを保護するために、何らかの保護手段を講じることは賢明です。パケットフィルタリングデバイスは、一つのサブネットから別のサブネットを分離するための非常に適切な手段です。
 
-Changes you make to servers running behind a reverse proxy are going to be completely transparent to your end users.
+TCP/IPプロトコルスタックのネットワーク層およびトランスポート層で動作し、すべてのパケットがプロトコルスタックに入る際に検査されます。ネットワークおよびトランスポートヘッダーは、次の情報が含まれているかを詳しく調べます：
 
-**Load Balancing**
+- **プロトコル（IPヘッダー、ネットワーク層）** - IPヘッダーのバイト9（バイトカウントは0から始まる）でパケットのプロトコルが識別されます。ほとんどのフィルターデバイスは、TCP、UDP、ICMPを区別する機能があります。
+- **ソースアドレス（IPヘッダー、ネットワーク層）** - ソースアドレスは、パケットを生成したホストの32ビットIPアドレスです。
+- **デスティネーションアドレス（IPヘッダー、ネットワーク層）** - デスティネーションアドレスは、パケットが送信されるホストの32ビットIPアドレスです。
+- **ソースポート（TCPまたはUDPヘッダー、トランスポート層）** - TCPまたはUDPネットワーク接続の各端はポートにバインドされています。TCPポートはUDPポートとは異なります。ポート番号が1024未満のものは予約されており、特定の用途が定義されています。ポート番号が1024以上（含む）のものはエフェメラルポートとして知られており、ベンダーが自由に使用できます。「Well known」ポートのリストについては、RFP1700を参照してください。ソースポートは疑似ランダムに割り当てられたエフェメラルポート番号です。そのため、ソースポートでフィルタリングすることはあまり有用ではありません。
+- **デスティネーションポート（TCPまたはUDPヘッダー、トランスポート層）** - デスティネーションポート番号は、パケットが送信されるポートを示します。デスティネーションホストの各サービスはポートをリッスンしています。フィルタリングされる可能性がある一般的なポートには、20/TCPおよび21/TCP（ftp接続/データ）、23/TCP（telnet）、80/TCP（http）、53/TCP（DNSゾーントランスファー）があります。
+- **接続状態（TCPヘッダー、トランスポート層）** - 接続状態は、パケットがネットワークセッションの最初のパケットであるかどうかを示します。TCPヘッダーのACKビットが「false」または0に設定されている場合、これはセッションの最初のパケットです。ACKビットが「false」または0に設定されているパケットを拒否または破棄することで、ホストが接続を確立することを防ぐのは簡単です。
 
-The reverse proxy will then enforce a load balancing algorithm like round robin, weighted round robin, least connections, weighted least connections, or random, to distribute the load among the servers in the cluster.
+有用なリソース：
 
-When a server goes down, the system will automatically failover to the next server up and users can continue with their secure file transfer activities.
-
-**SSL offloading/termination**
-
-Handles incoming HTTPS connections, decrypting the requests and passing unencrypted requests on to the web servers.
-
-**IP masking**
-
-Using a single ip but different URLs to route to different back end servers.
-
-Useful resources:
-
-- [The Benefits of a Reverse Proxy](https://dzone.com/articles/benefits-reverse-proxy)
+- [インターネットファイアウォールの構築 - パケットフィルタリング](http://web.deu.edu.tr/static/oreily/networking/firewall/ch06_01.htm)
 
 </details>
 
 <details>
-<summary><b>What is the difference between a router and a gateway? What is the default gateway?</b></summary><br>
+<summary><b>リバースプロキシサーバーを使用する利点は何ですか？</b></summary><br>
 
-**Router** describes the general technical function (layer-3 forwarding) or a hardware device intended for that purpose, while gateway describes the function for the local segment (providing connectivity to elsewhere). You could also state that "_you set up a router as gateway_". Another term is hop which describes the forwarding in between subnets.
+**バックエンドサーバーのトポロジーと特性を隠す**
 
-The term **default gateway** is used to mean the router on your LAN which has the responsibility of being the first point of contact for traffic to computers outside the LAN.
+**リバースプロキシサーバー** は、オリジンサーバーの存在と特性を隠すことができます。インターネットクラウドとWebサーバーの間に中間者として機能します。特にWebホスティングサービスを使用している場合には、セキュリティ上の理由で良い選択です。
 
-It's just a matter of perspective, the device is the same.
+**バックエンドサーバーの透過的なメンテナンスを許可**
 
-Useful resources:
+リバースプロキシの背後で動作するサーバーに対して行う変更は、エンドユーザーには完全に透過的です。
 
-- [Difference between router and gateway (orignal)](https://networkengineering.stackexchange.com/questions/51426/difference-between-router-and-gateway)
+**ロードバランシング**
 
-</details>
+リバースプロキシは、ラウンドロビン、ウェイテッドラウンドロビン、最小接続数、ウェイテッド最小接続数、またはランダムなどのロードバランシングアルゴリズムを強制し、クラスタ内のサーバー間で負荷を分散します。
 
-<details>
-<summary><b>Explain the function of each of the following DNS records: SOA, PTR, A, MX, and CNAME.</b></summary><br>
+サーバーがダウンすると、システムは自動的に次のサーバーにフェイルオーバーし、ユーザーはセキュアなファイル転送活動を続けることができます。
 
-**DNS records** are basically mapping files that tell the DNS server which IP address each domain is associated with, and how to handle requests sent to each domain. Some **DNS records** syntax that are commonly used in nearly all DNS record configurations are `A`, `AAAA`, `CNAME`, `MX`, `PTR`, `NS`, `SOA`, `SRV`, `TXT`, and `NAPTR`.
+**SSLオフロード/終了**
 
-- **SOA** - A Start Of Authority
-- **A** - Address Mapping records
-- **AAAA** - IP Version 6 Address records
-- **CNAME** - Canonical Name records
-- **MX** - Mail exchanger record
-- **NS** - Name Server records
-- **PTR** - Reverse-lookup Pointer records
+HTTPS接続を処理し、リクエストを復号化して、暗号化されていないリクエストをWebサーバーに渡します。
 
-Useful resources:
+**IPマスキング**
 
-- [List of DNS record types](https://en.wikipedia.org/wiki/List_of_DNS_record_types)
+単一のIPを使用して、異なるURLを異なるバックエンドサーバーにルーティングします。
+
+有用なリソース：
+
+- [リバースプロキシの利点](https://dzone.com/articles/benefits-reverse-proxy)
 
 </details>
 
 <details>
-<summary><b>Why couldn't MAC addresses be used instead of IPv4/6 for networking?</b></summary><br>
+<summary><b>ルーターとゲートウェイの違いは何ですか？デフォルトゲートウェイとは何ですか？</b></summary><br>
 
-The **OSI** model explains why it doesn't make sense to make routing, a **layer 3** concept, decisions based on a physical, **layer 2**, mechanism.
+**ルーター** は、一般的な技術機能（レイヤー3のフォワーディング）やその目的のために設計されたハードウェアデバイスを説明します。一方、ゲートウェイはローカルセグメントの機能（他の場所への接続を提供）を説明します。"_ルーターをゲートウェイとして設定する_" とも言えます。別の用語として、サブネット間のフォワーディングを説明する「ホップ」があります。
 
-Modern networking is broken into many different layers to accomplish your end to end communication. Your network card (what is addressed by the mac address - physical address) needs to only be responsible for communicating with peers on it's physical network.
+**デフォルトゲートウェイ** という用語は、LAN内でのルーターで、LANの外のコンピュータへのトラフィックの最初の接点としての責任を持つルーターを意味します。
 
-The communication that you are allowed to accomplish with your **MAC** address is going to be limited to other devices that reside within physical contact to your machine. On the internet, for example, you are not physically connected to each machine. That's why we make use of **TCP/IP** (a **layer 3**, logical address) mechanism when we need to communicate with a machine that we are not physically connected to.
+これは視点の問題であり、デバイスは同じです。
 
-**IP** is an arbitrary numbering scheme imposed in a hierarchical fashion on a group of computers to logically distinguish them as a group (that's what a subnet is). Sending messages between those groups is done by routing tables, themselves divided into multiple levels so that we don't have to keep track of every single subnet.
+有用なリソース：
 
-It's also pretty easy to relate this to another pair of systems. You have a State Issued ID Number, why would you need a mailing address if that ID number is already unique to just you? You need the mailing address because it's an arbitrary system that describes where the unique destination for communications to you should go.
-
-On the other hand, the distribution of **MAC** addresses across the network is random and completely unrelated to topology. Routes grouping would be impossible, every router would need to keep track of routes for every single device that relays traffic trough it. That is what **layer 2** switches do, and that does not scale well beyond a certain number of hosts.
-
-Useful resources:
-
-- [Why couldn't MAC addresses be used instead of IPv4|6 for networking? (original)](https://serverfault.com/questions/410626/why-couldnt-mac-addresses-be-used-instead-of-ipv46-for-networking)
+- [ルーターとゲートウェイの違い (原文)](https://networkengineering.stackexchange.com/questions/51426/difference-between-router-and-gateway)
 
 </details>
 
 <details>
-<summary><b>What is the smallest IPv4 subnet mask that can be applied to a network containing up to 30 devices?</b></summary><br>
+<summary><b>次のDNSレコードの機能を説明してください：SOA、PTR、A、MX、CNAME。</b></summary><br>
 
-Whether you have a standard `/24` VLAN for end users, a `/30` for point-to-point links, or something in between and subnet that must contain up to 30 devices works out to be a `/27` - or a subnet mask of `255.255.255.224`.
+**DNSレコード** は基本的にマッピングファイルで、DNSサーバーにどのIPアドレスが各ドメインに関連付けられているか、各ドメインに送信されたリクエストをどのように処理するかを伝えます。よく使用される**DNSレコード** の構文には、`A`、`AAAA`、`CNAME`、`MX`、`PTR`、`NS`、`SOA`、`SRV`、`TXT`、`NAPTR` があります。
 
-Useful resources:
+- **SOA** - 権威の開始
+- **A** - アドレスマッピングレコード
+- **AAAA** - IPバージョン6アドレスレコード
+- **CNAME** - 正規名レコード
+- **MX** - メール交換レコード
+- **NS** - ネームサーバーレコード
+- **PTR** - 逆引きポインターレコード
 
-- [How do you calculate the prefix, network, subnet, and host numbers?](https://networkengineering.stackexchange.com/questions/7106/how-do-you-calculate-the-prefix-network-subnet-and-host-numbers)
-- [The slash after an IP Address - CIDR Notation](https://networkengineering.stackexchange.com/questions/3697/the-slash-after-an-ip-address-cidr-notation)
-- [Why are there 3 ranges of private IPv4 addresses?](https://networkengineering.stackexchange.com/questions/32119/why-are-there-3-ranges-of-private-ipv4-addresses)
-- [IP Calculator](http://jodies.de/ipcalc)
+有用なリソース：
+
+- [DNSレコードタイプのリスト](https://en.wikipedia.org/wiki/List_of_DNS_record_types)
 
 </details>
 
 <details>
-<summary><b>What are some common HTTP status codes?</b></summary><br>
+<summary><b>なぜMACアドレスをIPv4/6の代わりにネットワーキングに使用できないのですか？</b></summary><br>
 
-- **1xx** - Informational responses - communicates transfer protocol-level information
-- **2xx** - Success - indicates that the client’s request was accepted successfully
-- **3xx** - Redirection - indicates that the client must take some additional action in order to complete their request
-- **4xx** - Client side error - this category of error status codes points the finger at clients
-- **5xx** - Server side error - the server takes responsibility for these error status codes
+**OSI** モデルは、ルーティング（**レイヤー3** の概念）を物理的な**レイヤー2** メカニズムに基づいて決定するのがなぜ意味がないのかを説明します。
 
-Useful resources:
+現代のネットワーキングは、エンドツーエンドの通信を達成するために多くの異なるレイヤーに分かれています。ネットワークカード（MACアドレス - 物理アドレスでアドレスされる）は、自分の物理ネットワーク上のピアと通信することだけを担当する必要があります。
 
-- [HTTP Status Codes](https://httpstatuses.com/)
+**MAC** アドレスで達成できる通信は、自分の機械と物理的に接触している他のデバイスに制限されます。例えば、インターネットでは、各マシンと物理的に接続されているわけではありません。だからこそ、物理的に接続されていないマシンと通信する必要があるときには、**TCP/IP**（**レイヤー3** の論理アドレス）メカニズムを使用します。
+
+**IP** は、コンピュータのグループに階層的に課された任意の番号付けスキームで、グループとして論理的に区別します（これがサブネットです）。これらのグループ間でメッセージを送信するのは、ルーティングテーブルを使用し、それ自体が複数のレベルに分かれているため、すべてのサブネットを追跡する必要がありません。
+
+これを別のペアのシステムに関連付けるのは簡単です。あなたには州発行のID番号がありますが、そのID番号がすでにあなたに固有であるなら、なぜ郵送先住所が必要でしょうか？郵送先住所が必要なのは、唯一の通信先がどこにあるかを説明するための任意のシステムだからです。
+
+一方、ネットワーク全体にわたる**MAC** アドレスの配布はランダムで、トポロジーとは完全に無関係です。ルートグルーピングは不可能で、すべてのルーターが通過するトラフィックのためにすべてのデバイスのルートを追跡する必要があります。これが**レイヤー2** スイッチの役割で、一定のホスト数を超えるとスケールしません。
+
+有用なリソース：
+
+- [なぜMACアドレスをIPv4|6の代わりにネットワーキングに使用できないのか？ (原文)](https://serverfault.com/questions/410626/why-couldnt-mac-addresses-be-used-instead-of-ipv46-for-networking)
+
+</details>
+
+<details>
+<summary><b>最大30デバイスを含むネットワークに適用できる最小のIPv4サブネットマスクは何ですか？</b></summary><br>
+
+標準の `/24` VLANをエンドユーザー用に使用するか、`/30` をポイントツーポイントリンク用に使用するか、またはその間のサブネットが最大30デバイスを含む必要がある場合、`/27`（またはサブネットマスク `255.255.255.224`）が適切です。
+
+有用なリソース：
+
+- [プレフィックス、ネットワーク、サブネット、ホスト番号をどのように計算しますか？](https://networkengineering.stackexchange.com/questions/7106/how-do-you-calculate-the-prefix-network-subnet-and-host-numbers)
+- [IPアドレスの後のスラッシュ - CIDR表記](https://networkengineering.stackexchange.com/questions/3697/the-slash-after-an-ip-address-cidr-notation)
+- [なぜ3つのプライベートIPv4アドレス範囲があるのか？](https://networkengineering.stackexchange.com/questions/32119/why-are-there-3-ranges-of-private-ipv4-addresses)
+- [IP計算機](http://jodies.de/ipcalc)
+
+</details>
+
+<details>
+<summary><b>一般的なHTTPステータスコードにはどのようなものがありますか？</b></summary><br>
+
+- **1xx** - 情報レスポンス - 転送プロトコルレベルの情報を伝えます
+- **2xx** - 成功 - クライアントのリクエストが正常に受け入れられたことを示します
+- **3xx** - リダイレクション - クライアントがリクエストを完了するために追加のアクションを取る必要があることを示します
+- **4xx** - クライアント側のエラー - このカテゴリのエラー状態コードは、クライアントに問題があることを示します
+- **5xx** - サーバー側のエラー - サーバーがこれらのエラー状態コードの責任を負います
+
+有用なリソース：
+
+- [HTTPステータスコード](https://httpstatuses.com/)
 
 </details>
 
 ###### Devops Questions (5)
 
 <details>
-<summary><b>What is DevOps? Which is more important to the success of any DevOps community: how people communicate or the tools that you choose to deploy? ***</b></summary><br>
+<summary><b>DevOpsとは何ですか？DevOpsコミュニティの成功において、コミュニケーションの取り方とツールの選択のどちらが重要ですか？***</b></summary><br>
 
-**DevOps** is a cohesive team that engages in both Development and Operations tasks, or it's individual Operations and Development teams that work very closely together. It's more of a "way" of working collaboratively with other departments to achieve common goals.
-
-</details>
-
-<details>
-<summary><b>What is a version control? Are your commit messages good looking?</b></summary><br>
-
-It is a system that records changes to a file or set of files over time so that you can recall specific versions later. Version control systems consist of a central shared repository where teammates can commit changes to a file or set of file. Then you can mention the uses of version control.
-
-Version control allows you to:
-
-- revert files back to a previous state
-- revert the entire project back to a previous state
-- compare changes over time
-- see who last modified something that might be causing a problem
-- who introduced an issue and when
-
-The seven rules of a great commit message:
-
-- separate subject from body with a blank line
-- limit the subject line to 50 characters
-- capitalize the subject line
-- do not end the subject line with a period
-- use the imperative mood in the subject line
-- wrap the body at 72 characters
-- use the body to explain what and why vs. how
-
-Useful resources:
-
-- [Getting Started - About Version Control (original)](https://git-scm.com/book/en/v2/Getting-Started-About-Version-Control)
+**DevOps** とは、開発と運用のタスクを両方行う統合チームのことを指します。または、非常に密接に協力して働く個々の運用チームと開発チームのことを指します。これは、共通の目標を達成するために他の部門と協力して作業する「方法」に近いです。
 
 </details>
 
 <details>
-<summary><b>Explain some basic <code>git</code> commands.</b></summary><br>
+<summary><b>バージョン管理とは何ですか？あなたのコミットメッセージは見栄えが良いですか？</b></summary><br>
 
-- `git init` - create a new local repository
-- `git commit -m "message"` - commit changes to head
-- `git status` - list the files you've added with `git add` and also commit any files you've changed since then
-- `git push origin master` - send changes to the master branch of your remote repository
+バージョン管理とは、ファイルまたはファイルのセットに対する変更を時間とともに記録するシステムであり、後で特定のバージョンを再呼び出すことができます。バージョン管理システムは、チームメイトがファイルやファイルのセットに変更をコミットできる中央共有リポジトリで構成されます。その後、バージョン管理の使用方法について説明します。
+
+バージョン管理により、以下のことが可能になります：
+
+- ファイルを以前の状態に戻す
+- プロジェクト全体を以前の状態に戻す
+- 時間の経過に伴う変更を比較する
+- 問題を引き起こしている可能性のあるものを最後に修正した人を見る
+- 課題を導入した人とその時期を見る
+
+優れたコミットメッセージの七つのルール：
+
+- 本文とタイトルを空行で区切る
+- タイトル行を50文字以内に制限する
+- タイトル行を大文字にする
+- タイトル行をピリオドで終わらせない
+- タイトル行で命令形を使用する
+- 本文は72文字で折り返す
+- 本文を使って「何を」「なぜ」説明し、「どうやって」は避ける
+
+有用なリソース：
+
+- [はじめに - バージョン管理について (原文)](https://git-scm.com/book/en/v2/Getting-Started-About-Version-Control)
 
 </details>
 
 <details>
-<summary><b>Explain a simple Continuous Integration pipeline.</b></summary><br>
+<summary><b>基本的な <code>git</code> コマンドを説明してください。</b></summary><br>
 
-- clone repository
-- deploy stage (QA)
-- testing environment (QA)
-- deploy stage (PROD)
+- `git init` - 新しいローカルリポジトリを作成する
+- `git commit -m "message"` - 変更をヘッドにコミットする
+- `git status` - `git add` で追加したファイルと、それ以降に変更したファイルをリスト表示する
+- `git push origin master` - リモートリポジトリのマスターブランチに変更を送信する
 
 </details>
 
 <details>
-<summary><b>Explain some basic <code>docker</code> commands.</b></summary><br>
+<summary><b>簡単な継続的インテグレーションパイプラインを説明してください。</b></summary><br>
 
-- `docker ps` - show running containers
-- `docker ps -a` - show all containers
-- `docker images` - show docker images
-- `docker logs <container-id|container-name>` - get logs from container
-- `docker network ls` - show all docker networks
-- `docker volumes ls` - show all docker volumes
-- `docker exec -it <container-id|container-name> bash` - execute bash in container with interactive shell
+- リポジトリをクローンする
+- デプロイステージ（QA）
+- テスト環境（QA）
+- デプロイステージ（PROD）
+
+</details>
+
+<details>
+<summary><b>基本的な <code>docker</code> コマンドを説明してください。</b></summary><br>
+
+- `docker ps` - 実行中のコンテナを表示する
+- `docker ps -a` - すべてのコンテナを表示する
+- `docker images` - Dockerイメージを表示する
+- `docker logs <container-id|container-name>` - コンテナからログを取得する
+- `docker network ls` - すべてのDockerネットワークを表示する
+- `docker volumes ls` - すべてのDockerボリュームを表示する
+- `docker exec -it <container-id|container-name> bash` - インタラクティブシェルでコンテナ内でbashを実行する
 
 </details>
 
 ###### Cyber Security Questions (1)
 
 <details>
-<summary><b>What is a Security Misconfiguration?</b></summary><br>
+<summary><b>セキュリティの誤設定とは何ですか？</b></summary><br>
 
-**Security misconfiguration** is a vulnerability when a device/application/network is configured in a way which can be exploited by an attacker to take advantage of it. This can be as simple as leaving the default username/password unchanged or too simple for device accounts etc.
+**セキュリティの誤設定** とは、デバイス、アプリケーション、ネットワークが攻撃者によって悪用される可能性がある方法で構成されている脆弱性です。例えば、デフォルトのユーザー名やパスワードが変更されていない、またはデバイスアカウントのパスワードが簡単すぎるなどのケースが考えられます。
 
 </details>
 
