@@ -4761,135 +4761,135 @@ Varnish は複数のウェブサーバー用のロードバランサーとして
 </details>
 
 <details>
-<summary><b>What are hits, misses, and hit-for-pass in Varnish Cache?</b></summary><br>
+<summary><b>Varnish Cache におけるヒット、ミス、ヒットフォーパスとは何ですか？</b></summary><br>
 
-A **hit** is a request which is successfully served from the cache, a **miss** is a request that goes through the cache but finds an empty cache and therefore has to be fetched from the origin, the **hit-for-pass** comes in when Varnish Cache realizes that one of the objects it has requested is uncacheable and will result in a pass.
+**ヒット**とは、キャッシュから正常に提供されたリクエストのことです。**ミス**とは、キャッシュを通過したが空のキャッシュが見つかり、したがってオリジンサーバーから取得しなければならないリクエストのことです。**ヒットフォーパス**は、Varnish Cache がリクエストしたオブジェクトの一つがキャッシュできないと判断し、パス（直接オリジンサーバーから取得）となる場合に発生します。
 
-Useful resources:
+有用なリソース:
 
-- [VCL rules for hits](https://book.varnish-software.com/4.0/chapters/VCL_Subroutines.html#vcl-vcl-hit)
-- [VCL rules for hit-for-pass](https://book.varnish-software.com/4.0/chapters/VCL_Subroutines.html#hit-for-pass)
-- [Example of the use](https://book.varnish-software.com/4.0/chapters/VCL_Basics.html#vcl-backend-response)
-
-</details>
-
-<details>
-<summary><b>What is a reasonable TTL for cached content given the following parameters? ***</b></summary><br>
-
-To be completed.
+- [ヒットに関する VCL ルール](https://book.varnish-software.com/4.0/chapters/VCL_Subroutines.html#vcl-vcl-hit)
+- [ヒットフォーパスに関する VCL ルール](https://book.varnish-software.com/4.0/chapters/VCL_Subroutines.html#hit-for-pass)
+- [使用例](https://book.varnish-software.com/4.0/chapters/VCL_Basics.html#vcl-backend-response)
 
 </details>
 
 <details>
-<summary><b>Developer says: <i><code>htaccess</code> is full of magic and it should be used</i>. What is your opinion about using <code>htaccess</code> files? How has this effect on the web app</b></summary><br>
+<summary><b>以下のパラメータを考慮して、キャッシュされたコンテンツに対する合理的な TTL はどのくらいですか？</b></summary><br>
 
-`.htaccess` files were born out of an era when shared hosting was common­place:
-
-- sysadmins needed a way to allow multiple clients to access their server under different accounts, with different configurations for their web­sites.
-
-The `.htaccess` file allowed them to modify how Apache works without having access to the entire server. These files can reside in any and every directory in the directory tree of the website and provide features to the directory and the files and folders inside it.
-
-**It’s horrible for performance**
-
-For `.htaccess` to work Apache needs to check EVERY directory in the requested path for the existence of a `.htaccess` file and if it exists it reads EVERY one of them and parses it. This happens for EVERY request. Remember that the second you change that file, it’s effective. This is because Apache reads it every time.
-
-Every single request the web­server handles - even for the lowliest `.png` or `.css` file - causes Apache to:
-
-- look for a `.htaccess` file in the directory of the current request
-- then look for a `.htaccess` file in every directory from there up to the server root
-- coalesce all of these `.htaccess` files together
-- reconfigure the web­server using the new settings
-- finally, deliver the file
-
-Every web­page can generate dozens of requests. This is over­head you don’t need, and what’s more, it’s completely unnecessary.
-
-**Security and permission loss**
-
-Allowing individual users to modify the configuration of a server using `.htaccess` can cause security concerns if not taken care properly. If you add any directive in the `.htaccess` file, it will be considered as they are added to Apache configuration file.
-
-This means it may be possible for non-admins to write these files and thus 'undo' all of your security. If you need to do something that is temporary, `.htaccess` is a good place to do it, if you need to do something more permanent, just put it in your `/etc/apache/sites-available/site.conf` (or `httpd.conf` or whatever your server calls).
-
-**Summary**
-
-You should avoid using `.htaccess` files completely if you have access to httpd main server config file. If it worked in `.htaccess`, it will work in your virtual host `.conf` file as well.
-
-If you cannot avoid using `.htaccess` files, you should follow these rules.
-
-- use only one `.htaccess` file or as few as possible
-- place the `.htaccess` file in the site root directory
-- keep your `.htaccess` file short and simple
-
-Useful resources:
-
-- [Like Apache: .htaccess](https://www.nginx.com/resources/wiki/start/topics/examples/likeapache-htaccess/)
-- [Don't Use .htaccess Unless You Must](https://www.danielmorell.com/guides/htaccess-seo/basics/dont-use-htaccess-unless-you-must)
+未完成です。
 
 </details>
 
 <details>
-<summary><b>Is it safe to use SNI SSL in production? How to test connection with and without it? In which cases it is useful?</b></summary><br>
+<summary><b>開発者が「<i><code>htaccess</code> は魔法がいっぱいで、使用すべきだ</i>」と言っています。<code>htaccess</code> ファイルの使用についてどう思いますか？これがウェブアプリケーションに与える影響は何ですか？</b></summary><br>
 
-With <b>OpenSSL</b>:
+`.htaccess` ファイルは、共有ホスティングが一般的だった時代に生まれました：
+
+- システム管理者は、複数のクライアントが異なるアカウントでサーバーにアクセスし、異なるウェブサイトの構成を持つ方法を必要としました。
+
+`.htaccess` ファイルは、Apache の設定全体にアクセスすることなく、Apache の動作を変更することを可能にしました。これらのファイルは、ウェブサイトのディレクトリツリーの任意のディレクトリに存在し、そのディレクトリおよびその中のファイルやフォルダに機能を提供します。
+
+**パフォーマンスに悪影響**
+
+`.htaccess` が機能するためには、Apache がリクエストされたパスのすべてのディレクトリで `.htaccess` ファイルの存在を確認し、存在する場合はすべての `.htaccess` ファイルを読み込み、解析する必要があります。これがすべてのリクエストで行われます。ファイルを変更すると、その変更が即座に適用されます。これは Apache が毎回ファイルを読み込むためです。
+
+すべてのリクエスト（たとえ最も単純な `.png` や `.css` ファイルのリクエストであっても）が Apache に次の処理をさせます：
+
+- 現在のリクエストのディレクトリで `.htaccess` ファイルを探す
+- そこからサーバーのルートまで、すべてのディレクトリで `.htaccess` ファイルを探す
+- これらの `.htaccess` ファイルを統合する
+- 新しい設定でウェブサーバーを再構成する
+- 最後に、ファイルを提供する
+
+すべてのウェブページは数十のリクエストを生成する可能性があります。これは不要なオーバーヘッドであり、さらに言えば、完全に不要です。
+
+**セキュリティと権限の喪失**
+
+個々のユーザーに `.htaccess` を使用してサーバーの設定を変更させると、適切に管理されない場合にセキュリティ上の懸念が生じる可能性があります。`.htaccess` ファイルにディレクティブを追加すると、それが Apache の設定ファイルに追加されたと見なされます。
+
+これにより、非管理者がこれらのファイルを書き込むことができる可能性があり、あなたのセキュリティ設定を「取り消す」ことができてしまいます。もし一時的な変更が必要な場合は `.htaccess` が適していますが、より恒久的な変更が必要な場合は、`/etc/apache/sites-available/site.conf`（または `httpd.conf` など、サーバーが呼ぶもの）に設定を追加してください。
+
+**まとめ**
+
+もし httpd メインサーバーの設定ファイルにアクセスできる場合は、`.htaccess` ファイルの使用を完全に避けるべきです。`.htaccess` で動作したものは、仮想ホストの `.conf` ファイルでも動作します。
+
+もし `.htaccess` ファイルを使用せざるを得ない場合は、以下のルールに従うべきです：
+
+- `.htaccess` ファイルはできるだけ少なく、または1つだけ使用する
+- `.htaccess` ファイルはサイトのルートディレクトリに配置する
+- `.htaccess` ファイルは短くシンプルに保つ
+
+有用なリソース:
+
+- [Apache のような: .htaccess](https://www.nginx.com/resources/wiki/start/topics/examples/likeapache-htaccess/)
+- [必要な場合以外は .htaccess を使用しない](https://www.danielmorell.com/guides/htaccess-seo/basics/dont-use-htaccess-unless-you-must)
+
+</details>
+
+<details>
+<summary><b>本番環境で SNI SSL を使用するのは安全ですか？それを使用した接続と使用しない接続をテストする方法は？どのような場合に役立ちますか？</b></summary><br>
+
+<b>OpenSSL</b> を使用する場合：
 
 ```bash
-# Testing connection to remote host (with SNI support)
+# SNI サポートありでリモートホストへの接続をテストする
 echo | openssl s_client -showcerts -servername google.com -connect google.com:443
-# Testing connection to remote host (without SNI support)
+# SNI サポートなしでリモートホストへの接続をテストする
 echo | openssl s_client -connect google.com:443 -showcerts
 ```
 
-With <b>GnuTLS</b>:
+<b>GnuTLS</b> を使用する場合：
 
 ```bash
-# Testing connection to remote host (with SNI support)
+# SNI サポートありでリモートホストへの接続をテストする
 gnutls-cli -p 443 google.com
-# Testing connection to remote host (without SNI support)
+# SNI サポートなしでリモートホストへの接続をテストする
 gnutls-cli --disable-sni -p 443 google.com
 ```
 
 </details>
 
 <details>
-<summary><b>How are cookies passed in the HTTP protocol?</b></summary><br>
+<summary><b>クッキーは HTTP プロトコルでどのように渡されますか？</b></summary><br>
 
-The server sends the following in its response header to set a cookie field:
+サーバーはクッキーを設定するために以下をレスポンスヘッダーに送信します：
 
 `Set-Cookie:name=value`
 
-If there is a cookie set, then the browser sends the following in its request header:
+クッキーが設定されている場合、ブラウザは以下をリクエストヘッダーに送信します：
 
 `Cookie:name=value`
 
 </details>
 
 <details>
-<summary><b>How to prevent processing requests in web server with undefined server names? No defined default server name rule can be security issue? ***</b></summary><br>
+<summary><b>未定義のサーバー名でのリクエスト処理を防ぐにはどうすればよいですか？定義されていないデフォルトのサーバー名ルールがセキュリティ問題になる可能性がありますか？***</b></summary><br>
 
-To be completed.
+未完了。
 
 </details>
 
 <details>
-<summary><b>You should rewrite POST with payload to an external API but the POST requests loose the parameters passed on the URL. How to fix this problem (e.g. in Nginx) and what are the reasons for this behavior?</b></summary><br>
+<summary><b>POST リクエストを外部 API にペイロード付きで書き換える必要がありますが、POST リクエストは URL に渡されたパラメータを失います。この問題を修正する方法（例：Nginx）とこの動作の理由は何ですか？</b></summary><br>
 
-The issue is that external redirects will never resend **POST** data. This is written into the HTTP spec (check the `3xx` section). Any client that does do this is violating the spec.
+問題は、外部リダイレクトが **POST** データを再送信しないことです。これは HTTP スペックに記載されています（`3xx` セクションを参照）。これを行うクライアントはスペックに違反しています。
 
-**POST** data is passed in the body of the request, which gets dropped if you do a standard redirect.
+**POST** データはリクエストのボディに渡され、標準のリダイレクトを行うとこのデータは失われます。
 
-Look at this:
+これを見てください:
 
 ```
-   +-------------------------------------------+-----------+-----------+
-   |                                           | Permanent | Temporary |
-   +-------------------------------------------+-----------+-----------+
-   | Allows changing the request method from   | 301       | 302       |
-   | POST to GET                               |           |           |
-   | Does not allow changing the request       | 308       | 307       |
-   | method from POST to GET                   |           |           |
-   +-------------------------------------------+-----------+-----------+
+   +------------------------------------+-----------+-----------+
+   |                                    | 永続的     | 一時的     |
+   +------------------------------------+-----------+-----------+
+   | リクエストメソッドを POST から GET に　 | 301       | 302       |
+   | 変更することを許可する                                         |
+   | リクエストメソッドを POST から GET に   | 308       | 307       |
+   | 変更することを許可しない                                       |
+   +------------------------------------+-----------+-----------+
 ```
 
-You can try with the HTTP status code **307**, a RFC compliant browser should repeat the post request. You just need to write a Nginx rewrite rule with HTTP status code **307** or **308**:
+HTTP ステータスコード **307** を試してみてください。RFC に準拠したブラウザは POST リクエストを再送信するはずです。Nginx でステータスコード **307** または **308** のリダイレクトルールを作成するだけで済みます。
 
 ```bash
 location / {
@@ -4910,126 +4910,126 @@ location /api {
 }
 ```
 
-HTTP Status code **307** or **308** should be used instead of **301** because it changes the request method from **POST** to **GET**.
+HTTP ステータスコード **307** または **308** は、**301** の代わりに使用するべきです。なぜなら、これらはリクエストメソッドを **POST** から **GET** に変更するからです。
 
-Useful resources:
+役立つリソース:
 
-- [Redirection on Apache (Maintain POST params)](https://stackoverflow.com/questions/17295085/redirection-on-apache-maintain-post-params)
-- [Why doesn't HTTP have POST redirect?](https://softwareengineering.stackexchange.com/questions/99894/why-doesnt-http-have-post-redirect)
+- [Apache でのリダイレクション（POST パラメータを維持）](https://stackoverflow.com/questions/17295085/redirection-on-apache-maintain-post-params)
+- [なぜ HTTP には POST リダイレクトがないのか？](https://softwareengineering.stackexchange.com/questions/99894/why-doesnt-http-have-post-redirect)
 
 </details>
 
 <details>
-<summary><b>What is the proper way to test NFS performance? Prepare a short checklist.
+<summary><b>NFS パフォーマンスをテストする適切な方法は？簡単なチェックリストを準備してください。
 </b></summary><br>
 
-The best benchmark is always "the application(s) that you normally use". The load on a NFS system when you have 20 people simultaneously compiling a Linux kernel is completely different from a bunch of people logging in at the same time or the accounts uses as "home directories for the local web-server".
+最適なベンチマークは常に「通常使用するアプリケーション」です。たとえば、20 人が同時に Linux カーネルをコンパイルしているときの NFS システムの負荷は、複数の人が同時にログインしている場合や、アカウントが「ローカル Web サーバーのホームディレクトリ」として使用されている場合とはまったく異なります。
 
-But we have some good tools for testing this.
+ただし、これをテストするための優れたツールもあります。
 
-- <b>boonie</b> - a classical performances evaluation tool tests. The main program tests database type access to a single file (or a set of files if you wish to test more than 1G of storage), and it tests creation, reading, and deleting of small files which can simulate the usage of programs such as Squid, INN, or Maildir format email.
-- <b>DBench</b> - was written to allow independent developers to debug and test SAMBA. It is heavily inspired of the original SAMBA tool.
-- <b>IOZone</b> - performance tests suite. POSIX and 64 bits compliant. This tests is the file system test from the L.S.E. Main features: POSIX async I/O, Mmap() file I/O, Normal file I/O Single stream measurement, Multiple stream measurement, Distributed file server measurements (Cluster) POSIX pthreads, Multi-process measurement selectable measurements with fsync, O_SYNC Latency plots.
+- **boonie** - クラシックなパフォーマンス評価ツールです。主なプログラムは、1 つのファイル（または 1G 以上のストレージをテストしたい場合はファイルセット）へのデータベース型アクセスをテストし、小さなファイルの作成、読み取り、削除をテストして、Squid や INN、Maildir 形式のメールなどのプログラムの使用をシミュレートします。
+- **DBench** - 独立した開発者が SAMBA をデバッグおよびテストできるように作成されました。オリジナルの SAMBA ツールに強く影響されています。
+- **IOZone** - パフォーマンステストスイートです。POSIX と 64 ビットに準拠しています。これは L.S.E のファイルシステムテストです。主な機能: POSIX 非同期 I/O、Mmap() ファイル I/O、通常のファイル I/O 単一ストリーム測定、複数ストリーム測定、分散ファイルサーバー測定（クラスター）、POSIX pthreads、マルチプロセス測定、fsync、O_SYNC の選択可能な測定、レイテンシプロット。
 
 </details>
 
 <details>
-<summary><b>You need to block several IPs from the same subnet. What is the most efficient way for the system to traverse the iptables rule set or the black-hole route?</b></summary><br>
+<summary><b>同じサブネットの複数の IP アドレスをブロックする必要があります。システムが iptables ルールセットやブラックホールルートを効率的に処理する最良の方法は何ですか？</b></summary><br>
 
-If you have a system with thousands of routes defined in the routing table and nothing in the iptables rules than it might actually be more efficient to input an iptables rule.
+ルーティングテーブルに何千ものルートが定義されていて、iptables のルールが何もない場合は、iptables ルールを追加する方が効率的な場合があります。
 
-In most systems however the routing table is fairly small, in cases like this it is actually more efficient to use null routes. This is especially true if you already have extensive iptables rules in place.
+しかし、多くのシステムではルーティングテーブルは比較的小さいため、そのような場合には null ルートを使用する方が実際には効率的です。これは、すでに広範な iptables ルールが存在する場合に特に当てはまります。
 
-Assuming you're blocking based on source address and not destination, then doing the **DROP** in **raw/PREROUTING** would work well as you would essentially be able to drop the packet before any routing decision is made.
+ソースアドレスに基づいてブロックしている場合、**raw/PREROUTING** で **DROP** を行うと、ルーティング決定が行われる前にパケットをドロップすることができるため、効果的です。
 
-Remember however that iptables rules are essentially a linked-list and for optimum performance when blocking a number of addresses you should use an `ipset`.
+ただし、iptables のルールは本質的にリンクリストであり、複数のアドレスをブロックする際には最適なパフォーマンスを得るために `ipset` を使用するべきです。
 
-On the other hand if blocking by destination, there is likely little difference between blocking at the routing table vs iptables **EXCEPT** if source IPs are spoofed in which case the blackholed entries may consume routing cache resources; in this case, **raw/PREROUTING** remains preferable.
+一方、宛先に基づいてブロックする場合、ルーティングテーブルでのブロックと iptables でのブロックの違いはほとんどないでしょう。ただし、ソース IP がスプーフィングされている場合、ブラックホールエントリがルーティングキャッシュリソースを消費する可能性があります。この場合、**raw/PREROUTING** の方が好ましいです。
 
-Your outgoing route isn't going to matter until you try to send a packet back to the attacker. By that time you will have already incurred most of the cost of socket setup and may even have a thread blocking waiting for the kernel to conclude you have no route to host, plus whatever error handling your server process does when it concludes there's a network problem.
+アウトゴーイングルートは、攻撃者にパケットを戻そうとするまで関係ありません。その時点では、ソケットのセットアップにかかるコストのほとんどが発生しており、カーネルがホストへのルートがないと判断するのを待つスレッドがブロックされることもあります。さらに、サーバープロセスがネットワーク問題を結論付けたときに行うエラーハンドリングもあります。
 
-iptables or another firewall will allow you to block the incoming traffic and discard it before it reaches the daemon process on your server. It seems clearly superior in this use case.
+iptables や他のファイアウォールは、着信トラフィックをブロックし、サーバー上のデーモンプログラムに到達する前に破棄することができます。このユースケースでは、これが明らかに優れています。
 
 ```bash
 iptables -A INPUT -s 192.168.200.0/24 -j DROP
 ```
 
-When you define a route on a Linux/Unix system it tells the system in order to communicate with the specified IP address you will need to route your network communication to this specific place.
+Linux/Unix システムでルートを定義すると、指定された IP アドレスと通信するためには、その特定の場所にネットワーク通信をルーティングする必要があることをシステムに伝えます。
 
-When you define a null route it simply tells the system to drop the network communication that is designated to the specified IP address. What this means is any TCP based network communication will not be able to be established as your server will no longer be able to send an SYN/ACK reply. Any UDP based network communication however will still be received; however your system will no longer send any response to the originating IP.
+null ルートを定義すると、指定された IP アドレスに対するネットワーク通信を破棄するようにシステムに指示します。つまり、TCP ベースのネットワーク通信は確立できなくなります。サーバーはもはや SYN/ACK 応答を送信できなくなります。一方、UDP ベースのネットワーク通信は受信されますが、システムは発信元 IP への応答を送信しなくなります。
 
-While iptables can accept tens of thousands of rules in a chain, the chains are walked sequentially until a match is found on every packet. So, lots of rules can lead to the system spending amazing amounts of CPU time walking through the rules.
+iptables はチェーンに数万のルールを受け入れることができますが、チェーンはパケットごとに一致が見つかるまで順次チェックされます。たくさんのルールがあると、システムがルールをチェックするのに大量の CPU 時間が費やされる可能性があります。
 
-The routing rules are much simpler than iptables. With iptables, a match can be based on many different variables including protocols, source and destination packets, and even other packets that were sent before the current packet.
+ルーティングルールは iptables よりもはるかに簡単です。iptables では、一致がプロトコル、ソースおよび宛先パケット、さらには現在のパケットより前に送信された他のパケットなど、さまざまな変数に基づいて行われます。
 
-In routing, all that matters is the remote IP address, so it's very easy to optimize. Also, many systems have a lot of routing rules. A typical system may only have 5 or 10, but something that's acting as a BGP router can have tens of thousands. So, for a very long time there have been extensive optimizations in selecting the right route for a particular packet.
+ルーティングでは、リモート IP アドレスがすべてであり、最適化が非常に簡単です。また、多くのシステムには多くのルーティングルールがあります。典型的なシステムでは 5 つまたは 10 つのルールしかないかもしれませんが、BGP ルーターとして機能しているものは数万のルールを持つことがあります。そのため、特定のパケットに対して適切なルートを選択するために長い間広範な最適化が行われてきました。
 
-In less technical terms this means your system will receive data from the attackers but no longer respond to it.
+技術的に言えば、これによりシステムは攻撃者からデータを受信しますが、それに応答しなくなります。
 
 ```bash
 ip route add blackhole 192.168.200.0/24
 ```
 
-or
+または
 
 ```bash
 ip route add 192.168.200.0/24 via 127.0.0.1
 ```
 
-Useful resources:
+有用なリソース:
 
-- [The difference between iptables DROP and null-routing.](https://www.tummy.com/blogs/2006/07/27/the-difference-between-iptables-drop-and-null-routing/)
+- [iptables DROP と null-routing の違い](https://www.tummy.com/blogs/2006/07/27/the-difference-between-iptables-drop-and-null-routing/)
 
 </details>
 
 <details>
-<summary><b>How to run <code>scp</code> with a second remote host?</b></summary><br>
+<summary><b>どのようにして <code>scp</code> を使って2つ目のリモートホストでファイルを転送しますか？</b></summary><br>
 
-With `ssh`:
+`ssh` を使う場合:
 
 ```bash
 ssh user1@remote1 'ssh user2@remote2 "cat file"' > file
 ```
 
-With `tar` (with compression):
+`tar` を使って圧縮する場合:
 
 ```bash
 ssh user1@remote1 'ssh user2@remote2 "cd path2; tar cj file"' | tar xj
 ```
 
-With `ssh` and port forwarding tunnel:
+`ssh` とポートフォワーディングトンネルを使う場合:
 
 ```bash
-# First, open the tunnel
+# まず、トンネルを開きます
 ssh -L 1234:remote2:22 -p 45678 user1@remote1
 
-# Then, use the tunnel to copy the file directly from remote2
+# 次に、そのトンネルを使って直接 remote2 からファイルをコピーします
 scp -P 1234 user2@localhost:file .
 ```
 
 </details>
 
 <details>
-<summary><b>How can you reduce load time of a dynamic website?</b></summary><br>
+<summary><b>動的ウェブサイトの読み込み時間を短縮するにはどうすればよいですか？</b></summary><br>
 
-- webpage optimization
-- cached web pages
-- quality web hosting
-- compressed text files
-- apache/nginx tuning
+- ウェブページの最適化
+- キャッシュされたウェブページ
+- 高品質なウェブホスティング
+- 圧縮されたテキストファイル
+- Apache/nginx のチューニング
 
 </details>
 
 <details>
-<summary><b>What types of dns cache working when you type api.example.com in your browser and press return?</b></summary><br>
+<summary><b>ブラウザで `api.example.com` と入力してリターンを押したときにどのような種類の DNS キャッシュが働いていますか？</b></summary><br>
 
-Browser checks if the domain is in its cache (to see the DNS Cache in Chrome, go to `chrome://net-internals/#dns`). When this cache fails, it simply asks the OS to resolve the domain.
+ブラウザはドメインがキャッシュに存在するか確認します（Chrome の DNS キャッシュを見るには、`chrome://net-internals/#dns` にアクセスします）。このキャッシュが失敗した場合、OS にドメインの解決を要求します。
 
-The OS resolver has it's own cache which it will check. If it fails this, it resorts to asking the OS configured DNS servers.
+OS のリゾルバには独自のキャッシュがあり、それを確認します。これも失敗した場合は、OS に設定された DNS サーバーに問い合わせます。
 
-The OS configured DNS servers will typically be configured by DHCP from the router where the DNS servers are likely to be the ISP's DNS servers configured by DHCP from the internet gateway to the router.
+OS に設定された DNS サーバーは通常、ルーターから DHCP によって設定されており、DNS サーバーは一般的にインターネットゲートウェイからルーターへの DHCP によって設定された ISP の DNS サーバーです。
 
-In the event the router has it's own DNS servers, it may have it's own cache otherwise you should be directed straight to your ISP's DNS servers most typically as soon as the OS cache was found to be empty.
+ルーターに独自の DNS サーバーがある場合、それにも独自のキャッシュがあるかもしれません。そうでない場合は、OS のキャッシュが空であると確認されると、通常、直接 ISP の DNS サーバーに誘導されます。
 
 Useful resources:
 
@@ -5040,33 +5040,33 @@ Useful resources:
 </details>
 
 <details>
-<summary><b>What is the difference between <code>Cache-Control: max-age=0</code> and <code>Cache-Control: no-cache</code>?</b></summary><br>
+<summary><b><code>Cache-Control: max-age=0</code> と <code>Cache-Control: no-cache</code> の違いは何ですか？</b></summary><br>
 
-**When sent by the origin server**
+**オリジンサーバーから送信された場合**
 
-`max-age=0` simply tells caches (and user agents) the response is stale from the get-go and so they SHOULD revalidate the response (e.g. with the If-Not-Modified header) before using a cached copy, whereas, `no-cache` tells them they MUST revalidate before using a cached copy.
+`max-age=0` は、キャッシュ（およびユーザーエージェント）に対して、レスポンスがすぐに古くなることを示し、したがって、キャッシュされたコピーを使用する前にレスポンスの再検証を行うべきであることを伝えます（例えば、If-Not-Modified ヘッダーを使って）。対照的に、`no-cache` は、キャッシュされたコピーを使用する前に必ず再検証を行わなければならないことを伝えます。
 
-In other words, caches may sometimes choose to use a stale response (although I believe they have to then add a Warning header), but `no-cache` says they're not allowed to use a stale response no matter what. Maybe you'd want the SHOULD-revalidate behavior when baseball stats are generated in a page, but you'd want the MUST-revalidate behavior when you've generated the response to an e-commerce purchase.
+つまり、キャッシュは時には古いレスポンスを使用することを選ぶかもしれません（ただし、その場合は警告ヘッダーを追加する必要があります）。しかし、`no-cache` は、古いレスポンスを使用することは許可されないと明示しています。たとえば、ページにベースボールの統計が生成されるときには `SHOULD-revalidate` の動作が望ましいかもしれませんが、eコマースの購入に対するレスポンスが生成されたときには `MUST-revalidate` の動作が望ましいです。
 
-**When sent by the user agent**
+**ユーザーエージェントから送信された場合**
 
-If a user agent sends a request with `Cache-Control: max-age=0` (aka. "end-to-end revalidation"), then each cache along the way will revalidate its cache entry (e.g. with the If-Not-Modified header) all the way to the origin server. If the reply is then 304 (Not Modified), the cached entity can be used.
+ユーザーエージェントが `Cache-Control: max-age=0` （別名「エンドツーエンド再検証」）を指定してリクエストを送信すると、経路上の各キャッシュがそのキャッシュエントリを再検証します（例えば、If-Not-Modified ヘッダーを使って）し、オリジンサーバーまで再検証が行われます。もし返信が 304（Not Modified）であれば、キャッシュされたエンティティを使用できます。
 
-On the other hand, sending a request with `Cache-Control: no-cache` (aka. "end-to-end reload") doesn't revalidate and the server MUST NOT use a cached copy when responding.
-
-</details>
-
-<details>
-<summary><b>What are the security risks of setting <code>Access-Control-Allow-Origin</code>?</b></summary><br>
-
-By responding with <code>Access-Control-Allow-Origin: *</code>, the requested resource allows sharing with every origin. This basically means that any site can send an XHR request to your site and access the server’s response which would not be the case if you hadn’t implemented this CORS response.
-
-So any site can make a request to your site on behalf of their visitors and process its response. If you have something implemented like an authentication or authorization scheme that is based on something that is automatically provided by the browser (cookies, cookie-based sessions, etc.), the requests triggered by the third party sites will use them too.
+一方、`Cache-Control: no-cache` （別名「エンドツーエンド再読み込み」）でリクエストを送信すると、再検証は行われず、サーバーはレスポンス時にキャッシュされたコピーを使用してはなりません。
 
 </details>
 
 <details>
-<summary><b>Create a single-use TCP or UDP proxy with <code>netcat</code>.</b></summary><br>
+<summary><b><code>Access-Control-Allow-Origin</code> を設定することによるセキュリティリスクは何ですか？</b></summary><br>
+
+<code>Access-Control-Allow-Origin: *</code> で応答することで、要求されたリソースはすべてのオリジンと共有を許可します。これは基本的に、どのサイトでもあなたのサイトに対して XHR リクエストを送信し、サーバーのレスポンスにアクセスできることを意味します。これは、CORS 応答を実装していなかった場合には起こりえないことです。
+
+そのため、どのサイトでも自サイトにリクエストを送信し、そのレスポンスを処理することができます。もしあなたのサイトに認証や認可のスキームが実装されており、これがブラウザによって自動的に提供される何か（クッキー、クッキーに基づくセッションなど）に依存している場合、サードパーティサイトによってトリガーされたリクエストもそれらを使用することになります。
+
+</details>
+
+<details>
+<summary><b><code>netcat</code>を使って使い捨ての TCP または UDP プロキシを作成する</b></summary><br>
 
 ```bash
 ### TCP -> TCP
@@ -5085,116 +5085,116 @@ nc -l -u -p 2000 -c "nc [ip|hostname] 3000"
 </details>
 
 <details>
-<summary><b>Explain 3 techniques for avoiding firewalls with <code>nmap</code>.</b></summary><br>
+<summary><b>nmapを使ってファイアウォールを回避するための3つのテクニックを説明してください。</b></summary><br>
 
-**Use Decoy addresses**
+**擬似アドレスの使用**
 
 ```bash
-# Generates a random number of decoys.
-nmap -D RND:10 [target]
+# ランダムな数の擬似アドレスを生成します。
+nmap -D RND:10 [ターゲット]
 
-# Manually specify the IP addresses of the decoys.
+# 擬似アドレスを手動で指定します。
 nmap -D decoy1,decoy2,decoy3
 ```
 
-In this type of scan you can instruct Nmap to spoof packets from other hosts.In the firewall logs it will be not only our IP address but also and the IP addresses of the decoys so it will be much harder to determine from which system the scan started.
+このタイプのスキャンでは、Nmapに他のホストからパケットを偽装させることができます。ファイアウォールのログには、私たちのIPアドレスだけでなく、擬似アドレスのIPも記録されるため、どのシステムからスキャンが開始されたかを特定するのが難しくなります。
 
-**Source port number specification**
-
-```bash
-nmap --source-port 53 [target]
-```
-
-A common error that many administrators are doing when configuring firewalls is to set up a rule to allow all incoming traffic that comes from a specific port number.The <code>--source-port</code> option of Nmap can be used to exploit this misconfiguration.Common ports that you can use for this type of scan are: 20, 53 and 67.
-
-**Append Random Data**
+**ソースポート番号の指定**
 
 ```bash
-nmap --data-length 25 [target]
+nmap --source-port 53 [ターゲット]
 ```
 
-Many firewalls are inspecting packets by looking at their size in order to identify a potential port scan.This is because many scanners are sending packets that have specific size.In order to avoid that kind of detection you can use the command <code>--data-length</code> to add additional data and to send packets with different size than the default.
+多くの管理者がファイアウォールを設定する際に犯す一般的なエラーは、特定のポート番号からのすべての受信トラフィックを許可するルールを設定することです。Nmapの`--source-port`オプションを使って、この誤設定を利用することができます。一般的に使用できるポート番号には、20、53、67があります。
 
-**TCP ACK Scan**
+**ランダムデータの追加**
 
 ```bash
-nmap -sA [target]
+nmap --data-length 25 [ターゲット]
 ```
 
-It is always good to send the ACK packets rather than the SYN packets because if there is any active firewall working on the remote computer then because of the ACK packets the firewall cannot create the log, since firewalls treat ACK packet as the response of the SYN packet.
+多くのファイアウォールは、パケットのサイズを確認してポートスキャンを特定しています。これは、多くのスキャナーが特定のサイズのパケットを送信するためです。そのような検出を回避するために、`--data-length`コマンドを使用して追加のデータを追加し、デフォルトとは異なるサイズのパケットを送信することができます。
 
-Useful resources:
+**TCP ACKスキャン**
 
-- [Nmap - Techniques for Avoiding Firewalls](https://pentestlab.blog/2012/04/02/nmap-techniques-for-avoiding-firewalls/)
+```bash
+nmap -sA [ターゲット]
+```
+
+SYNパケットよりもACKパケットを送信する方が良いです。なぜなら、リモートコンピュータでアクティブなファイアウォールがある場合、ACKパケットのためにファイアウォールはログを作成できないからです。ファイアウォールはACKパケットをSYNパケットの応答として扱います。
+
+有用なリソース:
+
+- [Nmap - ファイアウォール回避のテクニック](https://pentestlab.blog/2012/04/02/nmap-techniques-for-avoiding-firewalls/)
 
 </details>
 
 ###### Devops Questions (5)
 
 <details>
-<summary><b>Explain how Flap Detection works in Nagios?</b></summary><br>
+<summary><b>Nagiosでのフラップ検出の仕組みを説明してください。</b></summary><br>
 
-**Flapping** occurs when a service or host changes state too frequently, this causes lot of problem and recovery notifications.
+**フラッピング**は、サービスやホストが頻繁に状態を変更する場合に発生し、多くの問題や復旧通知を引き起こします。
 
-Once you have defined **Flapping**, explain how Nagios detects **Flapping**. Whenever Nagios checks the status of a host or service, it will check to see if it has started or stopped flapping.
+**フラッピング**を定義した後、Nagiosがどのようにして**フラッピング**を検出するかを説明します。Nagiosがホストやサービスの状態をチェックするたびに、それがフラッピングを開始または停止したかどうかを確認します。
 
-Nagios follows the below given procedure to do that:
+Nagiosは以下の手順に従ってこれを行います:
 
-- storing the results of the last 21 checks of the host or service analyzing the historical check results and determine where state changes/transitions occur
-- using the state transitions to determine a percent state change value (a measure of change) for the host or service
-- comparing the percent state change value against low and high flapping thresholds
-
-</details>
-
-<details>
-<summary><b>What are the advantages that Containerization provides over Virtualization?</b></summary><br>
-
-Below are the advantages of containerization over virtualization:
-
-- containers provide real-time provisioning and scalability but VMs provide slow provisioning
-- containers are lightweight when compared to VMs
-- VMs have limited performance when compared to containers
-- containers have better resource utilization compared to VMs
+- ホストまたはサービスの最後の21回のチェック結果を保存し、履歴チェック結果を分析して状態の変更/遷移がどこで発生したかを判断します。
+- 状態遷移を使用して、ホストまたはサービスの状態変化率（変化の度合い）を決定します。
+- その状態変化率を低いフラップ閾値と高いフラップ閾値と比較します。
 
 </details>
 
 <details>
-<summary><b>Is the way of distributing Docker apps (e.g. Apache, MySQL) from Docker Hub is good for production environments? Describe security problems and possible solutions. ***</b></summary><br>
+<summary><b>コンテナ化が仮想化に対して提供する利点は何ですか？</b></summary><br>
+
+以下は、仮想化に対するコンテナ化の利点です:
+
+- コンテナはリアルタイムでのプロビジョニングとスケーラビリティを提供しますが、VMはプロビジョニングが遅いです。
+- コンテナはVMと比較して軽量です。
+- VMはコンテナと比較してパフォーマンスが制限されています。
+- コンテナはVMと比較してリソースの利用効率が良いです。
+
+</details>
+
+<details>
+<summary><b>Docker HubからのDockerアプリ（例：Apache、MySQL）の配布方法は、本番環境に適していますか？セキュリティ上の問題点と可能な解決策を説明してください。</b></summary><br>
 
 To be completed.
 
 </details>
 
 <details>
-<summary><b>Some of the common use cases of LXC and LXD come from the following requirements... Explain.</b></summary><br>
+<summary><b>LXCとLXDの一般的な使用ケースには、次のような要件があります...説明してください。</b></summary><br>
 
-- the need for an isolated development environment without polluting your host machine
-- isolation within production servers and the possibility to run more than one service in its own container
-- a need to test things with more than one version of the same software or different operating system environments
-- experimenting with different and new releases of GNU/Linux distributions without having to install them on a physical host machine
-- trying out a software or development stack that may or may not be used after some playing around
-- installing many types of software in your primary development machine or production server and maintaining them on a longer run
-- doing a dry run of any installation or maintenance task before actually executing it on production machines
-- better utilization and provisioning of server resources with multiple services running for different users or clients
-- high-density virtual private server (VPS) hosting, where isolation without the cost of full virtualization is needed
-- easy access to host hardware from a container, compared to complicated access methods from virtual machines
-- multiple build environments with different customizations in place
+- ホストマシンを汚染せずに、隔離された開発環境が必要な場合
+- 本番サーバー内の隔離と、各サービスを独自のコンテナで実行する可能性
+- 同じソフトウェアの複数のバージョンや異なるOS環境でテストする必要がある場合
+- GNU/Linuxディストリビューションの異なる新しいリリースを、物理ホストマシンにインストールせずに試すこと
+- しばらく試してみて使うかどうか分からないソフトウェアや開発スタックを試すこと
+- プライマリ開発マシンや本番サーバーに多種類のソフトウェアをインストールし、それを長期間維持すること
+- 本番マシンで実際に実行する前に、インストールやメンテナンス作業の予行演習を行うこと
+- 複数のサービスを異なるユーザーやクライアントのために実行し、サーバーリソースをより良く利用し、プロビジョニングすること
+- 完全な仮想化のコストをかけずに隔離が必要な高密度の仮想プライベートサーバー（VPS）ホスティング
+- 仮想マシンからの複雑なアクセス方法と比較して、コンテナからのホストハードウェアへの容易なアクセス
+- 異なるカスタマイズが施された複数のビルド環境
 
 </details>
 
 <details>
-<summary><b>You have to prepare a Redis cluster. How will you ensure security?</b></summary><br>
+<summary><b>Redisクラスタを準備する必要があります。セキュリティをどのように確保しますか？</b></summary><br>
 
-- protect a given Redis instance from outside accesses via firewall
-- binding it to 127.0.0.1 if only local clients are accessing it
-- sandboxed environment
-- enabling **AUTH**
-- enabling **Protected Mode**
-- data encryption support (e.g. `spiped`)
-- disabling of specific commands
-- users **ACLs**
+- ファイアウォールを使用して、特定のRedisインスタンスへの外部アクセスを保護する
+- ローカルクライアントのみがアクセスする場合は、127.0.0.1にバインドする
+- サンドボックス環境を利用する
+- **AUTH**を有効にする
+- **Protected Mode**を有効にする
+- データ暗号化のサポート（例: `spiped`）
+- 特定のコマンドの無効化
+- ユーザーの**ACLs**（アクセス制御リスト）の設定
 
-Useful resources:
+参考リソース:
 
 - [Redis Security](https://redis.io/topics/security)
 - [A few things about Redis security](http://antirez.com/news/96)
@@ -5204,116 +5204,116 @@ Useful resources:
 ###### Cyber Security Questions (5)
 
 <details>
-<summary><b>What is OWASP Application Security Verification Standard? Explain in a few points. ***</b></summary><br>
+<summary><b>OWASPアプリケーションセキュリティ検証標準（ASVS）とは何ですか？簡単に説明してください。</b></summary><br>
 
-To be completed.
-
-</details>
-
-<details>
-<summary><b>What is CSRF?</b></summary><br>
-
-**Cross Site Request Forgery** is a web application vulnerability in which the server does not check whether the request came from a trusted client or not. The request is just processed directly. It can be further followed by the ways to detect this, examples and countermeasures.
+後日完成予定。
 
 </details>
 
 <details>
-<summary><b>What is the difference between policies, processes and guidelines?</b></summary><br>
+<summary><b>CSRFとは何ですか？</b></summary><br>
 
-As **security policy** defines the security objectives and the security framework of an organisation. A **process** is a detailed step by step how to document that specifies the exact action which will be necessary to implement important security mechanism. **Guidelines** are recommendations which can be customized and used in the creation of procedures.
-
-</details>
-
-<details>
-<summary><b>What is a false positive and false negative in case of IDS?</b></summary><br>
-
-When the device generated an alert for an intrusion which has actually not happened: this is **false positive** and if the device has not generated any alert and the intrusion has actually happened, this is the case of a **false negative**.
+**クロスサイトリクエストフォージェリ（CSRF）**は、ウェブアプリケーションの脆弱性の一つで、サーバーがリクエストが信頼できるクライアントから来たかどうかを確認しない場合に発生します。リクエストはそのまま処理されてしまいます。この脆弱性の検出方法、例、および対策についても説明が続くことがあります。
 
 </details>
 
 <details>
-<summary><b>10 quick points about web server hardening.</b></summary><br>
+<summary><b>ポリシー、プロセス、ガイドラインの違いは何ですか？</b></summary><br>
 
-Example:
+**セキュリティポリシー**は、組織のセキュリティ目標とセキュリティフレームワークを定義します。**プロセス**は、重要なセキュリティメカニズムを実装するために必要な具体的な手順を示した文書です。**ガイドライン**は、手順作成時にカスタマイズして使用できる推奨事項です。
 
-- if machine is a new install, protect it from hostile network traffic, until the operating system is installed and hardened
-- create a separate partition with the `nodev`, `nosuid`, and `noexec` options set for `/tmp`
-- create separate partitions for `/var`, `/var/log`, `/var/log/audit`, and `/home`
-- enable randomized virtual memory region placement
-- remove legacy services (e.g. `telnet-server`, `rsh`, `rlogin`, `rcp`, `ypserv`, `ypbind`, `tftp`, `tftp-server`, `talk`, `talk-server`).
-- limit connections to services running on the host to authorized users of the service via firewalls and other access control technologies
-- disable source routed packet acceptance
-- enable **TCP/SYN** cookies
-- disable SSH root login
-- install and configure **AIDE**
-- install and configure **OSsec HIDS**
-- configure **SELinux**
-- all administrator or root access must be logged
-- integrity checking of system accounts, group memberships, and their associated privileges should be enabled and tested
-- set password creation requirements (e.g. with PAM)
+</details>
 
-Useful resources:
+<details>
+<summary><b>IDSにおけるフォルスポジティブとフォルスネガティブの違いは何ですか？</b></summary><br>
+
+デバイスが実際には起こっていない侵入に対してアラートを生成した場合、これを**フォルスポジティブ**と呼びます。逆に、デバイスがアラートを生成せず、実際に侵入が発生した場合、これが**フォルスネガティブ**のケースです。
+
+</details>
+
+<details>
+<summary><b>Webサーバーのハードニングに関する10のポイント。</b></summary><br>
+
+例:
+
+- マシンが新規インストールの場合、OSのインストールとハードニングが完了するまで、敵対的なネットワークトラフィックから保護する
+- `/tmp` に `nodev`、`nosuid`、`noexec` オプションを設定して、別のパーティションを作成する
+- `/var`、`/var/log`、`/var/log/audit`、および `/home` 用に別のパーティションを作成する
+- ランダム化された仮想メモリ領域配置を有効にする
+- レガシーサービス（例: `telnet-server`、`rsh`、`rlogin`、`rcp`、`ypserv`、`ypbind`、`tftp`、`tftp-server`、`talk`、`talk-server`）を削除する
+- ファイアウォールやその他のアクセス制御技術を使用して、ホスト上で実行されているサービスへの接続を認可されたユーザーに限定する
+- ソースルーティングされたパケットの受信を無効にする
+- **TCP/SYN** クッキーを有効にする
+- SSHのrootログインを無効にする
+- **AIDE**をインストールして設定する
+- **OSsec HIDS**をインストールして設定する
+- **SELinux**を設定する
+- 管理者またはrootアクセスはすべてログに記録する必要がある
+- システムアカウント、グループメンバーシップ、およびそれに関連する権限の整合性チェックを有効にし、テストする
+- パスワード作成要件を設定する（例: PAMを使用）
+
+参考資料:
 
 - [Security Harden CentOS 7](https://highon.coffee/blog/security-harden-centos-7/)
 - [CentOS 7 Server Hardening Guide](https://www.lisenet.com/2017/centos-7-server-hardening-guide/)
 
 </details>
 
-## <a name="secret-knowledge">Secret Knowledge</a>
+## <a name="secret-knowledge">秘密の知識</a>
 
 ### :diamond_shape_with_a_dot_inside: <a name="guru-sysadmin">Guru Sysadmin</a>
 
 <details>
-<summary><b>Explain what is Event-Driven architecture and how it improves performance? ***</b></summary><br>
+<summary><b>イベント駆動アーキテクチャとは何か、またそれがどのようにパフォーマンスを向上させるのか説明してください。</b></summary><br>
 
-To be completed.
+記入予定。
 
 </details>
 
 <details>
-<summary><b>An application encounters some performance issues. You should to find the code we have to optimize. How to profile app in Linux environment?</b></summary><br>
+<summary><b>アプリケーションにパフォーマンスの問題が発生しています。最適化すべきコードを見つける必要があります。Linux環境でアプリをプロファイルする方法は？</b></summary><br>
 
-> Ideally, I need an app that will attach to a process and log periodic snapshots of: memory usage number of threads CPU usage.
+> 理想的には、プロセスにアタッチして、メモリ使用量、スレッド数、CPU使用率の定期的なスナップショットを記録するアプリが必要です。
 
-1. You can use `top`in batch mode. It runs in the batch mode either until it is killed or until N iterations is done:
+1. `top`をバッチモードで使用できます。バッチモードでは、終了するまで、または指定した回数の反復が完了するまで実行されます。
 
 ```bash
 top -b -p `pidof a.out`
 ```
 
-or
+または
 
 ```bash
 top -b -p `pidof a.out` -n 100
 ```
 
-2. You can use ps (for instance in a shell script):
+2. psも使用できます (例えばシェルスクリプトで):
 
 ```bash
 ps --format pid,pcpu,cputime,etime,size,vsz,cmd -p `pidof a.out`
 ```
 
-> I need some means of recording the performance of an application on a Linux machine.
+> Linuxマシンでアプリケーションのパフォーマンスを記録する手段が必要です。
 
-1. To record performance data:
-
+1. パフォーマンスデータを記録する:
+ 
 ```bash
 perf record -p `pidof a.out`
 ```
 
-or to record for 10 secs:
+または10秒間記録するには:
 
 ```bash
 perf record -p `pidof a.out` sleep 10
 ```
 
-or to record with call graph ():
+または、コールグラフを記録するには:
 
 ```bash
 perf record -g -p `pidof a.out`
 ```
 
-2) To analyze the recorded data
+2) 記録されたデータを解析する
 
 ```bash
 perf report --stdio
@@ -5322,21 +5322,21 @@ perf report --stdio -g none
 perf report --stdio -g
 ```
 
-**This is an example of profiling a test program**
+**これはテストプログラムのプロファイリングの例です**
 
-1. I run my test program (c++):
+1. テストプログラム（C++）を実行します:
 
 ```bash
 ./my_test 100000000
 ```
 
-2. Then I record performance data of a running process:
+2. 実行中のプロセスのパフォーマンスデータを記録します:
 
 ```bash
 perf record -g  -p `pidof my_test` -o ./my_test.perf.data sleep 30
 ```
 
-3. Then I analyze load per module:
+3. 次に、モジュールごとの負荷を分析します:
 
 ```bash
 perf report --stdio -g none --sort comm,dso -i ./my_test.perf.data
@@ -5349,7 +5349,7 @@ perf report --stdio -g none --sort comm,dso -i ./my_test.perf.data
      1.61%  my_test  [kernel.kallsyms]
 ```
 
-4. Then load per function is analyzed:
+4. 次に、機能ごとの負荷を分析します:
 
 ```bash
 perf report --stdio -g none -i ./my_test.perf.data | c++filt
@@ -5372,7 +5372,7 @@ perf report --stdio -g none -i ./my_test.perf.data | c++filt
   ...
 ```
 
-5. Then call chains are analyzed:
+5. 次に、コールチェインを分析します:
 
 ```bash
 perf report --stdio -g graph -i ./my_test.perf.data | c++filt
@@ -5404,46 +5404,46 @@ perf report --stdio -g graph -i ./my_test.perf.data | c++filt
   ...
 ```
 
-So at this point you know where your program spends time.
+この時点で、プログラムがどこに時間を費やしているかがわかります。
 
-Also the simple way to do app profile is to use the `pstack` utility or `lsstack`.
+また、アプリケーションのプロファイルを作成する簡単な方法は、`pstack`ユーティリティまたは`lsstack`を使用することです。
 
-Other tool is Valgrind. So this is what I recommend. Run program first:
+もう一つのツールはValgrindです。これをお勧めします。まずプログラムを実行します:
 
 ```bash
 valgrind --tool=callgrind --dump-instr=yes -v --instr-atstart=no ./binary > tmp
 ```
 
-Now when it works and we want to start profiling we should run in another window:
+プログラムが動作しているときに、プロファイリングを開始するには別のウィンドウで以下を実行します:
 
 ```bash
 callgrind_control -i on
 ```
 
-This turns profiling on. To turn it off and stop whole task we might use:
+これでプロファイリングがオンになります。オフにして全タスクを停止するには次のコマンドを使用します:
 
 ```bash
 callgrind_control -k
 ```
 
-Now we have some files named callgrind.out.* in current directory. To see profiling results use:
+これで、現在のディレクトリに`callgrind.out.*`という名前のファイルが生成されます。プロファイリングの結果を確認するには次のコマンドを使用します:
 
 ```bash
 kcachegrind callgrind.out.*
 ```
 
-I recommend in next window to click on **Self** column header, otherwise it shows that `main()` is most time consuming task.
+次のウィンドウで**Self**列のヘッダーをクリックすることをお勧めします。そうしないと、`main()`が最も時間を消費しているタスクとして表示されてしまいます。
 
-Useful resources:
+参考資料:
 
 - [Tracing processes for fun and profit](http://techblog.rosedu.org/tracing-processes-for-fun-and-profit.html)
 
 </details>
 
 <details>
-<summary><b>Using a Linux system with a limited number of packages installed, and telnet is not available. Use sysfs virtual filesystem to test connection on all interfaces (without loopback).</b></summary><br>
+<summary><b>インストールされているパッケージが限られており、telnetが利用できないLinuxシステムで、sysfs仮想ファイルシステムを使用して、すべてのインターフェース（ループバックを除く）で接続をテストする方法</b></summary><br>
 
-For example:
+例えば：
 
 ```bash
 #!/usr/bin/bash
@@ -5460,62 +5460,62 @@ if [[ $state -ne 0 ]] ; then echo "not connection" > /dev/stderr ; exit ; fi
 </details>
 
 <details>
-<summary><b>Write two golden rules for reducing the impact of hacked system.</b></summary><br>
+<summary><b>ハッキングされたシステムの影響を減らすための2つの基本ルールを書いてください。</b></summary><br>
 
-1) **The principle of least privilege**
+1) **最小権限の原則**
 
-You should configure services to run as a user with the least possible rights necessary to complete the service's tasks. This can contain a hacker even after they break in to a machine.
+サービスを実行するユーザーを、そのサービスのタスクを完了するために必要な最小限の権限しか持たないユーザーに設定するべきです。これにより、システムに侵入された場合でも、ハッカーの活動を制限できます。
 
-As an example, a hacker breaking into a system using a zero-day exploit of the Apache webserver service is highly likely to be limited to just the system memory and file resources that can be accessed by that process. The hacker would be able to download your html and php source files, and probably look into your mysql database, but they should not be able to get root or extend their intrusion beyond apache-accessible files.
+例えば、Apacheウェブサーバーサービスのゼロデイ攻撃を使用してシステムに侵入したハッカーは、そのプロセスがアクセスできるシステムメモリとファイルリソースに限られる可能性が高いです。ハッカーはあなたのHTMLやPHPソースファイルをダウンロードし、MySQLデータベースを覗くことはできるかもしれませんが、root権限を得たり、Apacheがアクセス可能なファイルを超えて侵入を拡大することはできないはずです。
 
-Many default Apache webserver installations create the 'apache' user and group by default and you can easily configure the main Apache configuration file (`httpd.conf`) to run apache using those groups.
+多くのデフォルトのApacheウェブサーバーインストールでは、デフォルトで'apache'ユーザーとグループが作成され、そのグループを使用してApacheを実行するようにメインのApache設定ファイル（`httpd.conf`）を簡単に設定できます。
 
-2) **The principle of separation of privileges**
+2) **特権の分離の原則**
 
-If your web site only needs read-only access to the database, then create an account that only has read-only permissions, and only to that database.
+ウェブサイトがデータベースへの読み取り専用アクセスだけを必要とする場合は、そのデータベースに対してのみ読み取り専用権限を持つアカウントを作成します。
 
-**SElinux** is a good choice for creating context for security, `app-armor` is another tool. **Bastille** was a previous choice for hardening.
+**SELinux**はセキュリティのためのコンテキスト作成に適しており、`app-armor`ももう一つのツールです。**Bastille**はハードニングのための以前の選択肢でした。
 
-Reduce the consequence of any attack, by separating the power of the service that has been compromised into it own "Box".
+攻撃の影響を減らすために、サービスの特権を独自の「ボックス」に分離します。
 
-3) **Whitelist, don't blacklist**
+3) **ホワイトリストを使用し、ブラックリストを使用しない**
 
-You're describing a blacklist approach. A whitelist approach would be much safer.
+ブラックリストアプローチを説明しています。ホワイトリストアプローチの方がずっと安全です。
 
-An exclusive club will never try to list everyone who can't come in; they will list everyone who can come in and exclude those not on the list.
+排他的なクラブは、入場できない人をリストアップしようとはしません。入場できる人をリストアップし、リストにない人を除外します。
 
-Similarly, trying to list everything that shouldn't access a machine is doomed. Restricting access to a short list of programs/IP addresses/users would be more effective.
+同様に、機械にアクセスすべきでないものをリストアップしようとするのは無理があります。アクセスを短いリストのプログラム/IPアドレス/ユーザーに制限する方が効果的です。
 
-Of course, like anything else, this involves some trade-offs. Specifically, a whitelist is massively inconvenient and requires constant maintenance.
+もちろん、これにはいくつかのトレードオフがあります。具体的には、ホワイトリストは非常に不便であり、定期的なメンテナンスが必要です。
 
-To go even further in the tradeoff, you can get great security by disconnecting the machine from the network.
+さらにトレードオフを進めるためには、ネットワークから機械を切り離すことで優れたセキュリティを得ることができます。
 
-**Also interesting are**:
+**また興味深い点は**:
 
-Use the tools available. It's highly unlikely that you can do as well as the guys who are security experts, so use their talents to protect yourself.
+利用可能なツールを使用してください。セキュリティの専門家ほどうまく対処できる可能性は低いため、彼らの才能を利用して自分を守りましょう。
 
-- public key encryption provides excellent security
-- enforce password complexity
-- understand why you are making exceptions to the rules above - review your exceptions regularly
-- hold someone to account for failure, it keeps you on your toes
+- 公開鍵暗号化は優れたセキュリティを提供します
+- パスワードの複雑さを強制する
+- 上記のルールに対する例外の理由を理解し、例外を定期的に見直す
+- 失敗に対して責任を持たせることで、注意を払い続ける
 
 Useful resources:
 
-- [How to prevent zero day attacks (original)](https://serverfault.com/questions/391370/how-to-prevent-zero-day-attacks)
+- [ゼロデイ攻撃を防ぐ方法 (原文)](https://serverfault.com/questions/391370/how-to-prevent-zero-day-attacks)
 
 </details>
 
 <details>
-<summary><b>You're on a security conference. Members debating about putting up the OpenBSD firewall on the core of the network. Go to the podium and express your opinion about this solution. What are the pros/cons and why? ***</b></summary><br>
+<summary><b>セキュリティカンファレンスに参加しています。メンバーがネットワークのコアにOpenBSDファイアウォールを導入するかどうかについて議論しています。壇上に上がり、このソリューションについての意見を述べてください。利点/欠点は何ですか？なぜですか？</b></summary><br>
 
-To be completed.
+完成次第記入。
 
 </details>
 
 <details>
-<summary><b>Is there a way to allow multiple cross-domains using the Access-Control-Allow-Origin header in Nginx?</b></summary><br>
+<summary><b>Access-Control-Allow-Origin ヘッダーを使って Nginx で複数のクロスドメインを許可する方法はありますか？</b></summary><br>
 
-To match a list of domain and subdomain this regex make it ease to work with fonts:
+ドメインとサブドメインのリストに一致させるために、この正規表現を使うとフォント?との作業が楽になります：
 
 ```bash
 location ~* \.(?:ttf|ttc|otf|eot|woff|woff2)$ {
@@ -5525,7 +5525,7 @@ location ~* \.(?:ttf|ttc|otf|eot|woff|woff2)$ {
 }
 ```
 
-More slightly configuration:
+少し詳細な設定：
 
 ```bash
 location / {
@@ -5534,8 +5534,8 @@ location / {
         set $cors "true";
     }
 
-    # Nginx doesn't support nested If statements. This is where things get slightly nasty.
-    # Determine the HTTP request method used
+    # Nginx はネストした If 文をサポートしていません。ここが少し面倒な部分です。
+    # 使用される HTTP リクエストメソッドを判定
     if ($request_method = 'GET') {
         set $cors "${cors}get";
     }
@@ -5544,7 +5544,7 @@ location / {
     }
 
     if ($cors = "true") {
-        # Catch all in case there's a request method we're not dealing with properly
+        # 処理していないリクエストメソッドに備えてキャッチオール
         add_header 'Access-Control-Allow-Origin' "$http_origin";
     }
 
@@ -5568,36 +5568,36 @@ location / {
 </details>
 
 <details>
-<summary><b>Explain <code>:(){ :|:& };:</code> and how stop this code if you are already logged into a system?</b></summary><br>
+<summary><b><code>:(){ :|:& };:</code> の説明と、すでにシステムにログインしている場合にこのコードを止める方法</b></summary><br>
 
-It's a **fork bomb**.
+これは**フォークボム**です。
 
-- `:()` - this defines the function. `:` is the function name and the empty parenthesis shows that it will not accept any arguments
-- `{ }` - these characters shows the beginning and end of function definition
-- `:|:` - it loads a copy of the function `:` into memory and pipe its output to another copy of the `:` function, which has to be loaded into memory
-- `&` - this will make the process as a background process, so that the child processes will not get killed even though the parent gets auto-killed
-- `:` - final `:` will execute the function again and hence the chain reaction begins
+- `:()` - これは関数を定義します。`:` が関数名で、空の括弧は引数を受け取らないことを示します。
+- `{ }` - これらの文字は関数定義の開始と終了を示します。
+- `:|:` - 関数 `:` のコピーをメモリに読み込み、その出力を別のコピーの `:` 関数にパイプで渡します。この別のコピーもメモリに読み込む必要があります。
+- `&` - これにより、プロセスがバックグラウンドプロセスとして実行されるため、親プロセスが自動的に終了しても子プロセスは終了しません。
+- `:` - 最後の `:` が関数を再度実行し、そのため連鎖反応が始まります。
 
-The best way to protect a multi-user system is to use **PAM** to limit the number of processes a user can use. We know the biggest problem with a fork bomb is the fact it takes up so many processes.
+マルチユーザーシステムを保護する最良の方法は、**PAM** を使用してユーザーが使用できるプロセスの数を制限することです。フォークボムの最大の問題は、多くのプロセスを占有することです。
 
-So we have two ways of attempting to fix this, if you are already logged into the system:
-- execute a **SIGSTOP** command to stop the process: `killall -STOP -u user1`
-- if you can't run at the command line you will have to use `exec` to force it to run (due to processes all being used): `exec killall -STOP -u user1`
+したがって、すでにシステムにログインしている場合、以下の2つの方法で修正を試みることができます：
+- **SIGSTOP** コマンドを実行してプロセスを停止する: `killall -STOP -u user1`
+- コマンドラインで実行できない場合は、`exec` を使用して強制的に実行する（すべてのプロセスが使用中の場合）: `exec killall -STOP -u user1`
 
-With fork bombs your best method for this is preventing from being to big of an issue in the first place.
+フォークボムに対して最良の方法は、最初から大きな問題にならないようにすることです。
 
 </details>
 
 <details>
-<summary><b>How to recover deleted file held open e.g. by Apache?</b></summary><br>
+<summary><b>Apache などによって開かれたままの削除されたファイルを復元する方法</b></summary><br>
 
-If a file has been deleted but is still open, that means the file still exists in the filesystem (it has an inode) but has a hard link count of 0. Since there is no link to the file, you cannot open it by name. There is no facility to open a file by inode either.
+ファイルが削除されたがまだ開かれている場合、そのファイルはファイルシステムにまだ存在しており（inode がある）、ハードリンクのカウントが 0 になっています。ファイルへのリンクが存在しないため、名前で開くことはできません。また、inode でファイルを開く機能もありません。
 
-Linux exposes open files through special symbolic links under `/proc`. These links are called `/proc/12345/fd/42` where 12345 is the **PID** of a process and 42 is the number of a file descriptor in that process. A program running as the same user as that process can access the file (the read/write/execute permissions are the same you had as when the file was deleted).
+Linux では、開かれているファイルが `/proc` の下にある特殊なシンボリックリンクを介して表示されます。これらのリンクは `/proc/12345/fd/42` という形式で、ここで 12345 はプロセスの **PID**、42 はそのプロセス内のファイルディスクリプタの番号です。そのプロセスと同じユーザーで実行されているプログラムは、そのファイルにアクセスできます（ファイルが削除されたときの読み取り/書き込み/実行権限はそのままです）。
 
-The name under which the file was opened is still visible in the target of the symbolic link: if the file was `/var/log/apache/foo.log`, then the target of the link is `/var/log/apache/foo.log (deleted)`.
+ファイルが開かれていたときの名前は、シンボリックリンクのターゲットにまだ表示されています。例えば、ファイルが `/var/log/apache/foo.log` であった場合、リンクのターゲットは `/var/log/apache/foo.log (deleted)` です。
 
-Thus you can recover the content of an open deleted file given the **PID** of a process that has it open and the descriptor that it's opened on like this:
+このように、削除されたファイルを開いているプロセスの**PID**と、そのファイルを開いているディスクリプタがあれば、そのファイルの内容を復元することができます：
 
 ```bash
 recover_open_deleted_file () {
@@ -5618,7 +5618,7 @@ recover_open_deleted_file () {
 recover_open_deleted_file "/proc/$pid/fd/$fd"
 ```
 
-If you only know the process **ID** but not the descriptor, you can recover all files with:
+プロセスの**ID**だけがわかっていて、ディスクリプタがわからない場合は、以下の方法ですべてのファイルを復元できます：
 
 ```bash
 for x in /proc/$pid/fd/* ; do
@@ -5626,7 +5626,7 @@ for x in /proc/$pid/fd/* ; do
 done
 ```
 
-If you don't know the process **ID** either, you can search among all processes:
+プロセスの**ID**もわからない場合は、すべてのプロセスから検索することができます：
 
 ```bash
 for x in /proc/[1-9]*/fd/* ; do
@@ -5636,18 +5636,18 @@ for x in /proc/[1-9]*/fd/* ; do
 done
 ```
 
-You can also obtain this list by parsing the output of `lsof`, but it isn't simpler nor more reliable nor more portable (this is Linux-specific anyhow).
+`lsof`の出力をパースすることでもこのリストを得ることができますが、よりシンプルで信頼性が高く、移植性が高いというわけではありません（いずれにせよ、これはLinux特有のものです）。
 
 </details>
 
 <details>
-<summary><b>The team of admins needs your support. You must remotely reinstall the system on one of the main servers. There is no access to the management console (e.g. iDRAC). How to install Linux on disk, from and where other Linux exist and running?</b></summary><br>
+<summary><b>管理チームがサポートを必要としています。主要なサーバーの1台でリモートからシステムを再インストールする必要があります。管理コンソール（例: iDRAC）へのアクセスはありません。他のLinuxが存在し、動作している状態でディスクにLinuxをインストールするにはどうすれば良いでしょうか？</b></summary><br>
 
-It is possible that the question should be: "_System installation from the level and in place of already other system working_".
+質問は次のように修正する必要があるかもしれません: "_既存の他のシステムのレベルおよび場所からのシステムインストール_"
 
-On the example of the Debian GNU/Linux distribution.
+Debian GNU/Linuxディストリビューションの例を用いて説明します。
 
-1. Creating a working directory and downloading the system using the debootstrap tool.
+1. 作業ディレクトリを作成し、`debootstrap`ツールを使用してシステムをダウンロードします。
 
 ```bash
 _working_directory="/mnt/system"
@@ -5655,38 +5655,38 @@ mkdir $_working_directory
 debootstrap --verbose --arch amd64 {wheezy|jessie} . http://ftp.en.debian.org/debian
 ```
 
-2. Mounting sub-systems: `proc`, `sys`, `dev` and `dev/pts`.
+2. サブシステム `proc`、`sys`、`dev` および `dev/pts` をマウントします。
 
 ```bash
 for i in proc sys dev dev/pts ; do mount -o bind $i $_working_directory/$i ; done
 ```
 
-3. Copy system backup for restore.
+3. システムバックアップをコピーしてリストアします。
 
 ```bash
 cp system_backup_22012015.tgz $_working_directory/mnt
 ```
 
-However, it is better not to waste space and do it in a different way (assuming that the copy is in `/mnt/backup`):
+ただし、スペースを無駄にせず、別の方法で行う方が良いです（バックアップが `/mnt/backup` にあると仮定します）：
 
 ```bash
 _backup_directory="${_working_directory}/mnt/backup"
 mkdir $_backup_directory && mount --bind /mnt/backup $_backup_directory
 ```
 
-4. Chroot to "new" system.
+4. "新しい" システムに chroot します。
 
 ```bash
 chroot $_working_directory /bin/bash
 ```
 
-5. Updating information about mounted devices.
+5. マウントされたデバイスに関する情報を更新します。
 
 ```bash
 grep -v rootfs /proc/mounts > /etc/mtab
 ```
 
-6. In the "new" system, the next thing to do is mount the disk on which the "old" system is located (e.g. `/dev/sda1`).
+6. "新しい" システム内で、"古い" システムが存在するディスクをマウントします（例: `/dev/sda1`）。
 
 ```bash
 _working_directory="/mnt/old_system"
@@ -5694,46 +5694,46 @@ _backup_directory="/mnt/backup"
 mkdir $_working_directory && mount /dev/sda1 $_working_directory
 ```
 
-7. Remove all files of the old system.
+7. 古いシステムのすべてのファイルを削除します。
 
 ```bash
 for i in $(ls | awk '!(/proc/ || /dev/ || /sys/ || /mnt/)') ; do rm -fr $i ; done
 ```
 
-8. The next step is to restore the system from a backup.
+8. 次のステップは、バックアップからシステムをリストアすることです。
 
 ```bash
 tar xzvfp $_backup_directory/system_backup_22012015.tgz -C $_working_directory
 ```
 
-9. And mount `proc`, `sys`, `dev` and `dev/pts` in a new working directory.
+9. 新しい作業ディレクトリに `proc`、`sys`、`dev`、および `dev/pts` をマウントします。
 
 ```bash
 for i in proc sys dev dev/pts ; do mount -o bind $i $_working_directory/$i ; done
 ```
 
-10. Install and update grub configuration.
+10. GRUBの設定をインストールし、更新します。
 
 ```bash
 chroot $_working_directory /bin/bash -c "grub-install --no-floppy --root-directory=/ /dev/sda"
 chroot $_working_directory /bin/bash -c "update-grub"
 ```
 
-11. Unmount `proc`, `sys`, `dev` and `dev/pts` filesystems.
+11. `proc`、`sys`、`dev`、および `dev/pts` のファイルシステムをアンマウントします。
 
 ```bash
 cd
 grep $_working_directory /proc/mounts | cut -f2 -d " " | sort -r | xargs umount -n
 ```
 
-None of the available commands, i.e. `halt`, `shutdown` or `reboot`, will work. You need to reload the system configuration - to do this, use the **kernel debugger** (without the '**b**' option):
+利用可能なコマンド（`halt`、`shutdown`、`reboot`）はどれも機能しません。システム設定を再読み込みする必要があります。そのためには、**カーネルデバッガ**を使用します（`**b**` オプションは使用しません）：
 
 ```bash
 echo 1 > /proc/sys/kernel/sysrq
 echo reisu > /proc/sysrq-trigger
 ```
 
-Of course, it is recommended to fully restart the machine in order to completely load the current system. To do this:
+もちろん、現在のシステムを完全に読み込むためには、マシンを完全に再起動することをお勧めします。これを行うには：
 
 ```bash
 sync ; reboot -f
@@ -5742,87 +5742,87 @@ sync ; reboot -f
 </details>
 
 <details>
-<summary><b>Rsync triggered Linux OOM killer on a single 50 GB file. How does the OOM killer decide which process to kill first? How to control this?</b></summary><br>
+<summary><b>Rsync が 50 GB の単一ファイルで Linux の OOM キラーを発動させました。OOM キラーはどのプロセスを最初に終了させるかどうやって決めるのですか？これを制御する方法はありますか？</b></summary><br>
 
-Major distribution kernels set the default value of `/proc/sys/vm/overcommit_memory` to zero, which means that processes can request more memory than is currently free in the system.
+主要なディストリビューションのカーネルは、`/proc/sys/vm/overcommit_memory` のデフォルト値をゼロに設定しています。これは、プロセスが現在システムで利用可能なメモリよりも多くのメモリを要求できることを意味します。
 
-If memory is exhaustively used up by processes, to the extent which can possibly threaten the stability of the system, then the **OOM killer** comes into the picture.
+もしメモリがプロセスによって使い果たされ、システムの安定性を脅かす可能性がある場合、**OOM キラー** が登場します。
 
-NOTE: It is the task of the **OOM Killer** to continue killing processes until enough memory is freed for the smooth functioning of the rest of the process that the Kernel is attempting to run.
+NOTE: **OOM キラー** の仕事は、カーネルが実行しようとしている残りのプロセスがスムーズに機能するために十分なメモリが解放されるまで、プロセスを終了させ続けることです。
 
-The **OOM Killer** has to select the best process(es) to kill. Best here refers to that process which will free up the maximum memory upon killing and is also the least important to the system.
+**OOM キラー** は最適なプロセスを選択して終了させなければなりません。ここで「最適」とは、終了させたときに最大のメモリを解放し、システムにとって重要度が最も低いプロセスを指します。
 
-The primary goal is to kill the least number of processes that minimizes the damage done and at the same time maximizing the amount of memory freed.
+主な目標は、最小限のプロセスを終了させて損害を最小限に抑えつつ、解放されるメモリの量を最大化することです。
 
-To facilitate this, the kernel maintains an `oom_score` for each of the processes. You can see the oom_score of each of the processes in the `/proc` filesystem under the pid directory.
+これを実現するために、カーネルは各プロセスに `oom_score` を維持しています。プロセスの `oom_score` は、`/proc` ファイルシステムの pid ディレクトリで確認できます。
 
-  > When analyzing OOM killer logs, it is important to look at what triggered it.
+  > OOM キラーのログを分析する際には、何がそれを引き起こしたのかを確認することが重要です。
 
 ```bash
 cat /proc/10292/oom_score
 ```
 
-The higher the value of `oom_score` of any process, the higher is its likelihood of getting killed by the **OOM Killer** in an out-of-memory situation.
+`oom_score` の値が高いほど、そのプロセスが **OOM キラー** によって終了される可能性が高くなります。
 
-If you want to create a special control group containing the list of processes which should be the first to receive the **OOM killer's** attention, create a directory under `/mnt/oom-killer` to represent it:
+**OOM キラー** の注意を最初に受けるべきプロセスのリストを含む特別なコントロールグループを作成したい場合は、`/mnt/oom-killer` の下にディレクトリを作成してそれを表します：
 
 ```bash
 mkdir lambs
 ```
 
-Set `oom.priority` to a value high enough:
+`oom.priority` を十分に高い値に設定します：
 
 ```bash
 echo 256 > /mnt/oom-killer/lambs/oom.priority
 ```
 
-`oom.priority` is a 64-bit unsigned integer, and can have a maximum value an unsigned 64-bit number can hold. While scanning for the process to be killed, the **OOM-killer** selects a process from the list of tasks with the highest `oom.priority` value.
+`oom.priority` は 64 ビットの符号なし整数で、符号なし 64 ビット数が保持できる最大値を持つことができます。プロセスを終了する際、**OOM キラー** は `oom.priority` の値が最も高いプロセスをリストから選択します。
 
-Add the PID of the process to be added to the list of tasks:
+プロセスをタスクのリストに追加するには、その PID を追加します：
 
 ```bash
 echo <pid> > /mnt/oom-killer/lambs/tasks
 ```
 
-To create a list of processes, which will not be killed by the **OOM-killer**, make a directory to contain the processes:
+**OOM キラー** によって終了されないプロセスのリストを作成するには、プロセスを含むディレクトリを作成します：
 
 ```bash
 mkdir invincibles
 ```
 
-Setting `oom.priority` to zero makes all the process in this cgroup to be excluded from the list of target processes to be killed.
+`oom.priority` をゼロに設定すると、この cgroup 内のすべてのプロセスが終了対象プロセスのリストから除外されます。
 
 ```bash
 echo 0 > /mnt/oom-killer/invincibles/oom.priority
 ```
 
-To add more processes to this group, add the pid of the task to the list of tasks in the invincible group:
+このグループにさらにプロセスを追加するには、タスクの PID を invincible グループのタスクリストに追加します：
 
 ```bash
 echo <pid> > /mnt/oom-killer/invincibles/tasks
 ```
 
-Useful resources:
+役立つリソース：
 
-- [Rsync triggered Linux OOM killer on a single 50 GB file](https://serverfault.com/questions/724469/rsync-triggered-linux-oom-killer-on-a-single-50-gb-file)
-- [Taming the OOM killer](https://lwn.net/Articles/317814/)
-
-</details>
-
-<details>
-<summary><b>You have a lot of sockets, hanging in <code>TIME_WAIT</code>. Your http service behind proxy serve a lot of small http requests. How to check and reduce <code>TIME_WAIT</code> sockets? ***</b></summary><br>
-
-To be completed.
-
-Useful resources:
-
-- [How to reduce number of sockets in TIME_WAIT?](https://serverfault.com/questions/212093/how-to-reduce-number-of-sockets-in-time-wait)
+- [Rsync が 50 GB の単一ファイルで Linux の OOM キラーを発動させた問題](https://serverfault.com/questions/724469/rsync-triggered-linux-oom-killer-on-a-single-50-gb-file)
+- [OOM キラーの制御方法](https://lwn.net/Articles/317814/)
 
 </details>
 
 <details>
-<summary><b>How do <code>SO_REUSEADDR</code> and <code>SO_REUSEPORT</code> differ? Explain all socket implementations. ***</b></summary><br>
+<summary><b>多くのソケットが <code>TIME_WAIT</code> 状態で待機しています。プロキシの背後にある http サービスが多くの小さな http リクエストを処理しています。<code>TIME_WAIT</code> ソケットを確認し、削減する方法は？ ***</b></summary><br>
 
-To be completed.
+完了予定。
+
+役立つリソース：
+
+- [TIME_WAIT 状態のソケットの数を減らす方法](https://serverfault.com/questions/212093/how-to-reduce-number-of-sockets-in-time-wait)
+
+</details>
+
+<details>
+<summary><b><code>SO_REUSEADDR</code> と <code>SO_REUSEPORT</code> はどのように異なりますか？すべてのソケット実装について説明してください。 ***</b></summary><br>
+
+完了予定。
 
 </details>
