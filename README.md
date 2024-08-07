@@ -3122,9 +3122,9 @@ tcpdump -nei eth0 -Q in host 192.168.252.125 and port 8080
 </details>
 
 <details>
-<summary><b>How to <code>git clone</code> including submodules?</b></summary><br>
+<summary><b>サブモジュールを含めて<code>git clone</code>する方法は？</b></summary><br>
 
-For example:
+例えば:
 
 ```bash
 # With -j8 - performance optimization
@@ -3139,148 +3139,148 @@ git submodule update --init --recursive
 </details>
 
 <details>
-<summary><b>Mention what are the advantages of using Redis? What is <code>redis-cli</code>? </b></summary><br>
+<summary><b>Redisを使用する利点は何ですか？<code>redis-cli</code>とは何ですか？</b></summary><br>
 
-- it provides high speed (exceptionally faster than others)
-- it supports a server-side locking
-- it has got lots of client lib
-- it has got command level Atomic Operation (tx operation)
-- supports for rich data types like hashes, sets, bitmaps
+- 高速で動作する（他のものよりも非常に速い）
+- サーバーサイドロッキングをサポート
+- 多くのクライアントライブラリがある
+- コマンドレベルでのアトミック操作（トランザクション操作）をサポート
+- ハッシュ、セット、ビットマップなどの豊富なデータ型をサポート
 
-`redis-cli` is the **Redis** command line interface, a simple program that allows to send commands to **Redis**, and read the replies sent by the server, directly from the terminal.
+`redis-cli`は**Redis**のコマンドラインインターフェースで、**Redis**にコマンドを送信し、サーバーから送られる返信を直接ターミナルで読み取ることができるシンプルなプログラムです。
 
-Useful resources:
+役立つリソース:
 
-- [10 Advantages of Redis](https://dzone.com/articles/10-traits-of-redis)
+- [Redisの10の利点](https://dzone.com/articles/10-traits-of-redis)
 
 </details>
 
 ###### Cyber Security Questions (4)
 
 <details>
-<summary><b>What is XSS, how will you mitigate it?</b></summary><br>
+<summary><b>XSSとは何か、どうやって対策しますか？</b></summary><br>
 
-**Cross Site Scripting** is a JavaScript vulnerability in the web applications. The easiest way to explain this is a case when a user enters a script in the client side input fields and that input gets processed without getting validated. This leads to untrusted data getting saved and executed on the client side.
+**クロスサイトスクリプティング (XSS)** とは、ウェブアプリケーションにおけるJavaScriptの脆弱性のことです。最も簡単に説明すると、ユーザーがクライアントサイドの入力フィールドにスクリプトを入力し、その入力が検証されずに処理されるケースです。これにより、信頼されていないデータが保存され、クライアントサイドで実行されてしまいます。
 
-Countermeasures of XSS are input validation, implementing a CSP (Content security policy) and other.
-
-</details>
-
-<details>
-<summary><b>HIDS vs NIDS and which one is better and why?</b></summary><br>
-
-**HIDS** is host intrusion detection system and **NIDS** is network intrusion detection system. Both the systems work on the similar lines. It’s just that the placement in different. **HIDS** is placed on each host whereas **NIDS** is placed in the network. For an enterprise, **NIDS** is preferred as **HIDS** is difficult to manage, plus it consumes processing power of the host as well.
+XSSへの対策としては、入力検証、CSP（コンテンツセキュリティポリシー）の実装などがあります。
 
 </details>
 
 <details>
-<summary><b>What is compliance?</b></summary><br>
+<summary><b>HIDSとNIDSの違いは何ですか？どちらが優れていますか？</b></summary><br>
 
-Abiding by a set of standards set by a government/Independent party/organisation, e.g. an industry which stores, processes or transmits Payment related information needs to be complied with PCI DSS (Payment card Industry Data Security Standard). Other compliance examples can be an organisation complying with its own policies.
-
-</details>
-
-<details>
-<summary><b>What is a WAF and what are its types?</b></summary><br>
-
-**WAF** stands for web application firewall. It is used to protect the application by filtering legitimate traffic from malicious traffic. **WAF** can be either a box type or cloud based.
-
-</details>
-
-### :diamond_shape_with_a_dot_inside: <a name="senior-sysadmin">Senior Sysadmin</a>
-
-###### System Questions (61)
-
-<details>
-<summary><b>Explain the current architecture you’re responsible for and point out where it’s scalable or fault-tolerant. ***</b></summary><br>
-
-To be completed.
+**HIDS**はホスト型侵入検知システムで、**NIDS**はネットワーク型侵入検知システムです。両者は似たような仕組みで動作しますが、配置場所が異なります。**HIDS**は各ホストに配置され、**NIDS**はネットワークに配置されます。エンタープライズ環境では**NIDS**が好まれます。なぜなら、**HIDS**は管理が難しく、ホストの処理能力を消費するためです。
 
 </details>
 
 <details>
-<summary><b>Tell me how code gets deployed in your current production. ***</b></summary><br>
+<summary><b>コンプライアンスとは何ですか？</b></summary><br>
 
-To be completed.
-
-</details>
-
-<details>
-<summary><b>What are the different types of kernels? Explain.</b></summary><br>
-
-**Monolithic Kernels**
-
-Earlier in this type of kernel architecture, all the basic system services like a process and memory management, interrupt handling etc were packaged into a single module in kernel space. This type of architecture led to some serious drawbacks like:
-
-- the size of the kernel, which was huge
-- poor maintainability, which means bug fixing or addition of new features resulted in recompilation of the whole kernel which could consume hours
-
-In a modern day approach to monolithic architecture, the kernel consists of different modules which can be dynamically loaded and unloaded. This modular approach allows easy extension of OS's capabilities. With this approach, maintainability of kernel became very easy as only the concerned module needs to be loaded and unloaded every time there is a change or bug fix in a particular module.
-
-Linux follows the monolithic modular approach.
-
-**Microkernels**
-
-This architecture majorly caters to the problem of ever growing size of kernel code which we could not control in the monolithic approach. This architecture allows some basic services like device driver management, protocol stack, file system etc to run in user space.
-
-In this architecture, all the basic OS services which are made part of user space are made to run as servers which are used by other programs in the system through inter process communication (IPC).
-
-Example: We have servers for device drivers, network protocol stacks, file systems, graphics, etc. Microkernel servers are essentially daemon programs like any others, except that the kernel grants some of them privileges to interact with parts of physical memory that are otherwise off limits to most programs.
-
-**Hybrid Kernels (Modular Kernels)**
-
-This is a combination of the above two, where the key idea is that Operating System services are in Kernel Space, and there is no message passing, no performance overhead and no reliability benefits, of having services in user space.
-
-This is used by Microsoft's NT kernels, all the way up to the latest Windows version.
-
-Useful resources:
-
-- [An Introduction to Kernels. The Heart of Computing Devices. (original)](https://keetmalin.wixsite.com/keetmalin/single-post/2017/08/24/An-Introduction-to-Kernels-The-Heart-of-Computing-Devices)
+政府や独立機関、組織などによって定められた基準に従うことを指します。例えば、支払いに関連する情報を保存、処理、送信する業界は、PCI DSS（Payment Card Industry Data Security Standard）に準拠する必要があります。その他のコンプライアンスの例としては、組織が自社のポリシーに準拠することが挙げられます。
 
 </details>
 
 <details>
-<summary><b>The program returns the error of the missing library. How to provide dynamically linkable libraries?</b></summary><br>
+<summary><b>WAFとは何か、その種類は何ですか？</b></summary><br>
 
-Environment variable `LD_LIBRARY_PATH` is a colon-separated set of directories where libraries should be searched for first, before the standard set of directories; this is useful when debugging a new library or using a nonstandard library for special purposes.
+**WAF**はウェブアプリケーションファイアウォールの略です。これは、正当なトラフィックを悪意のあるトラフィックから分離して、アプリケーションを保護するために使用されます。**WAF**には、ボックスタイプとクラウドベースの2種類があります。
 
-The best way to use `LD_LIBRARY_PATH` is to set it on the command line or script immediately before executing the program. This way the new `LD_LIBRARY_PATH` isolated from the rest of your system.
+</details>
 
-Example of use:
+### :diamond_shape_with_a_dot_inside: <a name="senior-sysadmin">シニアシステム管理者</a>
+
+###### システムに関する質問（61）
+
+<details>
+<summary><b>あなたが現在担当しているアーキテクチャを説明し、そのスケーラビリティやフォールトトレランスについて指摘してください。***</b></summary><br>
+
+記入予定。
+
+</details>
+
+<details>
+<summary><b>現在のプロダクション環境でコードがどのようにデプロイされているか教えてください。***</b></summary><br>
+
+記入予定。
+
+</details>
+
+<details>
+<summary><b>カーネルの種類とその違いを説明してください。</b></summary><br>
+
+**モノリシックカーネル**
+
+従来のこのタイプのカーネルアーキテクチャでは、プロセス管理やメモリ管理、割り込み処理などの基本的なシステムサービスがカーネル空間内の単一モジュールにまとめられていました。このアーキテクチャには、以下のような深刻な欠点がありました：
+
+- カーネルのサイズが非常に大きい
+- メンテナンス性が低く、新しい機能を追加したりバグ修正を行うたびに、カーネル全体を再コンパイルする必要があり、数時間かかることもある
+
+現代のモノリシックアーキテクチャでは、カーネルは動的にロードおよびアンロードできる複数のモジュールで構成されています。このモジュラーアプローチにより、OSの機能を簡単に拡張できるようになり、特定のモジュールに変更やバグ修正があった場合、関連するモジュールだけをロードおよびアンロードするだけで済むため、カーネルのメンテナンスが非常に簡単になりました。
+
+Linuxはモノリシックモジュラーアプローチを採用しています。
+
+**マイクロカーネル**
+
+このアーキテクチャは、モノリシックアプローチで制御できなかったカーネルコードの増大に対応するために開発されました。このアーキテクチャでは、デバイスドライバの管理、プロトコルスタック、ファイルシステムなどの基本的なサービスがユーザー空間で実行されます。
+
+このアーキテクチャでは、OSの基本サービスがユーザー空間の一部となり、システム内の他のプログラムがこれらのサービスを利用する際に、プロセス間通信（IPC）を介してサーバーとして実行されます。
+
+例: デバイスドライバ、ネットワークプロトコルスタック、ファイルシステム、グラフィックスなどにサーバーがあります。マイクロカーネルのサーバーは、他のプログラムと同様にデーモンプログラムですが、一部のサーバーには物理メモリの一部にアクセスできる特権が与えられています。
+
+**ハイブリッドカーネル（モジュラーカーネル）**
+
+これは上記の2つの組み合わせであり、OSサービスがカーネル空間に存在し、メッセージパッシングやパフォーマンスオーバーヘッドがなく、ユーザー空間でサービスを実行することによる信頼性の向上もありません。
+
+これは、MicrosoftのNTカーネル（最新のWindowsバージョンまで）で使用されています。
+
+役立つリソース:
+
+- [カーネルの紹介: コンピューティングデバイスの心臓部（オリジナル）](https://keetmalin.wixsite.com/keetmalin/single-post/2017/08/24/An-Introduction-to-Kernels-The-Heart-of-Computing-Devices)
+
+</details>
+
+<details>
+<summary><b>プログラムがライブラリの欠落エラーを返します。動的リンク可能なライブラリを提供するにはどうすればよいですか？</b></summary><br>
+
+環境変数`LD_LIBRARY_PATH`は、ライブラリが最初に検索されるディレクトリのコロンで区切られたセットであり、標準のディレクトリセットの前に検索されます。これは、新しいライブラリのデバッグや特定の目的で非標準ライブラリを使用する場合に便利です。
+
+`LD_LIBRARY_PATH`を使用する最良の方法は、コマンドラインまたはスクリプトでプログラムを実行する直前に設定することです。これにより、新しい`LD_LIBRARY_PATH`がシステムの他の部分から分離されます。
+
+使用例:
 
 ```bash
 export LD_LIBRARY_PATH="/list/of/library/paths:/another/path" ./program
 ```
 
-Useful resources:
+役立つリソース:
 
-- [How to correctly use LD_LIBRARY_PATH](http://wiredrevolution.com/system-administration/how-to-correctly-use-ld_library_path)
-
-</details>
-
-<details>
-<summary><b>Write the most important rules for using root privileges safely for novice administrators. ***</b></summary><br>
-
-To be completed.
+- [LD_LIBRARY_PATHの正しい使用方法](http://wiredrevolution.com/system-administration/how-to-correctly-use-ld_library_path)
 
 </details>
 
 <details>
-<summary><b>What is the advantage of synchronizing UID/GID across multiple systems?</b></summary><br>
+<summary><b>初心者の管理者がroot権限を安全に使用するための最も重要なルールを記述してください。 ***</b></summary><br>
 
-There are several principle reasons why you want to co-ordinate the **user/UID** and **group/GID** management across your network.
+未完了。
 
-The first is relatively obvious - it has to do with user and administrative convenience.
+</details>
 
-If each of your users are expected to have relatively uniform access to the systems throughout the network, then they'll expect the same username and password to work on each system that they are supposed to use. If they change their password they will expect that change to be global.
+<details>
+<summary><b>複数のシステム間でUID/GIDを同期する利点は何ですか？</b></summary><br>
 
-It also has a relationship with names and group names in Unix and Linux. They are mapped into numeric forms (**UID's** and **GID's** respectively). All file ownership (inodes) and processes use these numerics for all access and identity determination throughout the kernel and drivers. These numeric values are reverse mapped back to their corresponding principle symbolic representations (the names) by the utilities that display or process that information.
+ネットワーク全体でユーザー/UIDとグループ/GIDの管理を調整する主な理由はいくつかあります。
 
-It is also recommended that you adopt a policy that **UID's** are not re-used. When a user leaves your organization you "retire" their **UID** (disabling their access by \*'ing out their passwd, removing them from the groups maps, setting their "shell" to some `/bin/denied` binary and their home directory to a secured _graveyard_ - I use `/home/.graveyard` on my systems).
+まず、比較的明白な理由は、ユーザーと管理者の便宜性に関係しています。
 
-The reason for this may not be obvious. However, if you are maintaining archival backups for several years (or indefinitely) you'll want to avoid any ambiguities and confusion that might result from restoring one (long gone) user's files and finding them owned by one of your new users.
+ネットワーク全体で各ユーザーがほぼ均等なアクセス権を持つことが期待される場合、ユーザーはそれぞれのシステムで同じユーザー名とパスワードが機能することを期待します。パスワードを変更した場合、その変更が全システムに適用されることを期待します。
 
-Useful resources:
+また、UnixやLinuxの名前やグループ名とも関連しています。これらは数値形式（UIDとGID）にマッピングされます。すべてのファイル所有権（inode）やプロセスは、カーネルやドライバー全体でアクセスやアイデンティティの決定にこれらの数値を使用します。これらの数値は、情報を表示または処理するユーティリティによって対応するシンボリックな表現（名前）に逆マッピングされます。
+
+UIDが再利用されないようにするポリシーを採用することも推奨されます。ユーザーが組織を退職する際には、そのUIDを「引退」させる（passwdを無効化し、グループマップから削除し、「シェル」を `/bin/denied` バイナリに設定し、ホームディレクトリをセキュアな _graveyard_ に設定する - 私のシステムでは `/home/.graveyard` を使用しています）。
+
+これが明白でないかもしれませんが、数年間（または無期限に）アーカイブバックアップを維持する場合は、復元されたファイルが新しいユーザーの所有であることによる曖昧さや混乱を避けるためにUIDを再利用しないようにすることが望ましいです。
+
+有用なリソース:
 
 - [UID/GID Synchronization and Management (original)](https://linuxgazette.net/issue31/tag_uidgid.html)
 - [What's the advantage of synchronizing UID/GID across Linux machines?](https://serverfault.com/questions/603987/whats-the-advantage-of-synchronizing-uid-gid-across-linux-machines)
@@ -3289,122 +3289,122 @@ Useful resources:
 </details>
 
 <details>
-<summary><b>What principles to follow for successful system performance tuning? ***</b></summary><br>
+<summary><b>システムのパフォーマンスチューニングに成功するための原則は何ですか？ ***</b></summary><br>
 
-To be completed.
+未完了。
 
-Useful resources:
+有用なリソース:
 
 - [An Introduction to Performance Tuning](https://www.oreilly.com/library/view/system-performance-tuning/059600284X/ch01.html)
 
 </details>
 
 <details>
-<summary><b>Describe start-up configuration files and directory in BSD systems.</b></summary><br>
+<summary><b>BSDシステムにおける起動構成ファイルとディレクトリについて説明してください。</b></summary><br>
 
-In BSD the primary start-up configuration file is `/etc/defaults/rc.conf`. System startup scripts such as `/etc/rc` and `/etc/rc.d` just include this file.
+BSDでは、主要な起動構成ファイルは `/etc/defaults/rc.conf` です。システム起動スクリプト（例えば `/etc/rc` や `/etc/rc.d`）は、このファイルを含みます。
 
-If you want to add other programs to system startup you need to change `/etc/rc.conf` file instead of `/etc/defaults/rc.conf`.
+他のプログラムをシステム起動に追加したい場合は、`/etc/defaults/rc.conf` ではなく、`/etc/rc.conf` ファイルを変更する必要があります。
 
 </details>
 
 <details>
-<summary><b>CPU spent the most of the time for a IO operations to complete. Which tools do you use for diagnose what process(es) did exactly wait for IO? How to minimize IO wait time? ***</b></summary><br>
+<summary><b>CPUがIO操作の完了に最も多くの時間を費やしている。どのツールを使用して、どのプロセスが具体的にIO待ちをしているか診断しますか？IO待ち時間を最小限にするにはどうすればよいですか？ ***</b></summary><br>
 
-To be completed.
+未完了。
 
-Useful resources:
+有用なリソース:
 
 - [Can anyone explain precisely what IOWait is?](https://serverfault.com/questions/12679/can-anyone-explain-precisely-what-iowait-is)
 
 </details>
 
 <details>
-<summary><b>The Junior dev accidentally destroyed production database. How can you prevent such situations?</b></summary><br>
+<summary><b>ジュニア開発者が誤って本番データベースを破壊しました。どのようにしてそのような状況を防ぐことができますか？</b></summary><br>
 
-**Create disaster recovery plan**
+**災害復旧計画を作成する**
 
-Disaster recovery and business continuity planning are integral parts of the overall risk management for an organization. Is a documented process or set of procedures to recover and protect a business IT infrastructure.
+災害復旧と業務継続計画は、組織のリスク管理全体の重要な部分です。ビジネスITインフラを回復し保護するための文書化されたプロセスまたは手順のセットです。
 
-If you don’t have a recovery solution, then your restoration efforts will become rebuilding efforts, starting from scratch to recreate whatever was lost.
+回復ソリューションがない場合、復元の努力は、失われたものを再構築するための取り組みとなります。
 
-You should use commonly occurring real life data disaster scenarios to simulate what your backups will and won’t do in a crisis.
+実際に発生し得るデータ災害シナリオを使用して、バックアップが危機的な状況で何をするか、何をしないかをシミュレートするべきです。
 
-**Create disaster recovery center**
+**災害復旧センターを作成する**
 
-As a result, in the event of unplanned interruptions in the functioning of the primary location, service and all operational activities are switched to the backup center and therefore the unavailability of services is limited to the absolute minimum.
+結果として、主要な場所で計画外の中断が発生した場合、サービスとすべての運用活動がバックアップセンターに切り替えられ、サービスの停止が絶対的に最小限に抑えられます。
 
-Does the facility have sufficient bandwidth options and power to scale and deal with the increased load during a major disaster? Are resources available to periodically test failover?
+施設には、主要な災害時にスケールして増加した負荷に対処するための十分な帯域幅のオプションと電力がありますか？フェイルオーバーを定期的にテストするためのリソースはありますか？
 
-**Create regular backups and tested it!**
+**定期的なバックアップを作成し、テストする！**
 
-Backups are a way to protect the investment in data. By having several copies of the data, it does not matter as much if one is destroyed (the cost is only that of the restoration of the lost data from the backup).
+バックアップはデータへの投資を保護する方法です。データの複数のコピーがあれば、一つが破損しても、失われたデータの復元コストだけで済みます。
 
-When you lose data, one thing is certain: downtime.
+データを失うと、確実なことは一つだけです：ダウンタイム。
 
-To assure the validity and integrity of any backup, it's essential to carry out regular restoration tests. Ideally, a test should be conducted after every backup completes to ensure data can be successfully secured and recovered. However, this often isn't practical due to a lack of available resources or time constraints.
+バックアップの有効性と整合性を確保するためには、定期的な復元テストを実施することが重要です。理想的には、バックアップが完了するたびにテストを行い、データが正常に保護され回復できることを確認するべきですが、リソースの不足や時間の制約から、これが実践的でないことがよくあります。
 
-Make backups of entire virtual machines and important components in the middle of them.
+仮想マシン全体や重要なコンポーネントのバックアップを作成します。
 
-**Create snapshots: vm, disks or lvm**
+**スナップショットを作成する：vm、ディスク、またはlvm**
 
-Snapshots are perfect if you want to recover a server from a previous state but it's only a "quick method", it cannot restore the system after too many items changed.
+スナップショットは、サーバーを以前の状態に回復したい場合に最適ですが、「クイックメソッド」に過ぎず、多くの項目が変更された後にはシステムを復元できません。
 
-Create them always before making changes on production environments (and not only).
+本番環境で変更を行う前に常に作成してください（それだけでなく）。
 
-Disk snapshots are used to generate a snapshot of an entire disk. These snapshots don't make it easy to restore individual chunks of data (e.g. a lost user account), though it's possible. The primary purpose is to restore entire disks in case of disk failure.
+ディスクスナップショットは、ディスク全体のスナップショットを生成するために使用されます。これらのスナップショットは、個々のデータのチャンク（例：失われたユーザーアカウント）を復元するのは簡単ではありませんが、可能です。主な目的は、ディスク障害が発生した場合にディスク全体を復元することです。
 
-The LVM snapshots can be primarily used to easily copy data from production environment to staging environment.
+LVMスナップショットは、主に本番環境からステージング環境へのデータコピーに使用されます。
 
-Remember: Snapshots are not backups!
+覚えておいてください：スナップショットはバックアップではありません！
 
-**Development and testing environments**
+**開発およびテスト環境**
 
-A production environment is the real instance of the application and its database used by the company or the clients. The production database has all the real data.
+本番環境は、会社やクライアントが使用するアプリケーションとそのデータベースの実際のインスタンスです。本番データベースにはすべての実際のデータが含まれています。
 
-Setting up development environments based directly on the production database, instead of using a backup for this (removing the need for the above). Dev and test environment that your engineers can get to and a prod environment that only a few people can push updates to following an approved change.
+開発環境を本番データベースに直接基づいて設定するのではなく、バックアップを使用して（上記の必要性を排除します）。エンジニアがアクセスできる開発およびテスト環境と、承認された変更に従って更新をプッシュできる本番環境を作成します。
 
-All environments such as prod, dev and test should have one major difference: authorization data for services. For example postgres database instance on testing environment should be consistent (if possible) with the production base, however, in order to eliminate errors of database names and logins and passwords for authorization should be different.
+本番、開発、テストのすべての環境には、1つの主要な違いがあります：サービスのための認証データです。例えば、テスト環境のPostgreSQLデータベースインスタンスは、本番データベースと一貫性があるべきですが、データベース名やログイン、パスワードの認証エラーを排除するために異なるべきです。
 
-**Single point of failure**
+**単一障害点**
 
-The general method to avoid single points of failures is to provide redundant components for each necessary resource, so service can continue if a component fails.
+単一障害点を避けるための一般的な方法は、必要なリソースの各コンポーネントに冗長性を提供することであり、これによりコンポーネントが故障してもサービスを継続できるようにします。
 
-**Synchronization and replication process for databases**
+**データベースの同期および複製プロセス**
 
-The replication procedure is super fragile and prone to error.
+複製手順は非常に脆弱でエラーが発生しやすいです。
 
-A good idea is also slightly longer delay of data replication (e.g. for DRC). As in replicas, the data changes will usually be replicated within minutes, so the lost data won’t be on the replica database either once that happens.
+データ複製の遅延を少し長めに設定するのも良い考えです（例：DRC用）。レプリカでは、データ変更が通常数分以内に複製されるため、データが失われると、レプリカデータベースにもそのデータは存在しないことになります。
 
-**Create database model with users, roles and rights, use different methods of protection**
+**ユーザー、ロール、権限を持つデータベースモデルを作成し、異なる保護方法を使用する**
 
-Only very advanced devs have permissions for db admin access. The other really don't need write access to clone a database. On the other hand just don't give a developer write access to prod.
+非常に高度な開発者だけがDB管理者アクセス権を持っています。他の開発者はデータベースをクローンするための書き込みアクセス権を必要としません。その一方で、本番環境に対しては開発者に書き込みアクセス権を与えないでください。
 
-The production database should refuse connections from any server and pc which isn't the one running the production application, even if it provides a valid username/password.
+本番データベースは、プロダクションアプリケーションを実行しているサーバーやPC以外のいかなるサーバーやPCからの接続も拒否するべきです。たとえ有効なユーザー名やパスワードを提供してもです。
 
-How the hell development machines can access a production database right like that? How about a simple firewall rule to just let the servers needing the DB data access the database?
+開発マシンが本番データベースにアクセスできる理由は？データベースにアクセスする必要のあるサーバーだけにアクセスを許可するシンプルなファイアウォールルールを設定するのはどうですか？
 
-**Create summary/postmortem documents after failures**
+**障害後のサマリー/ポストモーテム文書を作成する**
 
-The post-mortem audience includes customers, direct reports, peers, the company's executive team and often investors.
+ポストモーテムの聴衆には、顧客、直属の部下、同僚、会社の経営陣、そしてしばしば投資家が含まれます。
 
-Explain what caused the outage on a timeline. Every incident begins with a specific trigger at a specific time, which often causes some unexpected behavior. For example, our servers were rebooted and we expected them to come back up intact, which didn't happen.
+障害の原因をタイムラインで説明します。すべてのインシデントは、特定の時間に特定のトリガーから始まり、通常は予期しない動作を引き起こします。例えば、サーバーが再起動され、期待通りに戻ることを期待していたが、そうならなかった場合です。
 
-Furthermore, every incident has a root cause: the reboot itself was trigger, however a bug in the driver caused the actual outage. Finally, there are consequences to every incident, the most obvious one is that the site goes down.
+さらに、すべてのインシデントには根本原因があります：再起動自体がトリガーでしたが、ドライバーのバグが実際の障害を引き起こしました。最後に、すべてのインシデントには結果があります。最も明らかな結果は、サイトがダウンすることです。
 
-The post-mortem answers the single most important question of what could have prevented the outage.
+ポストモーテムは、障害を防ぐために何ができたかという最も重要な質問に答えます。
 
-Despite how painful an outage may have been, the worst thing you can do is to bury it and never properly close the incident in a clear and transparent way.
+障害がどれほど辛いものであったとしても、最悪のことはそれを隠し、明確で透明な方法でインシデントを適切に閉じないことです。
 
-**If you also made a big mistake...**
+**もしあなたも大きなミスをした場合…**
 
-  > "*Humans are just apes with bigger computers.*" - african_cheetah (Reddit)
+  > "*人間はただのコンピュータを持った類人猿だ。" - african_cheetah (Reddit)
   >
-  > "*I've come to appreciate not having access to things I don't absolutely need.*" - warm_vanilla_sugar (Reddit)
+  > "*絶対に必要でないものにアクセスできないことを感謝するようになった。" - warm_vanilla_sugar (Reddit)
   >
-  > Document whatever happened somewhere. Write setup guides. Failure is instructive.
+  > 何が起こったかをどこかに文書化してください。セットアップガイドを書いてください。失敗は教育的です。
 
-Useful resources:
+有用なリソース:
 
 - [Accidentally destroyed production database on first day of a job...](https://www.reddit.com/r/cscareerquestions/comments/6ez8ag/accidentally_destroyed_production_database_on/)
 - [Postmortem of database outage of January 31](https://about.gitlab.com/2017/02/10/postmortem-of-database-outage-of-january-31/)
@@ -3413,41 +3413,41 @@ Useful resources:
 </details>
 
 <details>
-<summary><b>How to add new disk in Linux server without rebooting? How to rescan and add it in LVM?</b></summary><br>
+<summary><b>Linuxサーバーで再起動せずに新しいディスクを追加する方法は？どのようにリスキャンしてLVMに追加しますか？</b></summary><br>
 
-To be completed.
+未完了。
 
-Useful resources:
+有用なリソース:
 
 - [How to Add New Disk in Linux CentOS 7 Without Rebooting](https://linoxide.com/linux-how-to/add-new-disk-centos-7-without-rebooting/)
 
 </details>
 
 <details>
-<summary><b>Explain each system calls used for process management in Linux.</b></summary><br>
+<summary><b>プロセス管理のためにLinuxで使用される各システムコールについて説明してください。</b></summary><br>
 
-There are some system calls for process management. These are as follows:
+プロセス管理のためのシステムコールはいくつかあります。これらは次の通りです：
 
-- `fork()`: it is used to create a new process
-- `exec()`: it is used to execute a new process
-- `wait()`: it is used to make the process to wait
-- `exit()`: it is used to exit or terminate the process
-- `getpid()`: it is used to find the unique process ID
-- `getppid()`: it is used to check the parent process ID
-- `nice()`: it is used to bias the currently running process property
+- `fork()`: 新しいプロセスを作成するために使用されます。
+- `exec()`: 新しいプロセスを実行するために使用されます。
+- `wait()`: プロセスが待機するために使用されます。
+- `exit()`: プロセスを終了または終了させるために使用されます。
+- `getpid()`: 一意のプロセスIDを取得するために使用されます。
+- `getppid()`: 親プロセスIDを確認するために使用されます。
+- `nice()`: 現在実行中のプロセスの属性にバイアスをかけるために使用されます。
 
-Useful resources:
+有用なリソース:
 
 - [System Calls](http://faculty.salina.k-state.edu/tim/ossg/Introduction/sys_calls.html)
 
 </details>
 
 <details>
-<summary><b>Can’t mount the root file system. Why? ***</b></summary><br>
+<summary><b>ルートファイルシステムをマウントできません。なぜですか？ ***</b></summary><br>
 
-To be completed.
+未完了。
 
-Useful resources:
+有用なリソース:
 
 - [What does "mounting a root file system" mean exactly?](https://superuser.com/questions/193918/what-does-mounting-a-root-file-system-mean-exactly)
 - [How does a kernel mount the root partition?](https://unix.stackexchange.com/questions/9944/how-does-a-kernel-mount-the-root-partition)
@@ -3455,94 +3455,94 @@ Useful resources:
 </details>
 
 <details>
-<summary><b>You have to delete 100GB files. Which method will be the most optimal? ***</b></summary><br>
+<summary><b>100GBのファイルを削除する必要があります。どの方法が最も最適ですか？ ***</b></summary><br>
 
-To be completed.
+未完了。
 
-Useful resources:
+有用なリソース:
 
-- [Is there a way to delete 100GB file on Linux without thrashing IO/load?](https://serverfault.com/questions/336917/is-there-a-way-to-delete-100gb-file-on-linux-without-thrashing-io-load)
-- [rm on a directory with millions of files](https://serverfault.com/questions/183821/rm-on-a-directory-with-millions-of-files)
-
-</details>
-
-<details>
-<summary><b>Explain interrupts and interrupt handlers in Linux.</b></summary><br>
-
-Here's a high-level view of the low-level processing. I'm describing a simple typical architecture, real architectures can be more complex or differ in ways that don't matter at this level of detail.
-
-When an **interrupt** occurs, the processor looks if interrupts are masked. If they are, nothing happens until they are unmasked. When interrupts become unmasked, if there are any pending interrupts, the processor picks one.
-
-Then the processor executes the interrupt by branching to a particular address in memory. The code at that address is called the **interrupt handler**. When the processor branches there, it masks interrupts (so the interrupt handler has exclusive control) and saves the contents of some registers in some place (typically other registers).
-
-The interrupt handler does what it must do, typically by communicating with the peripheral that triggered the interrupt to send or receive data. If the interrupt was raised by the timer, the handler might trigger the OS scheduler, to switch to a different thread. When the handler finishes executing, it executes a special return-from-interrupt instruction that restores the saved registers and unmasks interrupts.
-
-The interrupt handler must run quickly, because it's preventing any other interrupt from running. In the Linux kernel, interrupt processing is divided in two parts:
-
-- The "top half" is the interrupt handler. It does the minimum necessary, typically communicate with the hardware and set a flag somewhere in kernel memory.
-- The "bottom half" does any other necessary processing, for example copying data into process memory, updating kernel data structures, etc. It can take its time and even block waiting for some other part of the system since it runs with interrupts enabled.
-
-Useful resources:
-
-- [How is an Interrupt handled in Linux? (original)](https://unix.stackexchange.com/questions/5788/how-is-an-interrupt-handled-in-linux)
-- [Interrupts and Interrupt Handlers](https://notes.shichao.io/lkd/ch7/)
+- [Linuxで100GBのファイルを削除する際にIO/負荷を過剰にかけずに済む方法はありますか？](https://serverfault.com/questions/336917/is-there-a-way-to-delete-100gb-file-on-linux-without-thrashing-io-load)
+- [数百万のファイルを持つディレクトリでのrmコマンド](https://serverfault.com/questions/183821/rm-on-a-directory-with-millions-of-files)
 
 </details>
 
 <details>
-<summary><b>What considerations come into play when designing a highly available application, both at the architecture level and the application level? ***</b></summary><br>
+<summary><b>Linuxにおける割り込みと割り込みハンドラーについて説明してください。</b></summary><br>
 
-To be completed.
+以下は低レベル処理の高レベルな概要です。ここでは簡単な典型的なアーキテクチャについて説明していますが、実際のアーキテクチャはより複雑であったり、詳細レベルで異なる場合があります。
 
-</details>
+**割り込み**が発生すると、プロセッサは割り込みがマスクされているかどうかを確認します。マスクされている場合、割り込みが解除されるまで何も起こりません。割り込みが解除されると、もし保留中の割り込みがあれば、プロセッサはその中から一つを選びます。
 
-<details>
-<summary><b>What fields are stored in an inode?</b></summary><br>
+次に、プロセッサは割り込みを実行するために、メモリ内の特定のアドレスに分岐します。そのアドレスにあるコードを**割り込みハンドラー**と呼びます。プロセッサがそこに分岐すると、割り込みをマスクし（割り込みハンドラーが排他的に制御できるようにし）、一部のレジスタの内容をどこかに保存します（通常は他のレジスタ）。
 
-Within a POSIX system, a file has the following attributes which may be retrieved by the stat system call:
+割り込みハンドラーは必要な処理を行います。通常は、割り込みを引き起こした周辺機器と通信してデータの送受信を行います。もし割り込みがタイマーによって引き起こされた場合、ハンドラーはOSスケジューラーをトリガーして異なるスレッドに切り替えるかもしれません。ハンドラーが実行を終えると、保存されたレジスタを復元し、割り込みを解除する特別な割り込みから戻る命令を実行します。
 
-- **Device ID** (this identifies the device containing the file; that is, the scope of uniqueness of the serial number).
-File serial numbers
-- The **file mode** which determines the file type and how the file's owner, its group, and others can access the file
-- A **link count** telling how many hard links point to the inode
-- The **User ID** of the file's owner
-- The **Group ID** of the file
-- The **device ID** of the file if it is a device file.
-- The **size of the file** in bytes
-- **Timestamps** telling when the inode itself was last modified (ctime, inode change time), the file content last modified (mtime, modification time), and last accessed (atime, access time)
-- The preferred **I/O block size**
-- The **number of blocks** allocated to this file
+割り込みハンドラーは迅速に実行する必要があります。なぜなら、他の割り込みが実行されるのを防いでいるからです。Linuxカーネルでは、割り込み処理は2つの部分に分かれています：
 
-Useful resources:
+- 「上半分（top half）」は割り込みハンドラーです。最小限の処理を行い、通常はハードウェアとの通信やカーネルメモリ内のフラグ設定を行います。
+- 「下半分（bottom half）」はその他の必要な処理を行います。例えば、データをプロセスメモリにコピーしたり、カーネルデータ構造を更新するなどです。これは時間がかかってもよく、他のシステムの一部が待機することもできます（割り込みが有効な状態で実行されるため）。
 
-- [Inodes - an Introduction](http://www.grymoire.com/Unix/Inodes.html)
+有用なリソース:
+
+- [Linuxでの割り込み処理方法 (原文)](https://unix.stackexchange.com/questions/5788/how-is-an-interrupt-handled-in-linux)
+- [割り込みと割り込みハンドラー](https://notes.shichao.io/lkd/ch7/)
 
 </details>
 
 <details>
-<summary><b>Ordinary users are able to read <code>/etc/passwd</code>. Is it a security hole? Do you know other password shadowing scheme?</b></summary><br>
+<summary><b>高可用性アプリケーションを設計する際に考慮すべき点は、アーキテクチャレベルとアプリケーションレベルの両方でどのようなものがありますか？ ***</b></summary><br>
 
-Typically, the _hashed passwords_ are stored in `/etc/shadow` on most Linux systems:
+未完了。
+
+</details>
+
+<details>
+<summary><b>inodeに格納されているフィールドはどれですか？</b></summary><br>
+
+POSIXシステム内では、ファイルには次の属性があり、`stat` システムコールによって取得できます：
+
+- **デバイスID**（これはファイルを含むデバイスを識別します。つまり、シリアル番号の一意性の範囲です。）
+
+- **ファイルモード**（ファイルの種類と、ファイルの所有者、そのグループ、および他のユーザーがファイルにどのようにアクセスできるかを決定します）
+- **リンクカウント**（inodeを指すハードリンクの数を示します）
+- ファイルの**ユーザーID**
+- ファイルの**グループID**
+- ファイルがデバイスファイルの場合、その**デバイスID**
+- ファイルの**サイズ**（バイト単位）
+- **タイムスタンプ**（inode自体が最後に変更された時刻（ctime、inode変更時間）、ファイル内容が最後に変更された時刻（mtime、修正時間）、最後にアクセスされた時刻（atime、アクセス時間））
+- 推奨される**I/Oブロックサイズ**
+- このファイルに割り当てられた**ブロックの数**
+
+有用なリソース:
+
+- [Inodes - 入門](http://www.grymoire.com/Unix/Inodes.html)
+
+</details>
+
+<details>
+<summary><b>一般ユーザーは <code>/etc/passwd</code> を読むことができます。これはセキュリティホールですか？他のパスワードシャドウイングスキームをご存知ですか？</b></summary><br>
+
+通常、ハッシュ化されたパスワードは、ほとんどのLinuxシステムで `/etc/shadow` に保存されます：
 
 ```bash
 -rw-r----- 1 root shadow 1349 2016-07-03 03:54 /etc/shadow
 ```
 
-They are stored in `/etc/master.passwd` on BSD systems.
+BSDシステムでは、`/etc/master.passwd` に保存されます。
 
-Programs that need to perform authentication still need to run with `root` privileges:
+認証を実行する必要があるプログラムは、引き続き `root` 権限で実行する必要があります：
 
 ```bash
 -rwsr-xr-x 1 root root 42792 2016-02-14 14:13 /usr/bin/passwd
 ```
 
-If you dislike the `setuid root` programs and one single file containing all the hashed passwords on your system, you can replace it with the **Openwall TCB PAM module**. This provides every single user with their own file for storing their hashed password - as a result the number of `setuid root` programs on the system can be drastically reduced.
+`setuid root` プログラムやシステム上のすべてのハッシュ化されたパスワードを含む単一のファイルが気に入らない場合は、**Openwall TCB PAM モジュール**を使用できます。これにより、各ユーザーに自分専用のファイルが提供され、ハッシュ化されたパスワードを保存することができます。その結果、システム上の `setuid root` プログラムの数を大幅に削減することができます。
 
-Useful resources:
+有用なリソース:
 
-- [Ordinary users are able to read /etc/passwd, is this a security hole? (original)](https://serverfault.com/questions/286654/ordinary-users-are-able-to-read-etc-passwd-is-this-a-security-hole/286657#286657)
-- [tcb - the alternative to /etc/shadow](https://www.openwall.com/tcb/)
-- [Why shadow your passwd file?](https://www.tldp.org/HOWTO/Shadow-Password-HOWTO-2.html)
+- [一般ユーザーが /etc/passwd を読むことができるのはセキュリティホールですか？ (原文)](https://serverfault.com/questions/286654/ordinary-users-are-able-to-read-etc-passwd-is-this-a-security-hole/286657#286657)
+- [tcb - /etc/shadow の代替](https://www.openwall.com/tcb/)
+- [なぜパスワードファイルをシャドウ化するのか？](https://www.tldp.org/HOWTO/Shadow-Password-HOWTO-2.html)
 
 </details>
 
