@@ -3547,16 +3547,16 @@ BSDシステムでは、`/etc/master.passwd` に保存されます。
 </details>
 
 <details>
-<summary><b>What are some of the benefits of using systemd over SysV init? ***</b></summary><br>
+<summary><b>systemdをSysV initの代わりに使用する主な利点は何ですか？ ***</b></summary><br>
 
-To be completed.
+未完了。
 
 </details>
 
 <details>
-<summary><b>How do you run command every time a file is modified?</b></summary><br>
+<summary><b>ファイルが変更されるたびにコマンドを実行する方法は？</b></summary><br>
 
-For example:
+例えば：
 
 ```bash
 while inotifywait -e close_write filename ; do
@@ -3569,215 +3569,215 @@ done
 </details>
 
 <details>
-<summary><b>You need to copy a large amount of data. Explain the most effective way. ***</b></summary><br>
+<summary><b>大量のデータをコピーする必要があります。最も効果的な方法を説明してください。 ***</b></summary><br>
 
-To be completed.
+未完了。
 
-Useful resources:
+有用なリソース:
 
-- [Copying a large directory tree locally? cp or rsync?](https://serverfault.com/questions/43014/copying-a-large-directory-tree-locally-cp-or-rsync)
-
-</details>
-
-<details>
-<summary><b>Tell me about the dangers and caveats of LVM.</b></summary><br>
-
-**Risks of using LVM**
-
-- Vulnerable to write caching issues with SSD or VM hypervisor
-- Harder to recover data due to more complex on-disk structures
-- Harder to resize filesystems correctly
-- Snapshots are hard to use, slow and buggy
-- Requires some skill to configure correctly given these issues
-
-Useful resources:
-
-- [LVM dangers and caveats (original)](https://serverfault.com/questions/279571/lvm-dangers-and-caveats)
+- [大量のディレクトリツリーをローカルでコピーする場合、cpとrsyncのどちらを使用するか？](https://serverfault.com/questions/43014/copying-a-large-directory-tree-locally-cp-or-rsync)
 
 </details>
 
 <details>
-<summary><b>Python dev team in your company have a dilemma what to choose: uwsgi or gunicorn. What are the pros/cons of each of the solutions from the admin's perspective? ***</b></summary><br>
+<summary><b>LVMの危険性と注意点について教えてください。</b></summary><br>
 
-To be completed.
+**LVMのリスク**
 
-Useful resources:
+- SSDやVMハイパーバイザーでの書き込みキャッシュ問題に脆弱
+- ディスク上の構造が複雑なため、データの回復が困難
+- ファイルシステムのサイズ変更が難しい
+- スナップショットの使用が難しく、遅く、バグが多い
+- これらの問題に対処するために、正しく設定するには一定のスキルが必要
 
-- [uWSGI vs. Gunicorn, or How to Make Python Go Faster than Node](https://blog.kgriffs.com/2012/12/18/uwsgi-vs-gunicorn-vs-node-benchmarks.html)
+有用なリソース:
+
+- [LVMの危険性と注意点 (原文)](https://serverfault.com/questions/279571/lvm-dangers-and-caveats)
 
 </details>
 
 <details>
-<summary><b>What if <code>kill -9</code> does not work? Describe exceptions for which the use of SIGKILL is insufficient.</b></summary><br>
+<summary><b>会社のPython開発チームがuwsgiとgunicornのどちらを選ぶかで悩んでいます。管理者の視点からそれぞれのソリューションの利点と欠点は何ですか？ ***</b></summary><br>
 
-`kill -9` (`SIGKILL`) always works, provided you have the permission to kill the process. Basically either the process must be started by you and not be setuid or setgid, or you must be root. There is one exception: even root cannot send a fatal signal to PID 1 (the init process).
+未完了。
 
-However `kill -9` is not guaranteed to work immediately. All signals, including `SIGKILL`, are delivered asynchronously: the kernel may take its time to deliver them. Usually, delivering a signal takes at most a few microseconds, just the time it takes for the target to get a time slice. However, if the target has blocked the signal, the signal will be queued until the target unblocks it.
+有用なリソース:
 
-Normally, processes cannot block `SIGKILL`. But kernel code can, and processes execute kernel code when they call system calls.
+- [uWSGI vs. Gunicorn、またはPythonをNodeよりも速くする方法](https://blog.kgriffs.com/2012/12/18/uwsgi-vs-gunicorn-vs-node-benchmarks.html)
 
-A process blocked in a system call is in uninterruptible sleep. The `ps` or `top` command will (on most unices) show it in state **D**.
+</details>
 
-To remove a **D** State Process, since it is uninterruptible, only a machine reboot can solve the problem in case its not automatically handled by the system.
+<details>
+<summary><b>もし <code>kill -9</code> が機能しない場合、どうしますか？ SIGKILLの使用が不十分な例外について説明してください。</b></summary><br>
 
-Usually there is a very few chance that a process stays in **D** State for long. And if it does then there is something not properly being handled in the system. This can be a potential bug as well.
+`kill -9`（`SIGKILL`）は、プロセスを終了させるための権限がある限り、常に機能します。基本的には、プロセスはあなたによって開始され、setuidまたはsetgidでない限り、またはあなたがrootである必要があります。一つの例外があります：rootであってもPID 1（initプロセス）には致命的なシグナルを送信できません。
 
-A classical case of long uninterruptible sleep is processes accessing files over NFS when the server is not responding; modern implementations tend not to impose uninterruptible sleep (e.g. under Linux, the intr mount option allows a signal to interrupt NFS file accesses).
+しかし、`kill -9` が即座に機能する保証はありません。すべてのシグナル、`SIGKILL`を含む、は非同期的に配信されます：カーネルがシグナルを配信するのに時間がかかることがあります。通常、シグナルの配信は数マイクロ秒以内に完了し、ターゲットがタイムスライスを取得するのにかかる時間だけです。しかし、ターゲットがシグナルをブロックしている場合、シグナルはターゲットが解除するまでキューに格納されます。
 
-You may sometimes see entries marked **Z** (or **H** under Linux) in the `ps` or `top` output. These are technically not processes, they are zombie processes, which are nothing more than an entry in the process table, kept around so that the parent process can be notified of the death of its child. They will go away when the parent process pays attention (or dies).
+通常、プロセスは`SIGKILL`をブロックすることはできません。しかし、カーネルコードは可能であり、プロセスはシステムコールを呼び出すとカーネルコードを実行します。
 
-Summary exceptions:
+システムコールでブロックされたプロセスは、非割り込みスリープ状態です。`ps`や`top`コマンドは、（ほとんどのUnix系システムで）**D** 状態で表示されます。
 
-- Zombie processes cannot be killed since they are already dead and waiting for their parent processes to reap them
-- Processes that are in the blocked state will not die until they wake up again
-- The init process is special: It does not get signals that it does not want to handle, and thus it can ignore **SIGKILL**. An exception from this exception is while init is ptraced on Linux
-- An uninterruptibly sleeping process may not terminate (and free its resources) even when sent **SIGKILL**. This is one of the few cases in which a Unix system may have to be rebooted to solve a temporary software problem
+**D** 状態のプロセスを削除するには、プロセスが非割り込み状態であるため、自動的にシステムによって処理されない限り、マシンを再起動することで問題を解決できます。
 
-Useful resources:
+通常、プロセスが長時間**D** 状態になる可能性は非常に低いです。もしそうなる場合、システムで何かが適切に処理されていないことがあります。これは潜在的なバグである可能性もあります。
 
-- [What if kill -9 does not work? (original)](https://unix.stackexchange.com/questions/5642/what-if-kill-9-does-not-work)
-- [How to kill a process in Linux if kill -9 has no effect](https://serverfault.com/questions/458261/how-to-kill-a-process-in-linux-if-kill-9-has-no-effect)
-- [When should I not kill -9 a process?](https://unix.stackexchange.com/questions/8916/when-should-i-not-kill-9-a-process)
+長時間の非割り込みスリープの古典的なケースは、サーバーが応答しないときにNFS経由でファイルにアクセスしているプロセスです。現代の実装では、非割り込みスリープを課さない傾向があります（例：Linuxでは、`intr`マウントオプションにより、NFSファイルアクセスを中断できるようになります）。
+
+`ps`や`top`の出力に**Z**（またはLinuxでは**H**）とマークされたエントリを時々見ることがあります。これらは技術的にはプロセスではなく、ゾンビプロセスであり、プロセステーブルのエントリに過ぎません。親プロセスが子プロセスの終了を通知されるまで保持されます。親プロセスがそれに注意を払うと（または終了すると）消えます。
+
+要約の例外:
+
+- ゾンビプロセスは、すでに死亡しており、親プロセスがそれを処理するのを待っているため、終了することはできません
+- ブロック状態のプロセスは、再び目覚めるまで死にません
+- initプロセスは特別です：処理したくないシグナルを受け取らないため、**SIGKILL**を無視することができます。この例外の例外は、Linuxでinitがptracedされているときです
+- 非割り込みスリープ状態のプロセスは、**SIGKILL**が送信されても終了しない可能性があります。これは、Unixシステムが一時的なソフトウェア問題を解決するために再起動する必要がある数少ないケースの1つです
+
+有用なリソース:
+
+- [kill -9 が機能しない場合はどうするか？ (原文)](https://unix.stackexchange.com/questions/5642/what-if-kill-9-does-not-work)
+- [kill -9 が効果がない場合にプロセスを終了させる方法](https://serverfault.com/questions/458261/how-to-kill-a-process-in-linux-if-kill-9-has-no-effect)
+- [プロセスをkill -9 で終了させるべきではない場合](https://unix.stackexchange.com/questions/8916/when-should-i-not-kill-9-a-process)
 - [SIGTERM vs. SIGKILL](https://major.io/2010/03/18/sigterm-vs-sigkill/)
 
 </details>
 
 <details>
-<summary><b>Difference between <code>nohup</code>, <code>disown</code>, and <code>&</code>. What happens when using all together?</b></summary><br>
+<summary><b><code>nohup</code>、<code>disown</code>、<code>&</code> の違い。すべてを一緒に使用した場合にどうなりますか？</b></summary><br>
 
-- `&` puts the job in the background, that is, makes it block on attempting to read input, and makes the shell not wait for its completion
-- `disown` removes the process from the shell's job control, but it still leaves it connected to the terminal. One of the results is that the shell won't send it a **SIGHUP**. Obviously, it can only be applied to background jobs, because you cannot enter it when a foreground job is running
-- `nohup` disconnects the process from the terminal, redirects its output to `nohup.out` and shields it from **SIGHUP**. One of the effects (the naming one) is that the process won't receive any sent **SIGHUP**. It is completely independent from job control and could in principle be used also for foreground jobs (although that's not very useful)
+- `&` はジョブをバックグラウンドで実行し、入力の読み込みをブロックし、シェルがジョブの完了を待たないようにします
+- `disown` はプロセスをシェルのジョブ制御から削除しますが、ターミナルへの接続は維持されます。これにより、シェルはプロセスに**SIGHUP**を送信しなくなります。明らかに、これはバックグラウンドジョブにのみ適用されるため、フォアグラウンドジョブが実行中にこの操作を行うことはできません
+- `nohup` はプロセスをターミナルから切り離し、その出力を `nohup.out` にリダイレクトし、**SIGHUP** から保護します。効果の1つ（名前に関連するもの）は、プロセスが送信された**SIGHUP**を受け取らなくなることです。ジョブ制御とは完全に独立しており、原理的にはフォアグラウンドジョブにも使用できます（ただし、あまり便利ではありません）
 
-If you use all three together, the process is running in the background, is removed from the shell's job control and is effectively disconnected from the terminal.
+これらをすべて一緒に使用すると、プロセスはバックグラウンドで実行され、シェルのジョブ制御から削除され、ターミナルから効果的に切り離されます。
 
-Useful resources:
+有用なリソース:
 
-- [Difference between nohup, disown and & (original)](https://unix.stackexchange.com/questions/3886/difference-between-nohup-disown-and)
-
-</details>
-
-<details>
-<summary><b>What is the main advantage of using <code>chroot</code>? When and  why do we use it? What is the purpose of the mount dev, proc, sys in a chroot environment?</b></summary><br>
-
-An advantage of having a chroot environment is the file-system is totally isolated from the physical host. `chroot` has a separate file-system inside the file-system, the difference is its uses a newly created root(/) as its root directory.
-
-A chroot jail is a way to isolate a process and its children from the rest of the system. It should only be used for processes that don't run as root, as root users can break out of the jail very easily.
-
-The idea is that you create a directory tree where you copy or link in all the system files needed for a process to run. You then use the `chroot()` system call to change the root directory to be at the base of this new tree and start the process running in that chroot'd environment. Since it can't actually reference paths outside the modified root, it can't perform operations (read/write etc.) maliciously on those locations.
-
-On Linux, using a bind mounts is a great way to populate the chroot tree. Using that, you can pull in folders like `/lib` and `/usr/lib` while not pulling in `/usr`, for example. Just bind the directory trees you want to directories you create in the jail directory.
-
-Chroot environment is useful for:
-
-- reinstall bootloader
-- reset a forgotten password
-- perform a kernel upgrade (or downgrade)
-- rebuild your initramdisk
-- fix your **/etc/fstab**
-- reinstall packages using your package manager
-- whatever
-
-When working in a chrooted environment, there is a few special file systems that needs to be mounted so all programs behave properly.
-
-Limitation is that `/dev`, `/sys` and `/proc` are not mounted by default but needed for many tasks.
-
-Useful resources:
-
-- [Its all about Chroot](https://medium.com/@itseranga/chroot-316dc3c89584)
-- [Best Practices for UNIX chroot() Operations](http://www.unixwiz.net/techtips/chroot-practices.html)
-- [Is there an easier way to chroot than bind-mounting?](https://askubuntu.com/questions/32418/is-there-an-easier-way-to-chroot-than-bind-mounting)
-- [What's the proper way to prepare chroot to recover a broken Linux installation?](https://superuser.com/questions/111152/whats-the-proper-way-to-prepare-chroot-to-recover-a-broken-linux-installation)
+- [nohup、disown、& の違い (原文)](https://unix.stackexchange.com/questions/3886/difference-between-nohup-disown-and)
 
 </details>
 
 <details>
-<summary><b>What are segmentation faults (segfaults), and how can identify what's causing them?</b></summary><br>
+<summary><b><code>chroot</code> の主な利点は何ですか？いつ、なぜ使用しますか？chroot 環境での mount dev、proc、sys の目的は何ですか？</b></summary><br>
 
-A **segmentation fault** (aka _segfault_) is a common condition that causes programs to crash. Segfaults are caused by a program trying to read or write an illegal memory location.
+chroot環境の利点は、ファイルシステムが物理ホストから完全に隔離されることです。`chroot` はファイルシステム内に別のファイルシステムを持ちますが、その違いは新しく作成されたルート（/）をルートディレクトリとして使用する点です。
 
-Program memory is divided into different segments:
+chroot監獄は、プロセスとその子プロセスをシステムの残りから隔離する方法です。rootでないプロセスにのみ使用すべきであり、rootユーザーは監獄から簡単に抜け出すことができます。
 
-- a text segment for program instructions
-- a data segment for variables and arrays defined at compile time
-- a stack segment for temporary (or automatic) variables defined in subroutines and functions
-- a heap segment for variables allocated during runtime by functions, such as `malloc` (in C)
+アイデアは、プロセスが実行するのに必要なすべてのシステムファイルをコピーまたはリンクして、ディレクトリツリーを作成することです。その後、`chroot()` システムコールを使用して、この新しいツリーの基部にルートディレクトリを変更し、そのchroot環境内でプロセスを実行します。実際には修正されたルートの外部のパスを参照できないため、これらの場所で悪意のある操作（読み取り/書き込みなど）を行うことはできません。
 
-In practice, segfaults are almost always due to trying to read or write a non-existent array element, not properly defining a pointer before using it, or (in C programs) accidentally using a variable's value as an address. Thus, when Process A reads memory location 0x877, it reads information residing at a different physical location in RAM than when Process B reads its own 0x877.
+Linuxでは、バインドマウントを使用してchrootツリーを補完するのが素晴らしい方法です。これを使用すると、例えば `/usr` を引っ張らずに `/lib` や `/usr/lib` のようなフォルダを取り込むことができます。必要なディレクトリツリーを監獄ディレクトリ内に作成したディレクトリにバインドしてください。
 
-All modern operating systems support and use segmentation, and so all can produce a segmentation fault.
+chroot環境は以下の目的に有用です:
 
-Segmentation fault can also occur under following circumstances:
+- ブートローダーの再インストール
+- 忘れたパスワードのリセット
+- カーネルのアップグレード（またはダウングレード）
+- initramdiskの再構築
+- **/etc/fstab** の修正
+- パッケージマネージャーを使用したパッケージの再インストール
+- その他
 
-- a buggy program/command, which can be only fixed by applying patch
-- it can also appear when you try to access an array beyond the end of an array under C programming
-- inside a chrooted jail this can occur when critical shared libs, config file or `/dev/` entry missing
-- sometime hardware or faulty memory or driver can also create problem
-- maintain suggested environment for all computer equipment (overheating can also generate this problem)
+chroot環境で作業する際には、すべてのプログラムが適切に動作するようにいくつかの特別なファイルシステムをマウントする必要があります。
 
-To debug this kind of error try one or all of the following techniques:
+制限として、`/dev`、`/sys`、および `/proc` はデフォルトではマウントされておらず、多くのタスクには必要です。
 
-- enable core files: `$ ulimit -c unlimited`
-- reproduce the crash: `$ ./<program>`
-- debug crash with gdb: `$ gdb <program> [core file]`
-- or run `LD_PRELOAD=...path-to.../libSegFault.so <program>` to get a report with backtrace, loaded libs, etc
+有用なリソース:
 
-Also:
-
-- make sure correct hardware installed and configured
-- always apply all patches and use updated system
-- make sure all dependencies installed inside jail
-- turn on core dumping for supported services such as Apache
-- use `strace` which is a useful diagnostic, instructional, and debugging tool
-
-Sometimes segmentation faults are not caused by bugs in the program but are caused instead by system memory limits being set too low. Usually it is the limit on stack size that causes this kind of problem (stack overflows). To check memory limits, use the `ulimit` command in bash.
-
-Useful resources:
-
-- [What are segmentation faults (segfaults), and how can I identify what's causing them? (original)](https://kb.iu.edu/d/aqsj)
-- [What is a segmentation fault on Linux?](https://stackoverflow.com/questions/3200526/what-is-a-segmentation-fault-on-linux)
-- [Segmentation fault when calling a recursive bash function](https://unix.stackexchange.com/questions/296641/segmentation-fault-when-calling-a-recursive-bash-function)
-- [Troubleshooting Segmentation Violations/Faults](http://web.mit.edu/10.001/Web/Tips/tips_on_segmentation.html)
-- [Can one use libSegFault.so to get backtraces for SIGABRT?](https://stackoverflow.com/questions/18706496/can-one-use-libsegfault-so-to-get-backtraces-for-sigabrt)
+- [Chrootについて](https://medium.com/@itseranga/chroot-316dc3c89584)
+- [UNIX chroot() 操作のベストプラクティス](http://www.unixwiz.net/techtips/chroot-practices.html)
+- [バインドマウントよりも簡単なchroot方法はありますか？](https://askubuntu.com/questions/32418/is-there-an-easier-way-to-chroot-than-bind-mounting)
+- [壊れたLinuxインストールを回復するためにchrootを準備する適切な方法は？](https://superuser.com/questions/111152/whats-the-proper-way-to-prepare-chroot-to-recover-a-broken-linux-installation)
 
 </details>
 
 <details>
-<summary><b>One of the processes runs slowly. How to check how long has been running and which tools will you use?</b></summary><br>
+<summary><b>セグメンテーション違反（セグフォルト）とは何ですか？それが発生する原因を特定する方法は？</b></summary><br>
 
-To be completed.
+**セグメンテーション違反**（通称 _セグフォルト_）は、プログラムがクラッシュする一般的な状態です。セグフォルトは、プログラムが不正なメモリ位置を読み書きしようとすることによって引き起こされます。
 
-Useful resources:
+プログラムのメモリは、異なるセグメントに分かれています：
 
-- [How to check how long a process has been running?](https://unix.stackexchange.com/questions/7870/how-to-check-how-long-a-process-has-been-running)
-- [Linux how long a process has been running?](https://www.cyberciti.biz/faq/how-to-check-how-long-a-process-has-been-running/)
-- [How to see system call that executed in current time by process?](https://stackoverflow.com/questions/42677724/how-to-see-system-call-that-executed-in-current-time-by-process)
+- プログラム命令のためのテキストセグメント
+- コンパイル時に定義された変数や配列のためのデータセグメント
+- サブルーチンや関数で定義された一時的（または自動的）変数のためのスタックセグメント
+- `malloc`（C言語の関数）など、実行時に関数によって割り当てられた変数のためのヒープセグメント
+
+実際には、セグフォルトはほぼ常に存在しない配列要素を読み書きしようとしたり、ポインタを使用する前に適切に定義していなかったり、（Cプログラムでは）変数の値をアドレスとして誤って使用することが原因です。したがって、プロセスAがメモリ位置0x877を読み取ると、プロセスBが自分の0x877を読み取るときとは異なる物理RAM位置の情報が読み取られます。
+
+すべての現代的なオペレーティングシステムはセグメンテーションをサポートしており、セグメンテーション違反を発生させる可能性があります。
+
+セグメンテーション違反が発生する状況には以下が含まれます：
+
+- バグのあるプログラム/コマンドで、パッチを適用することで修正可能
+- Cプログラミングで配列の終端を超えてアクセスしようとした場合
+- chrootされた環境内で、重要な共有ライブラリ、設定ファイル、または `/dev/` エントリが欠けている場合
+- ハードウェアや不良メモリ、ドライバの問題も原因になることがある
+- コンピュータ機器の推奨環境を維持する（過熱も問題を引き起こす可能性がある）
+
+このようなエラーをデバッグするには、以下の技術のいずれかまたはすべてを試してみてください：
+
+- コアファイルを有効にする： `$ ulimit -c unlimited`
+- クラッシュを再現する： `$ ./<program>`
+- gdbでクラッシュをデバッグする： `$ gdb <program> [core file]`
+- または `LD_PRELOAD=...path-to.../libSegFault.so <program>` を実行して、バックトレース、ロードされたライブラリなどのレポートを取得する
+
+また：
+
+- 正しいハードウェアがインストールされ、設定されていることを確認する
+- すべてのパッチを適用し、システムを最新の状態に保つ
+- ジェイル内にすべての依存関係がインストールされていることを確認する
+- Apacheなどのサポートされているサービスでコアダンプを有効にする
+- `strace` を使用することは、診断、教育、デバッグに役立つツールです
+
+時には、セグメンテーション違反はプログラムのバグではなく、システムメモリ制限が低すぎることが原因です。通常、このような問題を引き起こすのはスタックサイズの制限です（スタックオーバーフロー）。メモリ制限を確認するには、bashで `ulimit` コマンドを使用してください。
+
+有用なリソース：
+
+- [セグメンテーション違反（セグフォルト）とは何ですか？それが発生する原因を特定する方法は？（原文）](https://kb.iu.edu/d/aqsj)
+- [Linuxでのセグメンテーション違反とは？](https://stackoverflow.com/questions/3200526/what-is-a-segmentation-fault-on-linux)
+- [再帰的なbash関数を呼び出すときのセグメンテーション違反](https://unix.stackexchange.com/questions/296641/segmentation-fault-when-calling-a-recursive-bash-function)
+- [セグメンテーション違反/エラーのトラブルシューティング](http://web.mit.edu/10.001/Web/Tips/tips_on_segmentation.html)
+- [SIGABRTのバックトレースを取得するためにlibSegFault.soを使用できますか？](https://stackoverflow.com/questions/18706496/can-one-use-libsegfault-so-to-get-backtraces-for-sigabrt)
 
 </details>
 
 <details>
-<summary><b>What is a file descriptor in Linux?</b></summary><br>
+<summary><b>あるプロセスが遅いです。どのようにして実行時間を確認し、どのツールを使用しますか？</b></summary><br>
 
-In Unix and related computer operating systems, a file descriptor (FD, less frequently fildes) is an abstract indicator (handle) used to access a file or other input/output resource, such as a pipe or network socket. File descriptors form part of the POSIX application programming interface.
+未完了。
+
+有用なリソース：
+
+- [プロセスの実行時間を確認する方法](https://unix.stackexchange.com/questions/7870/how-to-check-how-long-a-process-has-been-running)
+- [Linuxでプロセスの実行時間を確認する方法](https://www.cyberciti.biz/faq/how-to-check-how-long-a-process-has-been-running/)
+- [現在の時間にプロセスによって実行されているシステムコールを見る方法](https://stackoverflow.com/questions/42677724/how-to-see-system-call-that-executed-in-current-time-by-process)
 
 </details>
 
 <details>
-<summary><b>Which way of additionally feeding random entropy pool would you suggest for producing random passwords? How to improve it?</b></summary><br>
+<summary><b>Linuxのファイルディスクリプタとは何ですか？</b></summary><br>
 
-You should use `/dev/urandom`, not `/dev/random`. The two differences between `/dev/random` and `/dev/urandom` are:
+Unixおよび関連するコンピュータオペレーティングシステムでは、ファイルディスクリプタ（FD、まれに fildes）は、ファイルやパイプ、ネットワークソケットなどの他の入力/出力リソースにアクセスするために使用される抽象的なインジケータ（ハンドル）です。ファイルディスクリプタは、POSIXアプリケーションプログラミングインターフェースの一部を形成します。
 
- - `/dev/random` might be theoretically better _in the context of an information-theoretically secure algorithm_. This is the kind of algorithm which is secure against today's technology, and also tomorrow's technology, and technology used by aliens, and God's own iPad as well.
+</details>
 
- - `/dev/urandom` will not block, while `/dev/random` may do so. `/dev/random` maintains a counter of "how much entropy it still has" under the assumption that any bits it has produced is a lost entropy bit. Blocking induces very real issues, e.g. a server which fails to boot after an automated install because it is stalling on its SSH server key creation.
+<details>
+<summary><b>ランダムなエントロピープールを追加で供給する方法としてどれをお勧めしますか？それを改善する方法は？</b></summary><br>
 
-So you want to use `/dev/urandom` and stop to worry about this entropy business.
+`/dev/random` ではなく、`/dev/urandom` を使用するべきです。`/dev/random` と `/dev/urandom` の違いは以下の通りです：
 
-The trick is that `/dev/urandom` never blocks, ever, even when it should: `/dev/urandom` is secure as long as it has received enough bytes of "initial entropy" since the last boot (32 random bytes are enough). A normal Linux installation will create a random seed (from `/dev/random`) upon installation, and save it on the disk. Upon each reboot, the seed will be read, fed into `/dev/urandom`, and a new seed immediately generated (from `/dev/urandom`) to replace it. Thus, this guarantees that `/dev/urandom` will always have enough initial entropy to produce cryptographically strong alea, perfectly sufficient for any mundane cryptographic job, including password generation.
+- `/dev/random` は理論的には情報理論的に安全なアルゴリズムの文脈ではより良いかもしれません。これは今日の技術だけでなく、明日の技術、エイリアンが使う技術、そして神自身のiPadに対しても安全なアルゴリズムです。
 
-Should any of these daemons require randomness when all available entropy has been exhausted, they may pause to wait for more, which can cause excessive delays in your application. Even worse, since most modern applications will either resort to using its own random seed created at program initialization, or to using `/dev/urandom` to avoid blocking, your applications will suffer from lower quality random data. This can affect the integrity of your secure communications, and can increase the chance of cryptoanalysis on your private data.
+- `/dev/urandom` はブロックしませんが、`/dev/random` はブロックする可能性があります。`/dev/random` は「どれだけのエントロピーが残っているか」をカウントしており、そのカウントが失われたエントロピービットとして扱われます。ブロックは非常に現実的な問題を引き起こす可能性があり、たとえば、SSHサーバーのキー作成でスタックするために自動インストール後にサーバーがブートしないことがあります。
 
-To check the amount of bytes of entropy currently available, use:
+したがって、`/dev/urandom` を使用して、このエントロピーの問題を心配しないでください。
+
+トリックは、`/dev/urandom` は決してブロックしないことです。たとえブロックすべきであっても、`/dev/urandom` は最後のブートから十分な「初期エントロピー」バイト（32ランダムバイトが十分）を受け取っている限り安全です。通常のLinuxインストールでは、インストール時にランダムシード（`/dev/random` から）を作成し、ディスクに保存します。各再起動時に、シードが読み取られ、`/dev/urandom` に供給され、新しいシードが直ちに生成されて置き換えられます（`/dev/urandom` から）。これにより、`/dev/urandom` は常に暗号的に強いランダムデータを生成するのに十分な初期エントロピーを持つことが保証され、パスワード生成などの一般的な暗号作業に完全に十分です。
+
+これらのデーモンのいずれかが、すべての利用可能なエントロピーが枯渇した場合にランダム性を必要とする場合、それらはより多くのエントロピーを待つために一時停止することがあり、これがアプリケーションに過度の遅延を引き起こす可能性があります。さらに悪いことに、ほとんどの現代のアプリケーションは、プログラムの初期化時に作成された独自のランダムシードを使用するか、`/dev/urandom` を使用してブロックを回避します。その結果、アプリケーションは低品質のランダムデータに悩まされ、セキュアな通信の整合性に影響を与える可能性があり、プライベートデータに対する暗号解析の可能性が高くなります。
+
+現在のエントロピーのバイト数を確認するには、以下を使用します：
 
 ```bash
 cat /proc/sys/kernel/random/entropy_avail
@@ -3785,67 +3785,67 @@ cat /proc/sys/kernel/random/entropy_avail
 
 **rng-tools**
 
-Fedora/Rh/Centos types: `sudo yum install rng-tools`.
+Fedora/Rh/Centos系: `sudo yum install rng-tools`。
 
-On deb types: `sudo apt-get install rng-tools` to set it up.
+Deb系: `sudo apt-get install rng-tools` でセットアップします。
 
-Then run `sudo rngd -r /dev/urandom` before generating the keys.
+その後、鍵生成前に `sudo rngd -r /dev/urandom` を実行します。
 
 **haveged**
 
-Fedora/Rh/Centos types: `sudo yum install haveged` and add `/usr/local/sbin/haveged -w 1024` to `/etc/rc.local`.
+Fedora/Rh/Centos系: `sudo yum install haveged` し、`/etc/rc.local` に `/usr/local/sbin/haveged -w 1024` を追加します。
 
-On deb types: `sudo apt-get install haveged` and add `DAEMON_ARGS="-w 1024"` to `/etc/default/haveged` to set it up.
+Deb系: `sudo apt-get install haveged` し、`/etc/default/haveged` に `DAEMON_ARGS="-w 1024"` を追加してセットアップします。
 
-Then run `sudo rngd -r /dev/urandom` before generating the keys.
+その後、鍵生成前に `sudo rngd -r /dev/urandom` を実行します。
 
-Useful resources:
+有用なリソース：
 
-- [Feeding /dev/random entropy pool? (original)](https://security.stackexchange.com/questions/89/feeding-dev-random-entropy-pool)
-- [GPG does not have enough entropy](https://serverfault.com/questions/214605/gpg-does-not-have-enough-entropy)
-
-</details>
-
-<details>
-<summary><b>What is the difference between <code>/sbin/nologin</code>, <code>/bin/false</code>, and <code>/bin/true</code>?</b></summary><br>
-
-When `/sbin/nologin` is set as the shell, if user with that shell logs in, they'll get a polite message saying 'This account is currently not available'.
-
-`/bin/false` is just a binary that immediately exits, returning false, when it's called, so when someone who has false as shell logs in, they're immediately logged out when false exits. Setting the shell to `/bin/true` has the same effect of not allowing someone to log in but false is probably used as a convention over true since it's much better at conveying the concept that person doesn't have a shell.
-
-`/bin/nologin` is the more user-friendly option, with a customizable message given to the user trying to log in, so you would theoretically want to use that; but both nologin and false will have the same end result of someone not having a shell and not being able to ssh in.
-
-Useful resources:
-
-- [What's the difference between /sbin/nologin and /bin/false](https://unix.stackexchange.com/questions/10852/whats-the-difference-between-sbin-nologin-and-bin-false)
-- [Why do some system users have /usr/bin/false as their shell?](https://superuser.com/questions/1183311/why-do-some-system-users-have-usr-bin-false-as-their-shell)
+- [/dev/random エントロピープールへの供給方法は？（原文）](https://security.stackexchange.com/questions/89/feeding-dev-random-entropy-pool)
+- [GPGに十分なエントロピーがない](https://serverfault.com/questions/214605/gpg-does-not-have-enough-entropy)
 
 </details>
 
 <details>
-<summary><b>Which symptoms might be suffering from a disk bottleneck? ***</b></summary><br>
+<summary><b><code>/sbin/nologin</code>、<code>/bin/false</code>、および <code>/bin/true</code> の違いは何ですか？</b></summary><br>
 
-To be completed.
+`/sbin/nologin` がシェルとして設定されていると、そのシェルを持つユーザーがログインしようとした際に「このアカウントは現在利用できません」という丁寧なメッセージが表示されます。
 
-</details>
+`/bin/false` は、呼び出されるとすぐに終了し、false を返すバイナリです。したがって、false をシェルとして持つユーザーがログインすると、false が終了する際に即座にログアウトします。`/bin/true` をシェルとして設定するのもログインを許可しないという同じ効果がありますが、false の方がシェルがないことを伝えるのに適しているため、true よりも一般的に使用されます。
 
-<details>
-<summary><b>What is the meaning of the error <code>maxproc limit exceeded by uid %i ...</code> in FreeBSD?</b></summary><br>
+`/bin/nologin` はよりユーザーフレンドリーなオプションで、ログインを試みるユーザーにカスタマイズ可能なメッセージが表示されます。理論的にはこれを使用したいですが、nologin と false のどちらも、ユーザーがシェルを持たず、ssh でログインできないという最終的な結果は同じです。
 
-The FreeBSD kernel will only allow a certain number of processes to exist at one time. The number is based on the **kern.maxusers** variable.
+有用なリソース：
 
-**kern.maxusers** also affects various other in-kernel limits, such as network buffers. If the machine is heavily loaded, increase **kern.maxusers**. This will increase these other system limits in addition to the maximum number of processes.
-
-To adjust the **kern.maxusers** value, see the File/Process Limits section of the Handbook. While that section refers to open files, the same limits apply to processes.
-
-If the machine is lightly loaded but running a very large number of processes, adjust the **kern.maxproc** tunable by defining it in `/boot/loader.conf`.
+- [/sbin/nologin と /bin/false の違いは？](https://unix.stackexchange.com/questions/10852/whats-the-difference-between-sbin-nologin-and-bin-false)
+- [なぜ一部のシステムユーザーはシェルとして /usr/bin/false を持っているのか？](https://superuser.com/questions/1183311/why-do-some-system-users-have-usr-bin-false-as-their-shell)
 
 </details>
 
 <details>
-<summary><b>How to read a file line by line and assigning the value to a variable?</b></summary><br>
+<summary><b>ディスクのボトルネックに悩まされているかもしれない症状は何ですか？ ***</b></summary><br>
 
-For example:
+未完了。
+
+</details>
+
+<details>
+<summary><b>FreeBSD におけるエラー <code>maxproc limit exceeded by uid %i ...</code> の意味は何ですか？</b></summary><br>
+
+FreeBSD のカーネルは、一度に存在できるプロセスの数に制限があります。この数値は **kern.maxusers** 変数に基づいています。
+
+**kern.maxusers** はネットワークバッファなど、カーネル内のさまざまな制限にも影響します。マシンが重負荷である場合は、**kern.maxusers** を増やしてください。これにより、プロセスの最大数に加えて、これらの他のシステム制限も増加します。
+
+**kern.maxusers** の値を調整するには、ハンドブックのファイル/プロセス制限セクションを参照してください。そのセクションはオープンファイルに言及していますが、プロセスにも同じ制限が適用されます。
+
+マシンが軽負荷であるが非常に多くのプロセスを実行している場合は、`/boot/loader.conf` で **kern.maxproc** のチューニングパラメータを定義して調整してください。
+
+</details>
+
+<details>
+<summary><b>ファイルを1行ずつ読み込み、値を変数に代入する方法は？</b></summary><br>
+
+例えば：
 
 ```bash
 while IFS='' read -r line || [[ -n "$line" ]] ; do
@@ -3853,61 +3853,61 @@ while IFS='' read -r line || [[ -n "$line" ]] ; do
 done < "/path/to/filename"
 ```
 
-Explanation:
+説明：
 
-- `IFS=''` (or `IFS=`) prevents leading/trailing whitespace from being trimmed.
-- `-r` prevents backslash escapes from being interpreted.
-- `|| [[ -n $line ]]` prevents the last line from being ignored if it doesn't end with a `\n` (since  read returns a non-zero exit code when it encounters EOF).
+- `IFS=''`（または `IFS=`）は、前後の空白がトリムされるのを防ぎます。
+- `-r` はバックスラッシュエスケープの解釈を防ぎます。
+- `|| [[ -n $line ]]` は、最後の行が `\n` で終わっていない場合でも無視されないようにします（`read` が EOF に遭遇すると非ゼロの終了コードを返すため）。
 
-Useful resources:
+有用なリソース：
 
-- [Read a file line by line assigning the value to a variable](https://stackoverflow.com/questions/10929453/read-a-file-line-by-line-assigning-the-value-to-a-variable)
-
-</details>
-
-<details>
-<summary><b>The client reports that his site received a grade B in the ssllabs scanner. Prepare a checklist of best practice for ssl configuration. ***</b></summary><br>
-
-Useful resources:
-
-- [Getting a Perfect SSL Labs Score](https://michael.lustfield.net/nginx/getting-a-perfect-ssl-labs-score)
-- [17 small suggestions how to improve ssllabs.com/ssltest/](https://community.qualys.com/thread/14023)
-- [How do you score A+ with 100 on all categories on SSL Labs test with Let's Encrypt and Nginx?](https://stackoverflow.com/questions/41930060/how-do-you-score-a-with-100-on-all-categories-on-ssl-labs-test-with-lets-encry)
+- [ファイルを1行ずつ読み込み、値を変数に代入する方法](https://stackoverflow.com/questions/10929453/read-a-file-line-by-line-assigning-the-value-to-a-variable)
 
 </details>
 
 <details>
-<summary><b>What does CPU jumps mean?</b></summary><br>
+<summary><b>クライアントがサイトのスコアがssllabsスキャナーでBだったと報告しています。SSL構成のベストプラクティスのチェックリストを準備してください。 ***</b></summary><br>
 
-An OS is a very busy thing, particularly so when you have it doing something (and even when you aren't). And when we are looking at an active enterprise environment, something is always going on.
+有用なリソース：
 
-Most of this activity is "bursty", meaning processes are typically quiescent with short periods of intense activity. This is certainly true of any type of network-based activity (e.g. processing PHP requests), but also applies to OS maintenance (e.g. file system maintenance, page reclamation, disk I/O requests).
-
-If you take a situation where you have a lot of such bursty processes, you get a very irregular and spiky CPU usage plot.
-
-As `500 - Internal Server Error` says, the high number of context switches are going to make the situation even worse.
-
-Useful resources:
-
-- [What does "CPU jumps” mean? (original)](https://stackoverflow.com/questions/32185607/what-does-cpu-jumps-mean)
+- [完璧なSSL Labsスコアを取得する方法](https://michael.lustfield.net/nginx/getting-a-perfect-ssl-labs-score)
+- [ssllabs.com/ssltest/を改善するための17の小さな提案](https://community.qualys.com/thread/14023)
+- [Let's EncryptとNginxを使用してSSL Labsテストですべてのカテゴリで100点を取得し、A+をスコアする方法は？](https://stackoverflow.com/questions/41930060/how-do-you-score-a-with-100-on-all-categories-on-ssl-labs-test-with-lets-encry)
 
 </details>
 
 <details>
-<summary><b>How do you trace a system call in Linux? Explain the possible methods.</b></summary><br>
+<summary><b>「CPUジャンプ」とは何を意味しますか？</b></summary><br>
+
+OSは非常に忙しいもので、何かをしているとき（そして何もしていないときも）特にそうです。アクティブな企業環境では、常に何かが進行しています。
+
+この活動のほとんどは「バースティー（burst）」であり、プロセスは通常は静止していて、短い期間の激しい活動があります。これはネットワークベースの活動（例えばPHPリクエストの処理）にも当てはまりますが、OSのメンテナンス（例えばファイルシステムのメンテナンス、ページの回収、ディスクI/Oリクエスト）にも当てはまります。
+
+多くのバースティーなプロセスがある状況では、非常に不規則でスパイキーなCPU使用率のプロットが得られます。
+
+`500 - Internal Server Error` で示されるように、高い数のコンテキストスイッチは状況をさらに悪化させるでしょう。
+
+有用なリソース：
+
+- [「CPUジャンプ」とは何を意味しますか？（原文）](https://stackoverflow.com/questions/32185607/what-does-cpu-jumps-mean)
+
+</details>
+
+<details>
+<summary><b>Linuxでシステムコールをトレースする方法は？考えられる方法を説明してください。</b></summary><br>
 
 **SystemTap**
 
-This is the most powerful method. It can even show the call arguments:
+これは最も強力な方法です。コールの引数も表示できます：
 
-Usage:
+使用方法：
 
 ```bash
 sudo apt-get install systemtap
 sudo stap -e 'probe syscall.mkdir { printf("%s[%d] -> %s(%s)\n", execname(), pid(), name, argstr) }'
 ```
 
-Then on another terminal:
+そして他のターミナルで:
 
 ```bash
 sudo rm -rf /tmp/a /tmp/b
@@ -3915,32 +3915,32 @@ mkdir /tmp/a
 mkdir /tmp/b
 ```
 
-Sample output:
+出力例:
 
 ```bash
 mkdir[4590] -> mkdir("/tmp/a", 0777)
 mkdir[4593] -> mkdir("/tmp/b", 0777)
 ```
 
-**`strace` with `-f|-ff` params**
+**`strace`コマンドを`-f|-ff`パラメータ付きで**
 
-You can use the `-f` and `-ff` option. Something like this:
+このように`-f`や`-ff`オプションをつけることができます:
 
 ```bash
 strace -f -e trace=process bash -c 'ls; :
 ```
 
-- `-f` : Trace child processes as they are created by currently traced processes as a result of the fork(2) system call.
+- `-f` : 現在トレースされているプロセスによって `fork(2)` システムコールの結果として作成された子プロセスもトレースします。
 
-- `-ff` : If the `-o` filename option is in effect, each processes trace is written to filename.pid where pid is the numeric process id of each process. This is incompatible with `-c`, since no per-process counts are kept.
+- `-ff` : `-o` ファイル名オプションが有効な場合、各プロセスのトレースは `filename.pid` に書き込まれます。ここで `pid` は各プロセスの数値プロセスIDです。これは `-c` と互換性がなく、プロセスごとのカウントが保持されないためです。
 
-**`ltrace -S` shows both system calls and library calls**
+**`ltrace -S` はシステムコールとライブラリコールの両方を表示します**
 
-This awesome tool therefore gives even further visibility into what executables are doing.
+この素晴らしいツールは、実行ファイルが何をしているのかさらに詳しく見ることができます。
 
-**`ftrace` minimal runnable example**
+**`ftrace` の最小限の実行可能な例**
 
-Here goes a minimal runnable example. Run with `sudo`:
+以下は最小限の実行可能な例です。`sudo` を使って実行してください。
 
 ```bash
 #!/bin/sh
@@ -3953,46 +3953,46 @@ if ! mountpoint -q debug; then
   mount -t debugfs nodev debug
 fi
 
-# Stop tracing.
+# トレイシングをやめる
 echo 0 > "${d}/tracing_on"
 
-# Clear previous traces.
+# 前回のトレイシングを消去
 echo > "${d}/trace"
 
-# Find the tracer name.
+# とレイザー名を探す
 cat "${d}/available_tracers"
 
-# Disable tracing functions, show only system call events.
+# トレイシング機能を無効化し、システムコールイベントだけ表示する
 echo nop > "${d}/current_tracer"
 
-# Find the event name with.
+# イベント名とともに表示
 grep mkdir "${d}/available_events"
 
-# Enable tracing mkdir.
-# Both statements below seem to do the exact same thing,
-# just with different interfaces.
+# mkdirのトレースを有効にする:
+# 以下の2つの文はは全く同じことをする
+# ただインターフェースが違うだけ
 # https://www.kernel.org/static/html/v4.18/trace/events.html
 echo sys_enter_mkdir > "${d}/set_event"
 # echo 1 > "${d}/events/syscalls/sys_enter_mkdir/enable"
 
-# Start tracing.
+# トレイシングを開始する
 echo 1 > "${d}/tracing_on"
 
-# Generate two mkdir calls by two different processes.
+# 2つの異なるプロセスによる2つのmkdirコールの生成
 rm -rf /tmp/a /tmp/b
 mkdir /tmp/a
 mkdir /tmp/b
 
-# View the trace.
+# トレイスの表示
 cat "${d}/trace"
 
-# Stop tracing.
+# トレイスの停止
 echo 0 > "${d}/tracing_on"
 
 umount debug
 ```
 
-Sample output:
+出力のサンプル:
 
 ```bash
 # tracer: nop
@@ -4008,28 +4008,28 @@ Sample output:
             mkdir-5620  [003] .... 10249.264613: sys_mkdir(pathname: 7ffcdc91ecb0, mode: 1ff)
 ```
 
-One cool thing about this method is that it shows the function call for all processes on the system at once, although you can also filter PIDs of interest with `set_ftrace_pid`.
+この方法の一つのクールな点は、システム上のすべてのプロセスの関数呼び出しを一度に表示できることです。ただし、`set_ftrace_pid` を使って興味のある PID をフィルタリングすることもできます。
 
-Useful resources:
+有用なリソース:
 
-- [How do I trace a system call in Linux? (original)](https://stackoverflow.com/questions/29840213/how-do-i-trace-a-system-call-in-linux)
-- [Does ftrace allow capture of system call arguments to the Linux kernel, or only function names?](https://stackoverflow.com/questions/27608752/does-ftrace-allow-capture-of-system-call-arguments-to-the-linux-kernel-or-only)
-- [How to trace just system call events with ftrace without showing any other functions in the Linux kernel?](https://stackoverflow.com/questions/52764544/how-to-trace-just-system-call-events-with-ftrace-without-showing-any-other-funct)
-- [What system call is used to load libraries in Linux?](https://unix.stackexchange.com/questions/226524/what-system-call-is-used-to-load-libraries-in-linux)
+- [Linuxでシステムコールをトレースする方法は？（原文）](https://stackoverflow.com/questions/29840213/how-do-i-trace-a-system-call-in-linux)
+- [ftraceはLinuxカーネルに対するシステムコールの引数をキャプチャできますか、それとも関数名だけですか？](https://stackoverflow.com/questions/27608752/does-ftrace-allow-capture-of-system-call-arguments-to-the-linux-kernel-or-only)
+- [ftraceでシステムコールイベントだけをトレースし、Linuxカーネルの他の関数を表示しない方法は？](https://stackoverflow.com/questions/52764544/how-to-trace-just-system-call-events-with-ftrace-without-showing-any-other-funct)
+- [Linuxでライブラリをロードするために使用されるシステムコールは何ですか？](https://unix.stackexchange.com/questions/226524/what-system-call-is-used-to-load-libraries-in-linux)
 
 </details>
 
 <details>
-<summary><b>How to remove all files except some from a directory?</b></summary><br>
+<summary><b>ディレクトリから一部を除くすべてのファイルを削除するには？</b></summary><br>
 
-Solution 1 - with `extglob`:
+解決策1 - `extglob`をつける:
 
 ```bash
 shopt -s extglob
 rm !(textfile.txt|backup.tar.gz|script.php|database.sql|info.txt)
 ```
 
-Solution 2 - with `find`:
+解決策2 -`find`をつける:
 
 ```bash
 find . -type f -not -name '*txt' -print0 | xargs -0 rm --
@@ -4038,9 +4038,9 @@ find . -type f -not -name '*txt' -print0 | xargs -0 rm --
 </details>
 
 <details>
-<summary><b>How to check if a string contains a substring in Bash?</b></summary><br>
+<summary><b>文字列にサブ文字列が含まれているかをBashで確認するにはどうすればよいですか？</b></summary><br>
 
-You can use `*` (wildcards) outside a case statement, too, if you use double brackets:
+`*`（ワイルドカード）を使って、case文の外でも確認することができます。ただし、ダブルブラケットを使用する必要があります。
 
 ```bash
 string='some text'
@@ -4052,209 +4052,209 @@ fi
 </details>
 
 <details>
-<summary><b>Explain differences between <code>2>&-</code>, <code>2>/dev/null</code>, <code>|&</code>, <code>&>/dev/null</code>, and <code>>/dev/null 2>&1</code>.</b></summary><br>
+<summary><b><code>2>&-</code>、<code>2>/dev/null</code>、<code>|&</code>、<code>&>/dev/null</code>、および <code>>/dev/null 2>&1</code> の違いを説明してください。</b></summary><br>
 
-- a **number 1** = standard out (i.e. `STDOUT`)
-- a **number 2** = standard error (i.e. `STDERR`)
-- if a number isn't explicitly given, then **number 1** is assumed by the shell (bash)
+- **番号 1** = 標準出力（`STDOUT`）
+- **番号 2** = 標準エラー（`STDERR`）
+- 明示的に番号が指定されていない場合、シェル（bash）はデフォルトで**番号 1**を使用します。
 
-First let's tackle the function of these.
+これらの機能について説明します。
 
 `2>&-`
 
-The general form of this one is `M>&-`, where **"M"** is a file descriptor number. This will close output for whichever file descriptor is referenced, i.e. **"M"**.
+一般的な形式は `M>&-` で、ここで **"M"** はファイルディスクリプタ番号です。これは、指定されたファイルディスクリプタ **"M"** の出力を閉じます。
 
 `2>/dev/null`
 
-The general form of this one is `M>/dev/null`, where **"M"** is a file descriptor number. This will redirect the file descriptor, **"M"**, to `/dev/null`.
+一般的な形式は `M>/dev/null` で、ここで **"M"** はファイルディスクリプタ番号です。これは、ファイルディスクリプタ **"M"** の出力を `/dev/null` にリダイレクトします。
 
 `2>&1`
 
-The general form of this one is `M>&N`, where **"M"** & **"N"** are file descriptor numbers. It combines the output of file descriptors **"M"** and **"N"** into a single stream.
+一般的な形式は `M>&N` で、ここで **"M"** と **"N"** はファイルディスクリプタ番号です。これは、ファイルディスクリプタ **"M"** と **"N"** の出力を単一のストリームに結合します。
 
 `|&`
 
-This is just an abbreviation for `2>&1 |`. It was added in Bash 4.
+これは `2>&1 |` の省略形です。Bash 4 で追加されました。
 
 `&>/dev/null`
 
-This is just an abbreviation for `>/dev/null 2>&1`. It redirects file descriptor 2 (`STDERR`) and descriptor 1 (`STDOUT`) to `/dev/null`.
+これは `>/dev/null 2>&1` の省略形です。ファイルディスクリプタ 2（`STDERR`）とファイルディスクリプタ 1（`STDOUT`）の出力を `/dev/null` にリダイレクトします。
 
 `>/dev/null`
 
-This is just an abbreviation for `1>/dev/null`. It redirects file descriptor 1 (`STDOUT`) to `/dev/null`.
+これは `1>/dev/null` の省略形です。ファイルディスクリプタ 1（`STDOUT`）の出力を `/dev/null` にリダイレクトします。
 
-Useful resources:
+有用なリソース：
 
-- [Difference between 2>&-, 2>/dev/null, |&, &>/dev/null and >/dev/null 2>&1](https://unix.stackexchange.com/questions/70963/difference-between-2-2-dev-null-dev-null-and-dev-null-21)
-- [Chapter 20. I/O Redirection](http://www.tldp.org/LDP/abs/html/io-redirection.html)
-
-</details>
-
-<details>
-<summary><b>How to redirect stderr and stdout to different files in the same line?</b></summary><br>
-
-Just add them in one line `command 2>> error 1>> output`.
-
-However, note that `>>` is for appending if the file already has data. Whereas, `>` will overwrite any existing data in the file.
-
-So, `command 2> error 1> output` if you do not want to append.
-
-Just for completion's sake, you can write `1>` as just `>` since the default file descriptor is the output. so `1>` and `>` is the same thing.
-
-So, `command 2> error 1> output` becomes, `command 2> error > output`.
+- [2>&-、2>/dev/null、|&、&>/dev/null、および >/dev/null 2>&1 の違い](https://unix.stackexchange.com/questions/70963/difference-between-2-2-dev-null-dev-null-and-dev-null-21)
+- [第20章 I/O リダイレクション](http://www.tldp.org/LDP/abs/html/io-redirection.html)
 
 </details>
 
 <details>
-<summary><b>Load averages are above 30 on a server with 24 cores but CPU shows around 70 percent idle. One of the common causes of this condition is? How to debug and fixed?</b></summary><br>
+<summary><b>標準エラーと標準出力を同じ行で異なるファイルにリダイレクトするにはどうすればよいですか？</b></summary><br>
 
-Requests which involve disk I/O can be slowed greatly if cpu(s) needs to wait on the disk to read or write data. I/O Wait, is the percentage of time the CPU has to wait on disk.
+1行で指定するには、`command 2>> error 1>> output` のようにします。
 
-Lets looks at how we can confirm if disk I/O is slowing down application performance by using a few terminal command line tools (`top`, `atop` and `iotop`).
+ただし、`>>` はファイルに既にデータがある場合に追加書き込みを行います。一方、`>` はファイルの既存のデータを上書きします。
 
-Example of debug:
+したがって、追加書き込みを行いたくない場合は、`command 2> error 1> output` を使用します。
 
-- answering whether or not I/O is causing system slowness
-- finding which disk is being written to
-- finding the processes that are causing high I/O
-- process list **state**
-- finding what files are being written too heavily
-- do you see your copy process put in **D** state waiting for I/O work to be done by pdflush?
-- do you see heavy synchronous write activity on your disks?
+完全性のために、`1>` は `>` として書くことができます。デフォルトのファイルディスクリプタは出力なので、`1>` と `>` は同じ意味です。
 
-also:
-
-- using `top` command - load averages and wa (wait time)
-- using `atop` command to monitor DSK (disk) I/O stats
-- using `iotop` command for real-time insight on disk read/writes
-
-For improvement performance:
-
-- check drive array configuration
-- check disk queuing algorithms and tuning them
-- tuning general block I/O parameters
-- tuning virtual memory management to improve I/O performance
-- check and tuning mount options and filesystem params (also responsible for cache)
-
-Useful resources:
-
-- [Linux server performance: Is disk I/O slowing your application? (original)](https://haydenjames.io/linux-server-performance-disk-io-slowing-application/)
-- [Troubleshooting High I/O Wait in Linux](https://bencane.com/2012/08/06/troubleshooting-high-io-wait-in-linux/)
-- [Debugging Linux I/O latency](https://superuser.com/questions/396696/debugging-linux-i-o-latency)
-- [How do pdflush, kjournald, swapd, etc interoperate?](https://unix.stackexchange.com/questions/76970/how-do-pdflush-kjournald-swapd-etc-interoperate)
-- [5 ways to improve HDD speed on Linux](https://thecodeartist.blogspot.com/2012/06/improving-hdd-performance-linux.html)
+したがって、`command 2> error 1> output` は `command 2> error > output` になります。
 
 </details>
 
 <details>
-<summary><b>How to enforce authorization methods in SSH? In what situations it would be useful?</b></summary><br>
+<summary><b>24コアのサーバーでロードアベレージが30を超えているが、CPUのアイドル率が約70％です。この状態の一般的な原因は何ですか？また、どのようにデバッグして修正しますか？</b></summary><br>
 
-Force login with a password:
+ディスクI/Oを伴うリクエストは、CPUがディスクの読み書きを待つ必要がある場合、パフォーマンスが大幅に低下する可能性があります。I/O待機時間（I/O Wait）は、CPUがディスクでの操作を待つ時間の割合です。
+
+以下の端末コマンドラインツール（`top`、`atop`、`iotop`）を使用して、ディスクI/Oがアプリケーションのパフォーマンスを低下させているかどうかを確認できます。
+
+デバッグの例：
+
+- I/Oがシステムの遅延を引き起こしているかどうかを確認する
+- どのディスクが書き込まれているかを特定する
+- 高いI/Oを引き起こしているプロセスを見つける
+- プロセスリストの**状態**を確認する
+- 過剰に書き込まれているファイルを特定する
+- コピー処理が**D**状態でI/O作業がpdflushによって行われるのを待っているか確認する
+- ディスクでの重い同期書き込みアクティビティを確認する
+
+また：
+
+- `top` コマンドを使用してロードアベレージと待機時間（wa）を確認する
+- `atop` コマンドを使用してディスク（DSK）I/Oの統計を監視する
+- `iotop` コマンドを使用してディスクの読み書きのリアルタイムの洞察を得る
+
+パフォーマンス改善のために：
+
+- ドライブアレイの構成を確認する
+- ディスクのキューイングアルゴリズムを確認し、調整する
+- 一般的なブロックI/Oパラメータを調整する
+- I/Oパフォーマンスを向上させるために仮想メモリ管理を調整する
+- マウントオプションやファイルシステムのパラメータを確認し、調整する（キャッシュにも影響があります）
+
+有用なリソース：
+
+- [Linuxサーバーのパフォーマンス: ディスクI/Oがアプリケーションを遅くしているか？](https://haydenjames.io/linux-server-performance-disk-io-slowing-application/)
+- [Linuxでの高いI/O待機時間のトラブルシューティング](https://bencane.com/2012/08/06/troubleshooting-high-io-wait-in-linux/)
+- [LinuxのI/O待機時間のデバッグ](https://superuser.com/questions/396696/debugging-linux-i-o-latency)
+- [pdflush、kjournald、swapdなどはどのように相互作用するのか？](https://unix.stackexchange.com/questions/76970/how-do-pdflush-kjournald-swapd-etc-interoperate)
+- [LinuxでHDDの速度を改善する5つの方法](https://thecodeartist.blogspot.com/2012/06/improving-hdd-performance-linux.html)
+
+</details>
+
+<details>
+<summary><b>SSHで認証方法を強制するにはどうすればよいですか？どのような状況で役立ちますか？</b></summary><br>
+
+パスワードでのログインを強制する：
 
 ```bash
 ssh -o PreferredAuthentications=password -o PubkeyAuthentication=no user@remote_host
 ```
 
-Force login using the key:
+キーを使用してログインを強制する：
 
 ```bash
 ssh -o PreferredAuthentications=publickey -o PubkeyAuthentication=yes -i id_rsa user@remote_host
 ```
 
-Useful resources:
+役立つリソース:
 
-- [How to force ssh client to use only password auth?](https://unix.stackexchange.com/questions/15138/how-to-force-ssh-client-to-use-only-password-auth)
-
-</details>
-
-<details>
-<summary><b>Getting <code>Too many Open files</code> error for Postgres. How to resolve it?</b></summary><br>
-
-Fixed the issue by reducing `max_files_per_process` e.g. to 200 from default 1000. This parameter is in `postgresql.conf` file and this sets the maximum number of simultaneously open files allowed to each server subprocess.
-
-Usually people start to edit `/etc/security/limits.conf` file, but forget that this file only apply to the actively logged in users through the PAM system.
+- [SSHクライアントにパスワード認証のみを使用させるにはどうすればよいですか？](https://unix.stackexchange.com/questions/15138/how-to-force-ssh-client-to-use-only-password-auth)
 
 </details>
 
 <details>
-<summary><b>In what circumstance can <code>df</code> and <code>du</code> disagree on available disk space? How do you solve it?</b></summary><br>
+<summary><b>Postgresで「Too many Open files」エラーが発生しています。どう解決すればよいですか？</b></summary><br>
 
-`du` checks usage of directories, but `df` checks free'd inodes, and files can be held open and take space after they're deleted.
+`max_files_per_process` をデフォルトの1000から200に減らすことで問題を解決しました。このパラメータは `postgresql.conf` ファイルにあり、各サーバーサブプロセスに許可される同時に開かれているファイルの最大数を設定します。
 
-**Solution 1**
+通常、人々は `/etc/security/limits.conf` ファイルを編集し始めますが、このファイルはPAMシステムを通じてアクティブにログインしているユーザーにのみ適用されることを忘れがちです。
 
-Check for files on located under mount points. Frequently if you mount a directory (say a sambafs) onto a filesystem that already had a file or directories under it, you lose the ability to see those files, but they're still consuming space on the underlying disk.
+</details>
 
-I've had file copies while in single user mode dump files into directories that I couldn't see except in single usermode (due to other directory systems being mounted on top of them).
+<details>
+<summary><b>`df`と`du`が利用可能なディスクスペースについて意見が異なるのはどのような状況ですか？どのように解決しますか？</b></summary><br>
 
-**Solution 2**
+`du` はディレクトリの使用状況を確認しますが、`df` は解放されたインデックスノードを確認します。ファイルが削除された後でも開いたままの状態でスペースを占有し続けることがあります。
 
-On the other hand `df -h` and `du -sh` could mismatched by about 50% of the hard disk size. This was caused by e.g. Apache (httpd) keeping large log files in memory which had been deleted from disk.
+**解決策 1**
 
-This was tracked down by running `lsof | grep "/var" | grep deleted` where `/var` was the partition I needed to clean up.
+マウントポイントの下にあるファイルを確認します。たとえば、ディレクトリ（例えば sambafs）をすでにファイルやディレクトリが存在するファイルシステムにマウントすると、これらのファイルを見ることができなくなりますが、基盤となるディスク上ではまだスペースを消費しています。
 
-The output showed lines like this:
+シングルユーザーモードでファイルコピーを行うと、他のディレクトリシステムが上にマウントされているため、通常のモードでは見えないディレクトリにファイルがダンプされることがあります。
+
+**解決策 2**
+
+一方、`df -h` と `du -sh` がハードディスクサイズの約50％で不一致になることがあります。これは例えば、Apache（httpd）がディスクから削除されたがメモリに保持されている大きなログファイルを保持しているためです。
+
+この問題は、`lsof | grep "/var" | grep deleted` を実行することで追跡されました。ここで `/var` はクリーンアップが必要なパーティションです。
+
+出力には次のような行が表示されました：
 
 ```
 httpd     32617    nobody  106w      REG        9,4 1835222944     688166 /var/log/apache/awstats_log (deleted)
 ```
 
-The situation was then resolved by restarting Apache (`service httpd restart`) and cleared of disk space, by allowing the locks on deleted files to be cleared.
+状況はApacheを再起動することで解決されました（`service httpd restart`）。これにより、削除されたファイルのロックがクリアされ、ディスクスペースが解放されました。
 
-Useful resources:
+有用なリソース：
 
 - [Why du and df display different values in Linux and Unix](https://linuxshellaccount.blogspot.com/2008/12/why-du-and-df-display-different-values.html)
 
 </details>
 
 <details>
-<summary><b>What is the difference between encryption and hashing?</b></summary><br>
+<summary><b>暗号化とハッシュ化の違いは何ですか？</b></summary><br>
 
-**Hashing**: Finally, hashing is a form of cryptographic security which differs from **encryption** whereas **encryption** is a two step process used to first encrypt and then decrypt a message, **hashing** condenses a message into an irreversible fixed-length value, or hash.
+**ハッシュ化**：ハッシュ化は暗号化とは異なる暗号セキュリティの形式です。**暗号化**はメッセージをまず暗号化し、その後復号化するための二段階プロセスですが、**ハッシュ化**はメッセージを不可逆的な固定長の値（またはハッシュ）に凝縮します。
 
 </details>
 
 <details>
-<summary><b>Should the root certificate go on the server?</b></summary><br>
+<summary><b>ルート証明書はサーバーに配置すべきですか？</b></summary><br>
 
-**Self-signed root certificates** need not/should not be included in web server configuration. They serve no purpose (clients will always ignore them) and they incur a slight performance (latency) penalty because they increase the size of the SSL handshake.
+**自己署名のルート証明書**は、ウェブサーバーの設定に含める必要はありません。これらは目的がなく（クライアントは常に無視します）、SSLハンドシェイクのサイズが大きくなるため、わずかなパフォーマンス（レイテンシー）のペナルティが発生します。
 
-If the client does not have the root in their trust store, then it won't trust the web site, and there is no way to work around that problem. Having the web server send the root certificate will not help - the root certificate has to come from a trusted 3rd party (in most cases the browser vendor).
+クライアントが信頼ストアにルート証明書を持っていない場合、そのウェブサイトを信頼しません。この問題を回避する方法はありません。ウェブサーバーがルート証明書を送信しても役に立ちません - ルート証明書は信頼できる第三者（ほとんどの場合、ブラウザベンダー）から提供される必要があります。
 
-Useful resources:
+有用なリソース：
 
 - [SSL root certificate optional?](https://security.stackexchange.com/questions/65332/ssl-root-certificate-optional)
 
 </details>
 
 <details>
-<summary><b>How to log all commands run by root on production servers?</b></summary><br>
+<summary><b>プロダクションサーバーでルートによって実行されたすべてのコマンドをログに記録するには？</b></summary><br>
 
-`auditd` is the correct tool for the job here:
+`auditd`がこの作業には適切なツールです：
 
-1. Add these 2 lines to `/etc/audit/audit.rules`:
+1. `/etc/audit/audit.rules` に以下の2行を追加します：
 
 ```bash
 -a exit,always -F arch=b64 -F euid=0 -S execve
 -a exit,always -F arch=b32 -F euid=0 -S execve
 ```
 
-These will track all commands run by root (euid=0). Why two rules? The execve syscall must be tracked in both 32 and 64 bit code.
+これにより、ルート（euid=0）によって実行されたすべてのコマンドが追跡されます。なぜ2つのルールが必要なのか？`execve` システムコールは、32ビットおよび64ビットの両方のコードで追跡する必要があります。
 
-2. To get rid of `auid=4294967295` messages in logs, add `audit=1` to the kernel's cmdline (by editing `/etc/default/grub`)
+2. ログに `auid=4294967295` メッセージを表示させないようにするには、カーネルのコマンドラインに `audit=1` を追加します（`/etc/default/grub` を編集）。
 
-3. Place the line
+3. 以下の
 
 ```bash
 session  required                pam_loginuid.so
 ```
 
-in all PAM config files that are relevant to login (`/etc/pam.d/{login,kdm,sshd}`), but not in the files that are relevant to su or sudo. This will allow auditd to get the calling user's uid correctly when calling sudo or su.
+を、ログインに関連するすべてのPAM設定ファイル（`/etc/pam.d/{login,kdm,sshd}`）に追加しますが、`su` または `sudo` に関連するファイルには追加しません。これにより、`sudo` または `su` を呼び出すときに、`auditd` が呼び出し元ユーザーのUIDを正しく取得できるようになります。
 
-Restart your system now.
+システムを再起動してください。
 
-Let's login and run some commands:
+ログインしてコマンドを実行してみましょう：
 
 ```bash
 $ id -u
@@ -4266,35 +4266,35 @@ $ sudo su -
 [...]
 ```
 
-Now read `/var/log/audit/auditd.log` for show what has been logged in.
+現在、`/var/log/audit/auditd.log` を読み取って、どのコマンドがログに記録されたかを確認してください。
 
-Useful resources:
+有用なリソース:
 
-- [Log all commands run by admins on production servers](https://serverfault.com/questions/470755/log-all-commands-run-by-admins-on-production-servers)
+- [管理者によって実行されたすべてのコマンドをログに記録する方法](https://serverfault.com/questions/470755/log-all-commands-run-by-admins-on-production-servers)
 
 </details>
 
 <details>
-<summary><b>How to prevent <code>dd</code> from freezing your system?</b></summary><br>
+<summary><b>`dd` コマンドがシステムをフリーズさせないようにするには？</b></summary><br>
 
-Try using ionice:
+`ionice` を使ってみてください：
 
 ```bash
 ionice -c3 dd if=/dev/zero of=file
 ```
 
-This start the `dd` process with the "idle" IO priority: it only gets disk time when no other process is using disk IO for a certain amount of time.
+これにより、`dd` プロセスが「アイドル」IO優先度で開始されます。これは、他のプロセスがディスクIOを使用していないときだけ、ディスク時間が割り当てられるという意味です。
 
-Of course this can still flood the buffer cache and cause freezes while the system flushes out the cache to disk. There are tunables under `/proc/sys/vm/` to influence this, particularly the `dirty_*` entries.
+もちろん、これでもバッファキャッシュがフラッドし、システムがキャッシュをディスクにフラッシュする間にフリーズが発生する可能性があります。これに影響を与えるためのチューニングパラメータが `/proc/sys/vm/` にあります。特に `dirty_*` エントリが関係しています。
 
 </details>
 
 <details>
-<summary><b>How to limit processes to not exceed more than X% of CPU usage?</b></summary><br>
+<summary><b>プロセスがCPU使用率をX%を超えないように制限する方法は？</b></summary><br>
 
 **nice/renice**
 
-nice is a great tool for 'one off' tweaks to a system:
+`nice` は、システムの「一時的な」調整に適したツールです。
 
 ```bash
 nice COMMAND
@@ -4302,7 +4302,7 @@ nice COMMAND
 
 **cpulimit**
 
-cpulimit if you need to run a CPU intensive job and having free CPU time is essential for the responsiveness of a system:
+`cpulimit` は、CPU集中的なジョブを実行する必要があり、システムの応答性にとって十分なCPU時間が重要な場合に使用します。
 
 ```bash
 cpulimit -l 50 COMMAND
@@ -4310,7 +4310,7 @@ cpulimit -l 50 COMMAND
 
 **cgroups**
 
-cgroups apply limits to a set of processes, rather than to just one:
+`cgroups` は、単一のプロセスではなく、一連のプロセスに制限を適用します。
 
 ```bash
 cgcreate -g cpu:/cpulimited
@@ -4323,7 +4323,7 @@ cgexec -g cpu:cpulimited COMMAND_3
 </details>
 
 <details>
-<summary><b>How mount a temporary ram partition?</b></summary><br>
+<summary><b>一時的なRAMパーティションのマウント方法は？</b></summary><br>
 
 ```bash
 # -t - filesystem type
@@ -4334,7 +4334,7 @@ mount -t tmpfs tmpfs /mnt -o size=64M
 </details>
 
 <details>
-<summary><b>How to kills a process that is locking a file?</b></summary><br>
+<summary><b>ファイルをロックしているプロセスを停止させるには？</b></summary><br>
 
 ```bash
 fuser -k filename
@@ -4343,7 +4343,7 @@ fuser -k filename
 </details>
 
 <details>
-<summary><b>Other admin trying to debug a server accidentally typed: <code>chmod -x /bin/chmod</code>. How to reset permissions back to default?</b></summary><br>
+<summary><b>サーバーをデバッグしようとしている他の管理者が誤って入力してしまった：<code>chmod -x /bin/chmod</code>。パーミッションをデフォルトに戻すには？</b></summary><br>
 
 ```bash
 # 1:
@@ -4361,22 +4361,22 @@ setfacl --set u::rwx,g::---,o::--- /bin/chmod
 /usr/lib/ld*.so /bin/chmod 0700 /bin/chmod
 ```
 
-Useful resources:
+役に立つリソース:
 
 - [What can you do when you can't chmod chmod?](https://www.networkworld.com/article/3002286/operating-systems/what-can-you-do-when-you-cant-chmod-chmod.html)
 
 </details>
 
 <details>
-<summary><b><code>grub></code> vs <code>grub-rescue></code>. Explain.</b></summary><br>
+<summary><b><code>grub></code> と <code>grub-rescue></code> の違いについて説明してください。</b></summary><br>
 
-- `grub>` - this is the mode to which it passes if you find everything you need to run the system in addition to the configuration file. With this mode, we have access to most (if not all) modules and commands. This mode can be called from the menu by pressing the 'c' key
-- `grub-rescue` - this is the mode to which it passes if it is impossible to find its own directory (especially the directory with modules and additional commands, e.g. directory `/boot/grub/i386-pc`), if its contents are damaged or if no normal module is found, contains only basic commands
+- `grub>` - これは、システムを実行するために必要なものが見つかり、設定ファイルも含まれている場合に切り替わるモードです。このモードでは、ほとんどすべてのモジュールやコマンドにアクセスできます。このモードには、メニューから 'c' キーを押すことでアクセスできます。
+- `grub-rescue` - これは、自身のディレクトリ（特にモジュールや追加コマンドが含まれているディレクトリ、例えば `/boot/grub/i386-pc`）が見つからない場合、内容が損傷している場合、または正常なモジュールが見つからない場合に切り替わるモードです。このモードには基本的なコマンドしか含まれていません。
 
 </details>
 
 <details>
-<summary><b>How to check whether the private key and the certificate match?</b></summary><br>
+<summary><b>プライベートキーと証明書が一致するかどうかを確認する方法は？</b></summary><br>
 
 ```bash
 (openssl rsa -noout -modulus -in private.key | openssl md5 ; openssl x509 -noout -modulus -in certificate.crt | openssl md5) | uniq
@@ -4385,112 +4385,112 @@ Useful resources:
 </details>
 
 <details>
-<summary><b>How to add new user without using <code>useradd</code>/<code>adduser</code> commands?</b></summary><br>
+<summary><b><code>useradd</code> または <code>adduser</code> コマンドを使わずに新しいユーザーを追加する方法は？</b></summary><br>
 
-1. Add an entry of user details in <code>/etc/passwd</code> with `vipw`:
+1. `vipw` コマンドを使って、<code>/etc/passwd</code> にユーザーの詳細を追加します：
 
 ```bash
 # username:password:UID:GID:Comments:Home_Directory:Login Shell
 user:x:501:501:test user:/home/user:/bin/bash
 ```
 
-  > Be careful with the syntax. Do not edit directly with an editor. `vipw` locks the file, so that other commands won't try to update it at the same time.
+   > 構文には注意してください。直接エディタで編集しないでください。`vipw` はファイルをロックするため、他のコマンドが同時にファイルを更新しようとすることはありません。
 
-2. You will have to create a group with same name in <code>/etc/group</code> with `vigr` (similar tool for `vipw`):
+2. 同じ名前のグループを <code>/etc/group</code> に `vigr` で作成する必要があります（`vipw` と似たツールです）。
 
 ```bash
 user:x:501:
 ```
 
-3. Assign a password to the user:
+3. ユーザーにパスワードを与えます:
 
 ```bash
 passwd user
 ```
 
-4. Create the home directory of the user with mkdir:
+4. `mkdir` コマンドを使ってユーザーのホームディレクトリを作成します：
 
 ```bash
 mkdir -m 0700 /home/user
 ```
 
-5. Copy the files from `/etc/skel` to the new home directory:
+5. `/etc/skel` から新しいホームディレクトリにファイルをコピーします：
 
 ```bash
 rsync -av --delete /etc/skel/ /home/user
 ```
 
-6. Fix ownerships and permissions with `chown` and `chmod`:
+6. `chown` と `chmod` を使って所有権と権限を修正します：
 
 ```bash
 chown -R user:user /home/user
 chmod -R go-rwx /home/user
 ```
 
-Useful resources:
+役に立つリソース:
 
 - [What steps to add a user to a system without using useradd/adduser?](https://unix.stackexchange.com/questions/153225/what-steps-to-add-a-user-to-a-system-without-using-useradd-adduser)
 
 </details>
 
 <details>
-<summary><b>Why do we need <code>mktemp</code> command? Present an example of use.</b></summary><br>
+<summary><b><code>mktemp</code> コマンドはなぜ必要ですか？ 使用例を示してください。</b></summary><br>
 
-<code>mktemp</code> randomizes the name. It is very important from the security point of view.
+<code>mktemp</code> コマンドは名前をランダム化します。これはセキュリティの観点から非常に重要です。
 
-Just imagine that you do something like:
+例えば、次のようなことをする場合を想像してみてください：
 
 ```bash
 echo "random_string" > /tmp/temp-file
 ```
 
-in your root-running script. And someone (who has read your script) does
+このスクリプトを実行しているユーザーが誰かがスクリプトを読んで、次のような操作を行ったとします：
 
 ```bash
 ln -s /etc/passwd /tmp/temp-file
 ```
 
-The <code>mktemp</code> command could help you in this situation:
+この状況では、<code>mktemp</code> コマンドが役立ちます：
 
 ```bash
 TEMP=$(mktemp /tmp/temp-file.XXXXXXXX)
 echo "random_string" > ${TEMP}
 ```
 
-Now this <code>ln /etc/passwd</code> attack will not work.
+これで、<code>ln /etc/passwd</code> 攻撃は機能しなくなります。
 
 </details>
 
 <details>
-<summary><b>Is it safe to attach the <code>strace</code> to a running process on the production? What are the consequences?</b></summary><br>
+<summary><b>稼働中のプロセスに対して <code>strace</code> をアタッチするのは安全ですか？その結果は何ですか？</b></summary><br>
 
-`strace` is the system call tracer for Linux. It currently uses the arcane `ptrace()` (process trace) debugging interface, which operates in a violent manner: **pausing the target process** for each syscall so that the debugger can read state. And doing this twice: when the syscall begins, and when it ends.
+`strace` は Linux のシステムコールトレーサーです。現在、`strace` は `ptrace()`（プロセストレース）デバッグインターフェースを使用しています。これは暴力的な方法で動作します。具体的には、デバッガが状態を読み取るために、**対象プロセスを各システムコールで一時停止**させるという方法です。この処理はシステムコールが開始されるときと終了するときの二回行われます。
 
-This means `strace` pauses your application twice for each syscall, and context-switches each time between the application and `strace`. It's like putting traffic metering lights on your application.
+つまり、`strace` は各システムコールでアプリケーションを二回一時停止させ、アプリケーションと `strace` の間でコンテキストスイッチを行います。これは、アプリケーションに交通信号のメーターを取り付けるようなものです。
 
-Cons:
+デメリット：
 
-- can cause significant and sometimes massive performance overhead, in the worst case, slowing the target application by over 100x. This may not only make it unsuitable for production use, but any timing information may also be so distorted as to be misleading
-- can't trace multiple processes simultaneously (with the exception of followed children)
-- visibility is limited to the system call interface
+- 重大かつ時には非常に大きなパフォーマンスオーバーヘッドを引き起こす可能性があります。最悪の場合、ターゲットアプリケーションのパフォーマンスを 100 倍以上も遅くすることがあります。これにより、プロダクション環境での使用には適さなくなり、タイミング情報が歪んで誤解を招く可能性もあります。
+- 複数のプロセスを同時にトレースできません（追跡する子プロセスを除く）。
+- システムコールインターフェースに対する可視性が制限されます。
 
-Useful resources:
+有用なリソース：
 
-- [strace Wow Much Syscall (original)](http://www.brendangregg.com/blog/2014-05-11/strace-wow-much-syscall.html)
+- [strace Wow Much Syscall (原文)](http://www.brendangregg.com/blog/2014-05-11/strace-wow-much-syscall.html)
 
 </details>
 
 <details>
-<summary><b>What is the easiest, safest and most portable way to remove <code>-rf</code> directory entry?</b></summary><br>
+<summary><b><code>-rf</code> ディレクトリエントリを削除する最も簡単で安全で移植性のある方法は何ですか？</b></summary><br>
 
-They're effective but not optimally portable:
+これらは効果的ですが、最適な移植性はありません：
 
 - <code>rm -- -fr</code>
 - <code>perl -le 'unlink("-fr");'</code>
 
-People who go on about shell command line quoting and character escaping are almost as dangerous as those who simply don't even recognize why a file name like that poses any problem at all.
+シェルコマンドラインのクォーティングや文字エスケープに関して語る人々は、ファイル名に問題がある理由を認識しない人々と同じくらい危険です。
 
-The most portable solution:
+最も移植性のある解決策：
 
 ```bash
 rm ./-fr
@@ -4499,65 +4499,65 @@ rm ./-fr
 </details>
 
 <details>
-<summary><b>Write a simple bash script (or pair of scripts) to backup and restore your system. ***</b></summary><br>
+<summary><b>システムのバックアップと復元を行うシンプルな bash スクリプト（またはスクリプトペア）を作成してください。 ***</b></summary><br>
 
-To be completed.
+未完了。
 
 </details>
 
 <details>
-<summary><b>What are salted hashes? Generate the password with salt for the <code>/etc/shadow</code> file.</b></summary><br>
+<summary><b>ソルト付きハッシュとは何ですか？ <code>/etc/shadow</code> ファイルのためにソルト付きパスワードを生成してください。</b></summary><br>
 
-**Salt** at its most fundamental level is random data. When a properly protected password system receives a new password, it will create a hashed value for that password, create a new random salt value, and then store that combined value in its database. This helps defend against dictionary attacks and known hash attacks.
+**ソルト**は基本的にはランダムなデータです。適切に保護されたパスワードシステムが新しいパスワードを受け取ると、そのパスワードのハッシュ値を作成し、新しいランダムなソルト値を生成して、その結合値をデータベースに保存します。これにより、辞書攻撃や既知のハッシュ攻撃から守る助けとなります。
 
-For example, if a user uses the same password on two different systems, if they used the same hashing algorithm, they could end up with the same hash value. However, if even one of the systems uses salt with its hashes, the values will be different.
+例えば、ユーザーが2つの異なるシステムで同じパスワードを使用した場合、同じハッシュアルゴリズムを使用していれば、同じハッシュ値が生成される可能性があります。しかし、どちらかのシステムがソルトを使用していれば、ハッシュ値は異なります。
 
-The encrypted passwords in `/etc/shadow` file are stored in the following format:
+`/etc/shadow` ファイルに保存されている暗号化されたパスワードは、以下の形式で保存されます：
 
 ```bash
 $ID$SALT$ENCRYPTED
 ```
 
-The `$ID` indicates the type of encryption, the `$SALT` is a random (up to 16 characters) string and `$ENCRYPTED` is a password’s hash.
+ここで、`$ID` は暗号化の種類を示し、`$SALT` はランダムな（最大16文字）文字列、`$ENCRYPTED` はパスワードのハッシュです。
 
 <table style="width:100%">
   <tr>
-    <th>Hash Type</th>
+    <th>ハッシュタイプ</th>
     <th>ID</th>
-    <th>Hash Length</th>
+    <th>ハッシュ長</th>
   </tr>
   <tr>
     <td>MD5</td>
     <td>$1</td>
-    <td>22 characters</td>
+    <td>22文字</td>
   </tr>
   <tr>
     <td>SHA-256</td>
     <td>$5</td>
-    <td>43 characters</td>
+    <td>43文字</td>
   </tr>
   <tr>
     <td>SHA-512</td>
     <td>$6</td>
-    <td>86 characters</td>
+    <td>86文字</td>
   </tr>
 </table>
 
-Use the below commands from the Linux shell to generate hashed password for `/etc/shadow` with the random salt:
+以下のコマンドを Linux シェルで使用して、ランダムなソルト付きのハッシュパスワードを `/etc/shadow` 用に生成します：
 
-- Generate **MD5** password hash
+- **MD5** パスワードハッシュの生成
 
 ```bash
 python -c "import random,string,crypt; randomsalt = ''.join(random.sample(string.ascii_letters,8)); print crypt.crypt('MySecretPassword', '\$1\$%s\$' % randomsalt)"
 ```
 
-- Generate **SHA-256** password hash
+- **SHA-256** パスワードハッシュの生成
 
 ```bash
 python -c "import random,string,crypt; randomsalt = ''.join(random.sample(string.ascii_letters,8)); print crypt.crypt('MySecretPassword', '\$5\$%s\$' % randomsalt)"
 ```
 
-- Generate **SHA-512** password hash
+- **SHA-512** パスワードハッシュの生成
 
 ```bash
 python -c "import random,string,crypt; randomsalt = ''.join(random.sample(string.ascii_letters,8)); print crypt.crypt('MySecretPassword', '\$6\$%s\$' % randomsalt)"
@@ -4568,49 +4568,49 @@ python -c "import random,string,crypt; randomsalt = ''.join(random.sample(string
 ###### Network Questions (27)
 
 <details>
-<summary><b>Create SPF records for your site to help control spam.</b></summary><br>
+<summary><b>スパムを制御するためにサイトに SPF レコードを作成する方法。</b></summary><br>
 
-* Start with the SPF version, this part defines the record as SPF. An SPF record should always start with the version number v=spf1 (version 1) this tag defines the record as SPF. There used to be a second version of SPF (called: SenderID), but this was discontinued.
+* SPF バージョンから始めます。この部分はレコードを SPF として定義します。SPF レコードは常にバージョン番号 v=spf1 (バージョン 1) で始めるべきです。このタグはレコードを SPF として定義します。以前は SPF の第二版 (SenderID と呼ばれる) がありましたが、これは廃止されました。
 
-* After including the v=spf1 SPF version tag you should follow with all IP addresses that are authorized to send email on your behalf. For example: <code>v=spf1 ip4:34.243.61.237 ip6:2a05:d018:e3:8c00:bb71:dea8:8b83:851e</code>
+* v=spf1 SPF バージョンタグを含めた後、次にあなたの代わりにメールを送信する権限があるすべての IP アドレスを続けて記述するべきです。例: <code>v=spf1 ip4:34.243.61.237 ip6:2a05:d018:e3:8c00:bb71:dea8:8b83:851e</code>
 
-* Next, you can include an include tag for every third-party organization that is used to send email on your behalf e.g. <code>include:thirdpartydomain.com.</code> This tag indicates that this particular third party is authorized to send email on behalf of your domain. You need to consult with the third party to learn which domain to use as a value for the ‘include’ statement.
+* 次に、あなたの代わりにメールを送信するために使用されるすべてのサードパーティー組織のために include タグを含めることができます。例: <code>include:thirdpartydomain.com.</code> このタグは、特定のサードパーティーがあなたのドメインの代わりにメールを送信する権限があることを示します。‘include’ ステートメントに使用するドメインについてはサードパーティーと相談する必要があります。
 
-* Once you have implemented all IP addresses and include tags you should end your record with an <code>~all</code> or <code>-all</code> tag. The all tag is an important part of the SPF record as it indicates what policy should be applied when ISPs detect a server which is not listed in your SPF record. If an unauthorized server does send email on behalf of your domain, action is taken according to the policy that has been published (e.g. reject the email or mark it as spam). What is the difference between these tags? You need to instruct how strict servers need to treat the emails. The <code>~all</code> tag indicates a soft fail and the <code>-all</code> indicates a hardfail. The all tag has the following basic markers:<br><br>
-`-all` – servers that aren’t listed in the SPF record are not authorized to send email (not compliant emails will be rejected)<br>
-`~all` – if the email is received from a server that isn’t listed, the email will be marked as a soft fail (emails will be accepted but marked)<br>
-`+all` - we strongly recommend not to use this option, this tag allows any server to send email from your domain<br>
+* すべての IP アドレスと include タグを実装した後は、レコードを <code>~all</code> または <code>-all</code> タグで終わるべきです。all タグは SPF レコードの重要な部分で、ISP があなたの SPF レコードにリストされていないサーバーを検出したときに適用されるポリシーを示します。もし認可されていないサーバーがあなたのドメインの代わりにメールを送信した場合、公開されたポリシーに従ってアクションが取られます（例: メールを拒否する、またはスパムとしてマークする）。これらのタグの違いは何ですか？メールをどれだけ厳しく扱うべきかを指示する必要があります。<code>~all</code> タグはソフトフェイルを示し、<code>-all</code> タグはハードフェイルを示します。all タグには以下の基本的なマーカーがあります:<br><br>
+`-all` – SPF レコードにリストされていないサーバーはメールを送信する権限がない (準拠しないメールは拒否されます)<br>
+`~all` – リストにないサーバーからメールを受信した場合、メールはソフトフェイルとしてマークされます (メールは受け入れられますがマークされます)<br>
+`+all` – このオプションの使用は強く推奨しません。このタグは任意のサーバーがあなたのドメインからメールを送信することを許可します<br>
 
-* After defining your SPF record your record might look something like this:
+* SPF レコードを定義した後、レコードは次のようになるかもしれません:
 <code>v=spf1 ip4:34.243.61.237 ip6:2a05:d018:e3:8c00:bb71:dea8:8b83:851e include:thirdpartydomain.com -all</code>
 
-Useful resources:
+有用なリソース:
 
-- [SPF Record Checker](https://www.dmarcanalyzer.com/spf/checker/)
-- [SPF Syntax](https://www.spf-record.com/syntax)
+- [SPF レコードチェッカー](https://www.dmarcanalyzer.com/spf/checker/)
+- [SPF 構文](https://www.spf-record.com/syntax)
 
-
-</details>
-
-<details>
-<summary><b>What is the difference between an authoritative and a nonauthoritative answer to a DNS query? ***</b></summary><br>
-
-An authoritative DNS query answer comes from the server that contains the zone files for the domain queried. This is the name server that the domain administrator set up the DNS records on. A nonauthoriative answer comes from a name server that does not host the domain zone files (for example, a commonly used name server has the answer cached such as Google's 8.8.8.8 or OpenDNS 208.67.222.222).
 
 </details>
 
 <details>
-<summary><b>If you try resolve hostname you get <code>NXDOMAIN</code> from <code>host</code> command. Your <code>resolv.conf</code> stores two nameservers but only second of this store this domain name. Why did not the local resolver check the second nameserver?</b></summary><br>
+<summary><b>DNS クエリに対する権威ある回答と非権威ある回答の違いは何ですか？</b></summary><br>
 
-**NXDOMAIN** is nothing but non-existent Internet or Intranet domain name. If domain name is unable to resolved using the DNS, a condition called the **NXDOMAIN** occurred.
+権威ある DNS クエリの回答は、クエリされたドメインのゾーンファイルを含むサーバーから来ます。これはドメイン管理者が DNS レコードを設定したネームサーバーです。非権威ある回答は、ドメインゾーンファイルをホストしていないネームサーバーから来ます（例えば、Google の 8.8.8.8 や OpenDNS の 208.67.222.222 などのよく使われるネームサーバーがキャッシュされた回答を持っている場合など）。
 
-The default behavior for `resolv.conf` and the `resolver` is to try the servers in the order listed. The resolver will only try the next nameserver if the first nameserver times out.
+</details>
 
-The algorithm used is to try a name server, and if the query times out, try the next, until out of name servers, then repeat trying all the name servers until a maximum number of retries are made.
+<details>
+<summary><b>ホスト名を解決しようとすると <code>host</code> コマンドで <code>NXDOMAIN</code> を取得します。<code>resolv.conf</code> には 2 つのネームサーバーが保存されていますが、そのうちの 2 番目だけがこのドメイン名を保存しています。なぜローカルリゾルバーは 2 番目のネームサーバーをチェックしなかったのですか？</b></summary><br>
 
-If a nameserver responds with **SERVFAIL** or a referral (**nofail**) or terminate query (**fail**) also only the first dns server will be used.
+**NXDOMAIN** は存在しないインターネットまたはイントラネットのドメイン名です。ドメイン名が DNS を使用して解決できない場合、**NXDOMAIN** という状態が発生します。
 
-Example:
+`resolv.conf` と `resolver` のデフォルトの動作は、リストされた順序でサーバーを試すことです。リゾルバーは、最初のネームサーバーがタイムアウトした場合にのみ、次のネームサーバーを試します。
+
+使用されるアルゴリズムは、ネームサーバーを試し、クエリがタイムアウトすると次を試す、ネームサーバーがなくなるまで繰り返し、最大再試行回数に達するまで再試行します。
+
+ネームサーバーが **SERVFAIL** で応答した場合や参照 (**nofail**) またはクエリの終了 (**fail**) があった場合も、最初の DNS サーバーのみが使用されます。
+
+例:
 
 ```
 nameserver 192.168.250.20   # it's not a dns
@@ -4618,7 +4618,7 @@ nameserver 8.8.8.8          # not store gate.test.int
 nameserver 127.0.0.1        # store gate.test.int
 ```
 
-so if you check:
+確認するためには:
 
 ```
 host -v -t a gate.test.int
@@ -4629,38 +4629,38 @@ Received 88 bytes from 8.8.8.8#53 in 43 ms
                                               # so the last server in the list was not asked
 ```
 
-To avoid this you can use e.g. `nslookup` command which will use the second nameserver if it receives a **SERVFAIL** from the first nameserver.
+この問題を避けるためには、例えば `nslookup` コマンドを使用できます。このコマンドは、最初のネームサーバーから **SERVFAIL** を受け取った場合に、2 番目のネームサーバーを使用します。
 
-Useful resources:
+有用なリソース:
 
 - [Second nameserver in /etc/resolv.conf not picked up by wget](https://serverfault.com/questions/398837/second-nameserver-in-etc-resolv-conf-not-picked-up-by-wget)
 
 </details>
 
 <details>
-<summary><b>Explore the current MTA configuration at your site. What are some of the special features of the MTA that are in use? ***</b></summary><br>
+<summary><b>サイトで現在の MTA 構成を調査してください。使用されている MTA の特別な機能にはどのようなものがありますか？ ***</b></summary><br>
 
-To be completed.
-
-</details>
-
-<details>
-<summary><b>How to find a domain based on the IP address? What techniques/tools can you use? ***</b></summary><br>
-
-To be completed.
+未完成です。
 
 </details>
 
 <details>
-<summary><b>Is it possible to have SSL certificate for IP address, not domain name?</b></summary><br>
+<summary><b>IP アドレスに基づいてドメインを見つける方法は？どのような技術やツールを使用できますか？ ***</b></summary><br>
 
-It is possible (but rarely used) as long as it is a public IP address.
+未完成です。
 
-An SSL certificate is typically issued to a Fully Qualified Domain Name (FQDN) such as `https://www.domain.com`. However, some organizations need an SSL certificate issued to a public IP address. This option allows you to specify a public IP address as the Common Name in your Certificate Signing Request (CSR). The issued certificate can then be used to secure connections directly with the public IP address (e.g. `https://1.1.1.1`.).
+</details>
 
-According to the CA Browser forum, there may be compatibility issues with certificates for IP addresses unless the IP address is in both the commonName and subjectAltName fields. This is due to legacy SSL implementations which are not aligned with RFC 5280, notably, Windows OS prior to Windows 10.
+<details>
+<summary><b>IP アドレスに対して SSL 証明書を取得することは可能ですか？ドメイン名ではなく IP アドレスに対してです。</b></summary><br>
 
-Useful resources:
+可能ですが（あまり一般的ではありません）、公開 IP アドレスである限り可能です。
+
+SSL 証明書は通常、`https://www.domain.com` のような完全修飾ドメイン名 (FQDN) に発行されます。ただし、一部の組織では、公開 IP アドレスに発行された SSL 証明書が必要です。このオプションを使用すると、証明書署名要求 (CSR) の Common Name に公開 IP アドレスを指定できます。発行された証明書は、公開 IP アドレス (`https://1.1.1.1` など) で直接接続を保護するために使用できます。
+
+CA Browser フォーラムによると、IP アドレスの証明書には互換性の問題がある場合があります。特に、IP アドレスが commonName と subjectAltName フィールドの両方に含まれていない場合です。これは、RFC 5280 に沿っていない古い SSL 実装、特に Windows 10 以前の Windows OS に起因しています。
+
+有用なリソース:
 
 - [Are SSL certificates bound to the servers ip address?](https://stackoverflow.com/questions/1095780/are-ssl-certificates-bound-to-the-servers-ip-address)
 - [SSL certificate for a public IP address?](https://serverfault.com/questions/193775/ssl-certificate-for-a-public-ip-address)
@@ -4668,11 +4668,11 @@ Useful resources:
 </details>
 
 <details>
-<summary><b>How do you do load testing and capacity planning for websites? ***</b></summary><br>
+<summary><b>ウェブサイトの負荷テストとキャパシティプランニングをどのように行いますか？ ***</b></summary><br>
 
-To be completed.
+未完成です。
 
-Useful resources:
+有用なリソース:
 
 - [How do you do load testing and capacity planning for web sites? (original)](https://serverfault.com/questions/350454/how-do-you-do-load-testing-and-capacity-planning-for-web-sites)
 - [Can you help me with my capacity planning?](https://serverfault.com/questions/384686/can-you-help-me-with-my-capacity-planning)
@@ -4681,7 +4681,7 @@ Useful resources:
 </details>
 
 <details>
-<summary><b>Developer reports a problem with connectivity to the remote service. Use <code>/dev</code> for troubleshooting.</b></summary><br>
+<summary><b>開発者がリモートサービスへの接続に問題があると報告しています。トラブルシューティングのために <code>/dev</code> を使用してください。</b></summary><br>
 
 ```bash
 # <host> - set remote host
@@ -4697,7 +4697,7 @@ timeout 1 bash -c 'cat < /dev/null > </dev/tcp/<host>/<port>' ; echo $?
 &> echo > "</dev/tcp/<host>/<port>"
 ```
 
-Useful resources:
+有用なリソース:
 
 - [Advanced Bash-Scripting Guide - /dev](http://www.tldp.org/LDP/abs/html/devref1.html#DEVTCP)
 - [/dev/tcp as a weapon](https://securityreliks.wordpress.com/2010/08/20/devtcp-as-a-weapon/)
@@ -4706,11 +4706,11 @@ Useful resources:
 </details>
 
 <details>
-<summary><b>How do I measure request and response times at once using <code>curl</code>?</b></summary><br>
+<summary><b>リクエストとレスポンスタイムを一度に <code>curl</code> で測定するにはどうすればよいですか？</b></summary><br>
 
-`curl` supports formatted output for the details of the request (see the `curl` manpage for details, under `-w| -write-out 'format'`). For our purposes we’ll focus just on the timing details that are provided.
+`curl` はリクエストの詳細に対するフォーマット出力をサポートしています（詳細は `curl` のマニュアルページの `-w| -write-out 'format'` を参照）。ここでは、提供されるタイミングの詳細に焦点を当てます。
 
-1. Create a new file, `curl-format.txt`, and paste in:
+1. 新しいファイル `curl-format.txt` を作成し、以下を貼り付けます：
 
 ```bash
     time_namelookup:  %{time_namelookup}\n
@@ -4723,40 +4723,40 @@ Useful resources:
          time_total:  %{time_total}\n
 ```
 
-2. Make a request:
+2. リクエストの作成:
 
 ```bash
 curl -w "@curl-format.txt" -o /dev/null -s "http://example.com/"
 ```
 
-What this does:
+これが行うこと:
 
-- `-w "@curl-format.txt"` - tells cURL to use our format file
-- `-o /dev/null` - redirects the output of the request to /dev/null
-- `-s` - tells cURL not to show a progress meter
-`http://example.com/` is the URL we are requesting. Use quotes particularly if your URL has "&" query string parameters
-
-</details>
-
-<details>
-<summary><b>You need to move ext4 journal on another disk/partition. What are the reasons for this? ***</b></summary><br>
-
-To be completed.
-
-Useful resources:
-
-- [ext4: using external journal to optimize performance](https://raid6.com.au/posts/fs_ext4_external_journal/)
-- [How to move an ext4 journal](https://unix.stackexchange.com/questions/278998/how-to-move-an-ext4-journal)
+- `-w "@curl-format.txt"` - cURL にフォーマットファイルを使用するよう指示します
+- `-o /dev/null` - リクエストの出力を /dev/null にリダイレクトします
+- `-s` - cURL に進行状況メーターを表示しないよう指示します
+`http://example.com/` はリクエストするURLです。URLに "&" クエリ文字列パラメータが含まれている場合は、特に引用符を使用してください
 
 </details>
 
 <details>
-<summary><b>Does having Varnish in front of your website/app mean you don't need to care about load balancing or redundancy?</b></summary><br>
+<summary><b>ext4ジャーナルを別のディスク/パーティションに移動する必要がある理由は何ですか？</b></summary><br>
 
-It depends. Varnish is a cache server, so its purpose is to cache contents and to act as a reverse proxy, to speed up retrieval of data and to lessen the load on the webserver.
-Varnish can be also configured as a load-balancer for multiple web servers, but if we use just one Varnish server, this will become our single point of failure on our infrastructure.
+未完成です。
 
-A better solution to ensure load-balancing or redundancy will be a cluster of at least two Varnish instances, in active-active mode or active-passive mode.
+有用なリソース:
+
+- [ext4: 外部ジャーナルを使用してパフォーマンスを最適化する](https://raid6.com.au/posts/fs_ext4_external_journal/)
+- [ext4ジャーナルを移動する方法](https://unix.stackexchange.com/questions/278998/how-to-move-an-ext4-journal)
+
+</details>
+
+<details>
+<summary><b>ウェブサイト/アプリケーションの前に Varnish を配置すると、負荷分散や冗長性について心配する必要がなくなりますか？</b></summary><br>
+
+それは場合によります。Varnish はキャッシュサーバーであり、その目的はコンテンツをキャッシュし、リバースプロキシとして機能してデータの取得を高速化し、ウェブサーバーへの負荷を軽減することです。  
+Varnish は複数のウェブサーバー用のロードバランサーとしても構成できますが、1台の Varnish サーバーのみを使用する場合、これがインフラストラクチャの単一障害点になります。
+
+負荷分散や冗長性を確保するためには、少なくとも2台の Varnish インスタンスから成るクラスター（アクティブ-アクティブモードまたはアクティブ-パッシブモード）がより良い解決策となります。
 
 </details>
 
