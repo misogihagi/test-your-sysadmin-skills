@@ -2088,247 +2088,247 @@ find . -inum 435304 -delete
 </details>
 
 <details>
-<summary><b>How to increase the size of LVM partition?</b></summary><br>
+<summary><b>LVMパーティションのサイズを増やす方法</b></summary><br>
 
-Use the `lvextend` command for resize LVM partition.
+LVMパーティションをリサイズするには、`lvextend` コマンドを使用します。
 
-- extending the size by 500MB:
+- サイズを500MB拡張する場合:
 
 ```bash
 lvextend -L +500M /dev/vgroup/lvolume
 ```
 
-- extending all available free space:
+- すべての利用可能な空きスペースを拡張する場合:
 
 ```bash
 lvextend -l +100%FREE /dev/vgroup/lvolume
 ```
 
-and `resize2fs` or `xfs_growfs` to resize filesystem:
+次に、`resize2fs` または `xfs_growfs` を使用してファイルシステムをリサイズします。
 
-- for ext filesystems:
+- extファイルシステムの場合:
 
 ```bash
 resize2fs /dev/vgroup/lvolume
 ```
 
-- for xfs filesystem:
+- xfsファイルシステムの場合:
 
 ```bash
 xfs_growfs mountpoint_for_/dev/vgroup/lvolume
 ```
 
-Useful resources:
+有用なリソース:
 
-- [Extending a logical volume](https://www.tldp.org/HOWTO/LVM-HOWTO/extendlv.html)
-
-</details>
-
-<details>
-<summary><b>What is a zombie/defunct process?</b></summary><br>
-
-Is a process that has completed execution (via the `exit` system call) but still has an entry in the process table: it is a process in the "**Terminated state**".
-
-Processes marked **defunct** are dead processes (so-called "zombies") that remain because their parent has not destroyed them properly. These processes will be destroyed by init if the parent process exits.
-
-Useful resources:
-
-- [What is a <defunct> process, and why doesn't it get killed?](https://askubuntu.com/questions/201303/what-is-a-defunct-process-and-why-doesnt-it-get-killed)
+- [論理ボリュームの拡張](https://www.tldp.org/HOWTO/LVM-HOWTO/extendlv.html)
 
 </details>
 
 <details>
-<summary><b>What is the proper way to upgrade/update a system in production? Do you automate these processes? Do you set downtime for them? Write recommendations. ***</b></summary><br>
+<summary><b>ゾンビ/デファンクトプロセスとは何ですか？</b></summary><br>
 
-To be completed.
+ゾンビプロセスとは、実行が完了した（`exit` システムコールによって）にもかかわらず、プロセステーブルにエントリが残っているプロセスです。これは「**終了状態**」のプロセスです。
 
-</details>
+**defunct** とマークされたプロセスは、親プロセスが適切に処理していないために残っている死んだプロセス（いわゆる「ゾンビ」）です。これらのプロセスは、親プロセスが終了すると init によって破棄されます。
 
-<details>
-<summary><b>Your friend during configuration of the MySQL server asked you: <i>Should I run <code>sudo mysql_secure_installation</code> after installing mysql?</i> What do you think about it? </b></summary><br>
+有用なリソース:
 
-It would be better if you run command as it provides many security options like:
-
-- You can set a password for root accounts
-- You can remove root accounts that are accessible from outside the local host
-- You can remove anonymous-user accounts
-- You can remove the test database, which by default can be accessed by anonymous users
-
-Useful resources:
-
-- [What is Purpose of using mysql_secure_installation?](https://stackoverflow.com/questions/20760908/what-is-purpose-of-using-mysql-secure-installation)
+- [defunct プロセスとは何か、それはなぜ終了しないのか？](https://askubuntu.com/questions/201303/what-is-a-defunct-process-and-why-doesnt-it-get-killed)
 
 </details>
 
 <details>
-<summary><b>Present and explain the good ways of using the <code>kill</code> command.</b></summary><br>
+<summary><b>本番環境でシステムをアップグレード/更新する適切な方法は何ですか？これらのプロセスを自動化していますか？それらのためにダウンタイムを設定していますか？おすすめの方法を書いてください。</b></summary><br>
 
-Speaking of killing processes never use `kill -9/SIGKILL` unless absolutely mandatory. This kill can cause problems because of its brute force.
+作成中です。
 
-Always try to use the following simple procedure:
+</details>
 
-- first, send **SIGTERM** (`kill -15`) signal first which tells the process to shutdown and is generally accepted as the signal to use when shutting down cleanly (but remember that this signal can be ignored).
-- next try to send **SIGHUP** (`kill -1`) signal which is commonly used to tell a process to shutdown and restart, this signal can also be caught and ignored by a process.
+<details>
+<summary><b>友人がMySQLサーバーの設定中に「MySQLをインストールした後に <code>sudo mysql_secure_installation</code> を実行するべきか？」と尋ねました。あなたはどう思いますか？</b></summary><br>
 
-The far majority of the time, this is all you need - and is much cleaner.
+このコマンドを実行するのが良いでしょう。以下のような多くのセキュリティオプションを提供してくれます：
 
-Useful resources:
+- ルートアカウントにパスワードを設定できる
+- ローカルホスト外からアクセス可能なルートアカウントを削除できる
+- 匿名ユーザーアカウントを削除できる
+- デフォルトで匿名ユーザーがアクセスできるテストデータベースを削除できる
 
-- [When should I not kill -9 a process?](https://unix.stackexchange.com/questions/8916/when-should-i-not-kill-9-a-process)
+有用なリソース:
+
+- [mysql_secure_installation を使う目的は何ですか？](https://stackoverflow.com/questions/20760908/what-is-purpose-of-using-mysql-secure-installation)
+
+</details>
+
+<details>
+<summary><b><code>kill</code> コマンドの適切な使い方を説明してください。</b></summary><br>
+
+プロセスを終了させる場合、絶対に必要な場合を除いて `kill -9/SIGKILL` を使わないでください。この強制終了は問題を引き起こす可能性があります。
+
+以下の手順を試すことをお勧めします：
+
+- まず **SIGTERM** (`kill -15`) シグナルを送信します。これはプロセスにシャットダウンを指示し、通常、正常にシャットダウンするためのシグナルと見なされています（ただし、このシグナルは無視されることがあります）。
+- 次に **SIGHUP** (`kill -1`) シグナルを送信してみてください。これはプロセスにシャットダウンと再起動を指示するためによく使われますが、これもプロセスによって無視されることがあります。
+
+ほとんどの場合、これだけで十分であり、よりクリーンな方法です。
+
+有用なリソース:
+
+- [いつ kill -9 を使わないほうがいいのか？](https://unix.stackexchange.com/questions/8916/when-should-i-not-kill-9-a-process)
 - [SIGTERM vs. SIGKILL](https://major.io/2010/03/18/sigterm-vs-sigkill/)
 
 </details>
 
 <details>
-<summary><b>What is <code>strace</code> command and how should be used? Explain example of connect to an already running process.</b></summary><br>
+<summary><b><code>strace</code> コマンドとは何か、それをどのように使うべきかを説明してください。既に実行中のプロセスに接続する例を挙げてください。</b></summary><br>
 
-`strace` is a powerful command line tool for debugging and troubleshooting programs in Unix-like operating systems such as Linux. It captures and records all system calls made by a process and the signals received by the process.
+`strace` は、LinuxのようなUnix系オペレーティングシステムでプログラムのデバッグやトラブルシューティングに使用される強力なコマンドラインツールです。プロセスが行うすべてのシステムコールと、プロセスが受け取るシグナルをキャプチャして記録します。
 
-**Strace Overview**
+**Strace の概要**
 
-`strace` can be seen as a light weight debugger. It allows a programmer/user to quickly find out how a program is interacting with the OS. It does this by monitoring system calls and signals.
+`strace` は軽量なデバッガーと見なすことができます。プログラマーやユーザーがプログラムがOSとどのように相互作用しているかを迅速に把握するのに役立ちます。これを行うために、システムコールとシグナルを監視します。
 
-**Uses**
+**使用例**
 
-Good for when you don't have source code or don't want to be bothered to really go through it. Also, useful for your own code if you don't feel like opening up **GDB**, but are just interested in understanding external interaction.
+ソースコードがない場合や、それを詳しく調べるのが面倒な場合に役立ちます。自分のコードでも、**GDB** を開きたくない場合や、外部との相互作用を理解したいだけの場合にも便利です。
 
-**Example of attach to the process**
+**プロセスに接続する例**
 
-`strace -p <PID>` - to attach a process to strace.
+`strace -p <PID>` - 既に実行中のプロセスに strace を接続します。
 
-`strace -e trace=read,write -p <PID>` - by this you can also trace a process/program for an event, like read and write (in this example). So here it will print all such events that include read and write system calls by the process.
+`strace -e trace=read,write -p <PID>` - これにより、特定のイベント（この例では読み取りと書き込み）を追跡することができます。これにより、プロセスによって行われる読み取りおよび書き込みのすべてのシステムコールが表示されます。
 
-Other such examples
+その他の例
 
-- `-e trace=network` - trace all the network related system calls.
-- `-e trace=signal` - trace all signal related system calls.
-- `-e trace=ipc` - trace all IPC related system calls.
-- `-e trace=desc` - trace all file descriptor related system calls.
-- `-e trace=memory` - trace all memory mapping related system calls.
+- `-e trace=network` - ネットワーク関連のすべてのシステムコールを追跡します。
+- `-e trace=signal` - シグナル関連のすべてのシステムコールを追跡します。
+- `-e trace=ipc` - IPC関連のすべてのシステムコールを追跡します。
+- `-e trace=desc` - ファイルディスクリプタ関連のすべてのシステムコールを追跡します。
+- `-e trace=memory` - メモリマッピング関連のすべてのシステムコールを追跡します。
 
-Useful resources:
+有用なリソース:
 
-- [How should strace be used? (original)](https://stackoverflow.com/questions/174942/how-should-strace-be-used)
-- [How does strace connect to an already running process? (original)](https://stackoverflow.com/questions/7482076/how-does-strace-connect-to-an-already-running-process)
-- [strace: for fun, profit, and debugging](http://timetobleed.com/hello-world/)
-
-</details>
-
-<details>
-<summary><b>When would you use access control lists instead of or in conjunction with the <code>chmod</code> command? ***</b></summary><br>
-
-To be completed.
+- [strace はどのように使用すべきか？（元記事）](https://stackoverflow.com/questions/174942/how-should-strace-be-used)
+- [strace は既に実行中のプロセスにどのように接続するのか？（元記事）](https://stackoverflow.com/questions/7482076/how-does-strace-connect-to-an-already-running-process)
+- [strace: 楽しみ、利益、デバッグのために](http://timetobleed.com/hello-world/)
 
 </details>
 
 <details>
-<summary><b>Which algorithms are supported in <code>/etc/shadow</code> file?</b></summary><br>
+<summary><b>いつ <code>chmod</code> コマンドの代わりに、または併用してアクセス制御リストを使用しますか？ ***</b></summary><br>
 
-Typical current algorithms are:
+作成中です。
+
+</details>
+
+<details>
+<summary><b><code>/etc/shadow</code> ファイルでサポートされているアルゴリズムはどれですか？</b></summary><br>
+
+一般的な現在のアルゴリズムは以下の通りです：
 
 - MD5
-- SHA-1 (also called SHA)
+- SHA-1（SHAとも呼ばれます）
 
-both should not be used for cryptographic/security purposes any more!!
+どちらも暗号化やセキュリティ目的での使用は推奨されません!!
 
 - SHA-256
 - SHA-512
-- SHA-3 (KECCAK was announced the winner in the competition for a new federal approved hash algorithm in October 2012)
+- SHA-3（KECCAKは2012年10月に新しい連邦承認のハッシュアルゴリズムとしてコンペティションで優勝しました）
 
-Useful resources:
+有用なリソース:
 
-- [What is the algorithm used to encrypt Linux passwords?](https://crypto.stackexchange.com/questions/40841/what-is-the-algorithm-used-to-encrypt-linux-passwords)
-- [How to find the hashing algorithm used to obfuscate passwords?](https://unix.stackexchange.com/questions/430141/how-to-find-the-hashing-algorithm-used-to-obfuscate-passwords)
-
-</details>
-
-<details>
-<summary><b>What is the use of ulimit in Unix-like systems?</b></summary><br>
-
-Most Unix-like operating systems, including Linux and BSD, provide ways to limit and control the usage of system resources such as threads, files, and network connections on a per-process and per-user basis. These "**ulimits**" prevent single users from using too many system resources.
+- [Linuxのパスワードを暗号化するために使用されるアルゴリズムは何ですか？](https://crypto.stackexchange.com/questions/40841/what-is-the-algorithm-used-to-encrypt-linux-passwords)
+- [パスワードを隠すために使用されるハッシュアルゴリズムを見つける方法は？](https://unix.stackexchange.com/questions/430141/how-to-find-the-hashing-algorithm-used-to-obfuscate-passwords)
 
 </details>
 
 <details>
-<summary><b>What are soft limits and hard limits?</b></summary><br>
+<summary><b>Unix系システムでのulimitの使用目的は何ですか？</b></summary><br>
 
-**Hard limit** is the maximum allowed to a user, set by the superuser or root. This value is set in the file `/etc/security/limits.conf`. The user can increase the **soft limit** on their own in times of needing more resources, but cannot set the **soft limit** higher than the **hard limit**.
-
-</details>
-
-<details>
-<summary><b>During configuration HAProxy to working with Redis you get <code>General socket error (Permission denied)</code> from log. SELinux is enable. Explain basic SELinux troubleshooting in CLI. ***</b></summary><br>
-
-Useful resources:
-
-- [Basic SELinux Troubleshooting in CLI](https://access.redhat.com/articles/2191331)
+LinuxやBSDを含むほとんどのUnix系オペレーティングシステムは、スレッド、ファイル、ネットワーク接続などのシステムリソースの使用をプロセスごとおよびユーザーごとに制限・管理する方法を提供しています。これらの「**ulimits**」は、単一のユーザーが過剰にシステムリソースを使用するのを防ぎます。
 
 </details>
 
 <details>
-<summary><b>You have configured an RSA key login but your server show <code>Server refused our key</code> as expected. Where will you look for the cause of the problem?</b></summary><br>
+<summary><b>ソフトリミットとハードリミットとは何ですか？</b></summary><br>
 
-**Server side**
+**ハードリミット**は、スーパーユーザーまたはrootによって設定されたユーザーに許可される最大値です。この値は `/etc/security/limits.conf` ファイルに設定されています。ユーザーは必要に応じて**ソフトリミット**を増やすことができますが、**ソフトリミット**を**ハードリミット**より高く設定することはできません。
 
-Setting `LogLevel VERBOSE` in file `/etc/ssh/sshd_config` is probably what you need, although there are higher levels:
+</details>
 
-SSH auth failures are logged in `/var/log/auth.log`, `/var/log/secure` or `/var/log/audit/audit.log`.
+<details>
+<summary><b>Redisと連携するためにHAProxyを設定している際に、ログから <code>General socket error (Permission denied)</code> エラーが発生しました。SELinuxが有効です。CLIでの基本的なSELinuxトラブルシューティングを説明してください。 ***</b></summary><br>
 
-The following should give you only ssh related log lines (for example):
+有用なリソース:
+
+- [CLIでの基本的なSELinuxトラブルシューティング](https://access.redhat.com/articles/2191331)
+
+</details>
+
+<details>
+<summary><b>RSAキー認証を設定しましたが、サーバーが予想通り「Server refused our key」と表示されます。この問題の原因をどこで探しますか？</b></summary><br>
+
+**サーバー側**
+
+ファイル `/etc/ssh/sshd_config` に `LogLevel VERBOSE` を設定することが必要でしょう。さらに高いレベルも設定できます。
+
+SSH認証の失敗は、`/var/log/auth.log`、`/var/log/secure`、または `/var/log/audit/audit.log` に記録されます。
+
+以下のコマンドを使用すると、SSHに関連するログ行のみを表示できます（例）:
 
 ```bash
 grep 'sshd' /var/log/auth.log
 ```
 
-Next, the most simple command to list all failed SSH logins is the one shown below:
+次に、すべての失敗したSSHログインを一覧表示する最も簡単なコマンドは以下の通りです:
 
 ```bash
 grep "Failed password" /var/log/auth.log
 ```
 
-also useful is:
+また、以下のコマンドも有用です:
 
 ```bash
 grep "Failed\|Failure" /var/log/auth.log
 ```
 
-On newer Linux distributions you can query the runtime log file maintained by Systemd daemon via `journalctl` command (`ssh.service` or `sshd.service`). For example:
+新しいLinuxディストリビューションでは、Systemdデーモンが管理するランタイムログファイルを `journalctl` コマンド（`ssh.service` または `sshd.service`）でクエリできます。例えば:
 
 ```bash
 journalctl _SYSTEMD_UNIT=ssh.service | egrep "Failed|Failure"
 ```
 
-**Client side**
+**クライアント側**
 
-Also you should run SSH client with `-v|--verbose` - it is in first level of verbosity. Next, you can enable additional (level 2 and 3) verbosity for even more debugging messages as shown with e.g. `-vv`.
+また、SSHクライアントを `-v|--verbose` オプションで実行することをお勧めします。これは最初のレベルの詳細表示です。次に、さらに多くのデバッグメッセージを表示するために、レベル2および3の詳細表示を有効にすることができます。例として `-vv` などです。
 
-Useful resources:
+有用なリソース:
 
-- [Enable Debugging Mode in SSH to Troubleshoot Connectivity Issues](https://www.tecmint.com/enable-debugging-mode-in-ssh/)
-
-</details>
-
-<details>
-<summary><b>Why do most distros use ext4, as opposed to XFS or other filesystems? Why are there so many of them? ***</b></summary><br>
-
-To be completed.
+- [SSHのデバッグモードを有効にして接続の問題をトラブルシューティングする](https://www.tecmint.com/enable-debugging-mode-in-ssh/)
 
 </details>
 
 <details>
-<summary><b>A project manager needs a new SQL Server. What do you ask her/his? ***</b></summary><br>
+<summary><b>なぜほとんどのディストリビューションはXFSや他のファイルシステムではなく、ext4を使用しているのでしょうか？なぜファイルシステムがこれほど多いのでしょうか？ ***</b></summary><br>
 
-I want the DBA to ask questions like:
-
-- How big will the database be? (whether we can add the database to an existing server)
-- How critical is the database? (about clustering, disaster recovery, high availability)
+未完成。
 
 </details>
 
 <details>
-<summary><b>Create a file with 100 lines with random values.</b></summary><br>
+<summary><b>プロジェクトマネージャーが新しいSQLサーバーを必要としています。彼女/彼に何を質問しますか？ ***</b></summary><br>
 
-For example:
+DBAに以下のような質問をしてほしいです:
+
+- データベースの大きさはどのくらいですか？（既存のサーバーにデータベースを追加できるかどうか）
+- データベースの重要度はどのくらいですか？（クラスタリング、災害復旧、高可用性について）
+
+</details>
+
+<details>
+<summary><b>ランダムな値で100行のファイルを作成します。</b></summary><br>
+
+例えば:
 
 ```bash
 cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 100 > /path/to/file
@@ -2337,26 +2337,26 @@ cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 100 > /path/to/file
 </details>
 
 <details>
-<summary><b>How to run script as another user without password?</b></summary><br>
+<summary><b>パスワードなしで別のユーザーとしてスクリプトを実行するにはどうすればよいですか？</b></summary><br>
 
-For example (with `visudo` command):
+例えば (`visudo` コマンドを使用して):
 
 ```bash
 user1 ALL=(user2) NOPASSWD: /opt/scripts/bin/generate.sh
 ```
 
-The command paths must be absolute! Then call `sudo -u user2 /opt/scripts/bin/generate.sh` from a user1 shell.
+コマンドのパスは絶対パスで指定する必要があります。その後、user1のシェルから `sudo -u user2 /opt/scripts/bin/generate.sh` を実行します。
 
 </details>
 
 <details>
-<summary><b>How to check if running as root in a bash script? What should you watch out for?</b></summary><br>
+<summary><b>bashスクリプトでrootとして実行しているかを確認するにはどうすればよいですか？注意すべき点は何ですか？</b></summary><br>
 
-In a bash script, you have several ways to check if the running user is root.
+bashスクリプトでは、実行中のユーザーがrootかどうかを確認する方法がいくつかあります。
 
-As a warning, do not check if a user is root by using the root username. Nothing guarantees that the user with ID 0 is called root. It's a very strong convention that is broadly followed but anybody could rename the superuser another name.
+注意点として、rootユーザー名を使用してユーザーがrootかどうかを確認しないでください。IDが0のユーザーがrootと呼ばれる保証はありません。それは広く守られている非常に強力な慣例ですが、誰でもスーパーユーザーの名前を別のものに変更することができます。
 
-I think the best way when using bash is to use `$EUID` because `$UID` could be changed and not reflect the real user running the script.
+bashを使用する場合、`$UID`は変更されて実際にスクリプトを実行しているユーザーを反映しない可能性があるため、`$EUID`を使用するのが最善だと思います。
 
 ```bash
 if (( $EUID != 0 )); then
@@ -2367,35 +2367,35 @@ fi
 </details>
 
 <details>
-<summary><b>Can you give a particular example when is indicated to use <code>nobody</code> account? Tell me the differences running httpd service as a <code>nobody</code> and <code>www-data</code> accounts.</b></summary><br>
+<summary><b><code>nobody</code>アカウントを使用する特定の例を教えてください。また、<code>nobody</code>アカウントと<code>www-data</code>アカウントでhttpdサービスを実行する場合の違いは何ですか？</b></summary><br>
 
-In many Unix variants, `nobody` is the conventional name of a user account which owns no files, is in no privileged groups, and has no abilities except those which every other user has.
+多くのUnix系システムでは、`nobody`は特定のファイルを所有せず、特権グループにも属さず、他のユーザーと同じ権限しか持たないユーザーアカウントの一般的な名称です。
 
-It is common to run daemons as `nobody`, especially servers, in order to limit the damage that could be done by a malicious user who gained control of them.
+悪意のあるユーザーが制御を奪った場合の被害を限定するために、特にサーバーなどのデーモンを`nobody`として実行することが一般的です。
 
-However, the usefulness of this technique is reduced if more than one daemon is run like this, because then gaining control of one daemon would provide control of them all. The reason is that `nobody`-owned processes have the ability to send signals to each other and even debug each other, allowing them to read or even modify each other's memory.
+ただし、この手法の有用性は、複数のデーモンが同じ方法で実行される場合には低下します。なぜなら、`nobody`が所有するプロセスは互いに信号を送ったり、さらにはデバッグし合うことができるため、他のデーモンの制御も可能になってしまうからです。
 
-**When should I use `nobody` account?**
+**`nobody`アカウントを使用するのはいつですか？**
 
-When permissions aren't required for a program's operations. This is most notable when there isn't ever going to be any disk activity.
+プログラムの操作に特別な権限が必要ない場合に使用します。特にディスク操作が不要な場合に適しています。
 
-A real world example of this is **memcached** (a key-value in-memory cache/database/thing), sitting on my computer and my server running under the `nobody` account. Why? Because it just doesn't need any permissions and to give it an account that did have write access to files would just be a needless risk.
+現実の例として、**memcached**（キー値のインメモリキャッシュ/データベース/ツール）があります。これは、私のコンピュータやサーバーで`nobody`アカウントで実行されています。なぜなら、このプログラムには特別な権限が必要ないからです。書き込みアクセス権を持つアカウントを与えることは、不要なリスクとなるでしょう。
 
-A good example are also web servers. Imagine if Apache ran as root and someone found a way to send custom commands to the console through Apache would have access to your entire system.
+良い例としては、ウェブサーバーも挙げられます。例えば、Apacheがrootとして実行されていて、誰かがApacheを通じてカスタムコマンドを送信できる方法を見つけた場合、システム全体にアクセスできてしまいます。
 
-`nobody` account also is used as a restricted shell for giving users filesystem access without an actual shell like bash. This should prevent them from being able to execute things.
+`nobody`アカウントは、bashのような実際のシェルを持たずにファイルシステムへのアクセスをユーザーに提供するための制限付きシェルとしても使用されます。これにより、ユーザーが他のプログラムを実行することを防ぐことができます。
 
-**`nobody` or `www-data` for httpd (Apache)**
+**httpd（Apache）における`nobody`と`www-data`の違い**
 
-Upon starting Apache needs root access, but it quickly drops this and assumes the identity of a non privileged user. This user can either be `nobody` or `apache`, or `www-data`.
+Apacheは起動時にrootアクセスが必要ですが、すぐに特権のないユーザーの権限に切り替えます。このユーザーは、`nobody`、`apache`、または`www-data`のいずれかになります。
 
-Several applications use the user `nobody` as a default. For example you probably never really want say the Apache service to be overwriting files that belong to bind. Having a per-service account tends to be a very good idea.
+いくつかのアプリケーションでは、`nobody`ユーザーがデフォルトとして使用されます。例えば、Apacheサービスがbindに属するファイルを上書きしないようにすることが望ましいです。サービスごとに専用のアカウントを持つことは、非常に良いアイデアです。
 
-Getting Apache to run as `nobody:nobody` is pretty easy, just update the user and group settings. But as I mentioned above I don't really recommend that particular user/group. It is entirely possible that you may be tempted to add a service to the system at some time in the future that also runs as `nobody`, and you will forget that have given write access on the filesystem to the user `nobody`.
+Apacheを`nobody:nobody`として実行するのは比較的簡単で、ユーザーとグループの設定を更新するだけです。しかし、先に述べたように、特定のユーザー/グループを推奨しない理由があります。将来的に別のサービスを追加する際に、それも`nobody`として実行することになり、ファイルシステムに対する書き込みアクセス権を`nobody`ユーザーに与えたことを忘れてしまうかもしれません。
 
- If somehow, `nobody` were to become compromised they could potentially have more impact than if an application isolate user, such as `www-data`. Of course a lot of this will depend on the file and group permissions. `nobody` uses the permissions of others, while an application specific user could be configured to allow file read access, but other could still be denied.
+もし、`nobody`が何らかの形で危険にさらされた場合、`www-data`のようなアプリケーション固有のユーザーよりも影響が大きくなる可能性があります。もちろん、これらはファイルやグループの権限に大きく依存します。`nobody`は他のユーザーと同じ権限を使用しますが、アプリケーション固有のユーザーはファイルの読み取りアクセスを許可しつつ、他のユーザーからのアクセスを拒否するように設定できる場合があります。
 
-Useful resources:
+役立つリソース:
 
 - [What is nobody user and group?](https://unix.stackexchange.com/questions/186568/what-is-nobody-user-and-group)
 - [The Linux and Unix Nobody User](http://linuxg.net/the-linux-and-unix-nobody-user/)
@@ -2404,100 +2404,100 @@ Useful resources:
 </details>
 
 <details>
-<summary><b>Is there a way to redirect output to a file and have it display on stdout?</b></summary><br>
+<summary><b>出力をファイルにリダイレクトしつつ、stdoutに表示させる方法はありますか？</b></summary><br>
 
-The command you want is named tee:
+必要なコマンドは`tee`です。
 
 `foo | tee output.file`
 
-For example, if you only care about stdout:
+例えば、stdoutのみに関心がある場合:
 
 `ls -a | tee output.file`
 
-If you want to include stderr, do:
+stderrを含めたい場合は、次のようにします。
 
 `program [arguments...] 2>&1 | tee outfile`
 
-`2>&1` redirects channel 2 (stderr/standard error) into channel 1 (stdout/standard output), such that both is written as stdout. It is also directed to the given output file as of the tee command.
+`2>&1`はチャネル2（stderr/標準エラー）をチャネル1（stdout/標準出力）にリダイレクトし、両方をstdoutとして出力します。また、`tee`コマンドを使用して指定された出力ファイルにも書き込まれます。
 
-Furthermore, if you want to append to the log file, use `tee -a` as:
+さらに、ログファイルに追加書き込みを行いたい場合は、`tee -a`を使用します。
 
 `program [arguments...] 2>&1 | tee -a outfile`
 
 </details>
 
 <details>
-<summary><b>What is the preferred bash shebang and why? What is the difference between executing a file using <code>./script</code> or <code>bash script</code>?</b></summary><br>
+<summary><b>推奨されるbashのshebangは何ですか？また、<code>./script</code>でファイルを実行するのと<code>bash script</code>で実行するのとの違いは何ですか？</b></summary><br>
 
-You should use `#!/usr/bin/env bash` for portability: different \*nixes put bash in different places, and using `/usr/bin/env` is a workaround to run the first bash found on the `PATH`.
+移植性を考慮して、`#!/usr/bin/env bash`を使用するべきです。異なる*Unix系OSではbashが異なる場所に配置されており、`/usr/bin/env`を使用することで`PATH`上で最初に見つかったbashを実行する回避策となります。
 
-Running `./script` does exactly that, and requires execute permission on the file, but is agnostic to what type of a program it is. It might be a **bash script**, an **sh script**, or a **Perl**, **Python**, **awk**, or **expect script**, or an actual **binary executable**. Running `bash script` would force it to be run under `sh`, instead of anything else.
+`./script`を実行する場合、そのファイルに実行権限が必要ですが、プログラムの種類には関係なく実行されます。それは**bashスクリプト**、**shスクリプト**、**Perl**、**Python**、**awk**、**expectスクリプト**、または実際の**バイナリエグゼキュタブル**である可能性があります。一方、`bash script`を実行すると、そのファイルが他の何かではなく`sh`で実行されることになります。
 
-Useful resources:
+役立つリソース:
 
 - [What is the preferred Bash shebang? (original)](https://stackoverflow.com/questions/10376206/what-is-the-preferred-bash-shebang)
 
 </details>
 
 <details>
-<summary><b>You must run command that will be performed for a very long time. How to prevent killing this process after the ssh session drops?</b></summary><br>
+<summary><b>非常に長い時間実行されるコマンドを実行する必要があります。SSHセッションが切断された後にこのプロセスが終了するのを防ぐにはどうすればよいですか？</b></summary><br>
 
-Use `nohup` to make your process ignore the hangup signal:
+`nohup` を使ってプロセスがハングアップシグナルを無視するようにします。
 
 ```bash
 nohup long-running-process &
 exit
 ```
 
-or you want to be using **GNU Screen**:
+または **GNU Screen** を使用することもできます：
 
 ```bash
 screen -d -m long-running-process
 exit
 ```
 
-Useful resources:
+役立つリソース：
 
-- [5 Ways to Keep Remote SSH Sessions and Processes Running After Disconnection](https://www.tecmint.com/keep-remote-ssh-sessions-running-after-disconnection/)
-
-</details>
-
-<details>
-<summary><b>What is the main purpose of the intermediate certification authorities?</b></summary><br>
-
-To find out the main purpose of an intermediate CA, you should first learn about **Root CAs**, **Intermediate CAs**, and the **SSL Certificate Chain Trust**.
-
-**Root CAs** are primary CAs which typically don’t directly sign end entity/server certificates. They issue Root certificates which are usually pre-installed within all browsers, mobiles, and applications. The private key of these certificates is used to sign other subsequent certificates called intermediate certificates. Root CAs are usually kept "offline” and in a highly secure environment with stringently limited access.
-
-**Intermediates CAs** are CAs that subordinate to the Root CA by one or more levels, being trusted by these to sign certificates on their behalf. The purpose of creating and using Intermediate CAs is primarily for security because if the intermediate private key is compromised, then the Root CA can revoke the intermediate certificate and create a new one with a new cryptographic key pair.
-
-**SSL Certificate Chain Trust** is the list of SSL certificates, from the root certificate to the end entity/server certificate. For an SSL Certificate to be trusted, it must be issued by a trusted CAs which is included in the trusted CA list of the connecting device (browser, mobile, and application). Therefore, the connecting device will test the trustworthiness of each SSL Certificate in the Chain Trust until it matches the one issued by a trusted CA.
-
-The **Root-Intermediate CA** structure is created by each major CA to protect against the disastrous effects of a root key compromise. If a root key is compromised, it would render the root and all subordinated certificates untrustworthy. For this reason, creating an Intermediate CA is a best practice to ensure a rigorous protection of the primary root key.
-
-Useful resources:
-
-- [How certificate chains work](https://knowledge.digicert.com/solution/SO16297.html)
+- [リモートSSHセッションとプロセスを切断後も実行し続ける5つの方法](https://www.tecmint.com/keep-remote-ssh-sessions-running-after-disconnection/)
 
 </details>
 
 <details>
-<summary><b>How to reload PostgreSQL after configuration changes?</b></summary><br>
+<summary><b>中間認証機関の主な目的は何ですか？</b></summary><br>
 
-Solution 1:
+中間CAの主な目的を理解するには、まず **ルートCA**、**中間CA**、および **SSL証明書チェーンの信頼** について学ぶ必要があります。
+
+**ルートCA** は通常、エンドエンティティ/サーバー証明書を直接署名することはありません。ルート証明書を発行し、これらの証明書は通常、すべてのブラウザ、モバイル、およびアプリケーションに事前にインストールされています。これらの証明書の秘密鍵は、後に発行される中間証明書を署名するために使用されます。ルートCAは通常「オフライン」で、アクセスが厳しく制限された非常に安全な環境に保管されています。
+
+**中間CA** は、ルートCAの下に1つまたは複数のレベルで従属しているCAであり、ルートCAから委任を受けて証明書に署名します。中間CAを作成し使用する主な目的はセキュリティであり、中間秘密鍵が侵害された場合、ルートCAは中間証明書を取り消し、新しい暗号鍵ペアで新しい証明書を作成できます。
+
+**SSL証明書チェーンの信頼** は、ルート証明書からエンドエンティティ/サーバー証明書までのSSL証明書のリストです。SSL証明書が信頼されるためには、接続デバイス（ブラウザ、モバイル、アプリケーション）の信頼できるCAリストに含まれている信頼されたCAによって発行される必要があります。そのため、接続デバイスは、信頼できるCAによって発行された証明書と一致するまで、チェーン内の各SSL証明書の信頼性を検証します。
+
+**ルート-中間CA** 構造は、ルートキーの侵害による破滅的な影響から保護するために、各主要CAによって作成されます。ルートキーが侵害されると、ルートおよびすべての従属証明書が信頼できなくなります。このため、主要なルートキーを厳格に保護するために中間CAを作成することは最良の方法です。
+
+役立つリソース：
+
+- [証明書チェーンの仕組み](https://knowledge.digicert.com/solution/SO16297.html)
+
+</details>
+
+<details>
+<summary><b>設定変更後にPostgreSQLを再読み込みするには？</b></summary><br>
+
+解決策 1:
 
 ```bash
 systemctl reload postgresql
 ```
 
-Solution 2:
+解決策 2:
 
 ```
 su - postgres
 /usr/bin/pg_ctl reload
 ```
 
-Solution 3:
+解決策 3:
 
 ```
 SELECT pg_reload_conf();
@@ -2506,80 +2506,80 @@ SELECT pg_reload_conf();
 </details>
 
 <details>
-<summary><b>You have added several aliases to <code>.profile</code>. How to reload shell without exit?</b></summary><br>
+<summary><b>いくつかのエイリアスを <code>.profile</code> に追加しました。シェルを終了せずに再読み込みするにはどうすればよいですか？</b></summary><br>
 
-The best way is `exec $SHELL -l` because `exec` replaces the current process with a new one. Also good (but other) solution is `. ~/.profile`.
+最適な方法は `exec $SHELL -l` です。`exec` は現在のプロセスを新しいプロセスで置き換えます。また、別の良い方法は `. ~/.profile` です。
 
-Useful resources:
+役立つリソース：
 
-- [How to reload .bash_profile from the command line?](https://stackoverflow.com/questions/4608187/how-to-reload-bash-profile-from-the-command-line)
+- [コマンドラインから .bash_profile を再読み込みするには？](https://stackoverflow.com/questions/4608187/how-to-reload-bash-profile-from-the-command-line)
 
 </details>
 
 <details>
-<summary><b>How to exit without saving shell history?</b></summary><br>
+<summary><b>シェルの履歴を保存せずに終了するには？</b></summary><br>
 
 ```bash
 kill -9 $$
 ```
 
-or
+または
 
 ```bash
 unset HISTFILE && exit
 ```
 
-Useful resources:
+役立つリソース：
 
-- [How do I close a terminal without saving the history?](https://unix.stackexchange.com/questions/25049/how-do-i-close-a-terminal-without-saving-the-history)
-
-</details>
-
-<details>
-<summary><b>What is this UID 0 toor account? Have I been compromised?</b></summary><br>
-
-**toor** is an alternative superuser account, where toor is root spelled backwards. It is intended to be used with a non-standard shell so the default shell for root does not need to change.
-
-This is important as shells which are not part of the base distribution, but are instead installed from ports or packages, are installed in `/usr/local/bin` which, by default, resides on a different file system. If root's shell is located in `/usr/local/bin` and the file system containing `/usr/local/bin`) is not mounted, root will not be able to log in to fix a problem and will have to reboot into single-user mode in order to enter the path to a shell.
-
-Some people use toor for day-to-day root tasks with a non-standard shell, leaving root, with a standard shell, for single-user mode or emergencies. By default, a user cannot log in using toor as it does not have a password, so log in as root and set a password for toor before using it to login.
-
-Useful resources:
-
-- [The root account (and toor)](https://administratosphere.wordpress.com/2007/10/04/the-root-account-and-toor/)
+- [履歴を保存せずにターミナルを閉じるには？](https://unix.stackexchange.com/questions/25049/how-do-i-close-a-terminal-without-saving-the-history)
 
 </details>
 
 <details>
-<summary><b>Is there an easy way to search inside 1000s of files in a complex directory structure to find files which contain a specific string?</b></summary><br>
+<summary><b>このUID 0のtoorアカウントは何ですか？自分が侵害されたのでしょうか？</b></summary><br>
 
-For example use `fgrep`:
+**toor** は代替のスーパーユーザーアカウントで、toor は root を逆さにしたものです。これは、root のデフォルトシェルを変更する必要がないように、標準外のシェルと一緒に使用するために意図されています。
+
+これは重要です。なぜなら、基本のディストリビューションに含まれていないシェルは、`/usr/local/bin` にインストールされるため、デフォルトでは異なるファイルシステムに存在します。もし root のシェルが `/usr/local/bin` にあり、`/usr/local/bin` を含むファイルシステムがマウントされていない場合、root は問題を修正するためにログインできず、シングルユーザーモードに再起動してシェルのパスを入力する必要があります。
+
+一部の人は、標準外のシェルを使用して日常的な root タスクに toor を使用し、root（標準シェルを持つ）はシングルユーザーモードや緊急時に使用します。デフォルトでは、toor にはパスワードがないためログインできないので、root としてログインし、toor にパスワードを設定してから使用してください。
+
+役立つリソース：
+
+- [root アカウント（と toor）](https://administratosphere.wordpress.com/2007/10/04/the-root-account-and-toor/)
+
+</details>
+
+<details>
+<summary><b>複雑なディレクトリ構造内の何千ものファイルから特定の文字列を含むファイルを簡単に検索する方法はありますか？</b></summary><br>
+
+例えば、`fgrep` を使用します：
 
 ```bash
 fgrep * -R "string"
 ```
 
-or:
+または
 
 ```bash
 grep -insr "pattern" *
 ```
 
-- `-i` ignore case distinctions in both the **PATTERN** and the input files
-- `-n`  prefix each line of output with the 1-based line number within its input file
-- `-s` suppress error messages about nonexistent or unreadable files.
-- `-r` read all files under each directory, recursively.
+- `-i` **PATTERN** と入力ファイルの両方で大文字と小文字の区別を無視します
+- `-n` 各出力行にその入力ファイル内の1ベースの行番号をプレフィックスとして付けます
+- `-s` 存在しないまたは読み取れないファイルに関するエラーメッセージを抑制します
+- `-r` 各ディレクトリ下のすべてのファイルを再帰的に読み取ります
 
-Useful resources:
+役立つリソース：
 
-- [How to grep a string in a directory and all its subdirectories files in LINUX?](https://stackoverflow.com/questions/15622328/how-to-grep-a-string-in-a-directory-and-all-its-subdirectories-files-in-linux)
+- [LINUXでディレクトリおよびそのサブディレクトリ内のファイルに文字列をgrepする方法](https://stackoverflow.com/questions/15622328/how-to-grep-a-string-in-a-directory-and-all-its-subdirectories-files-in-linux)
 
 </details>
 
 <details>
-<summary><b>How to find out the dynamic libraries executables loads when run?</b></summary><br>
+<summary><b>実行時に実行ファイルがロードする動的ライブラリを調べるには？</b></summary><br>
 
-You can do this with `ldd` command:
+`ldd` コマンドを使用して調べることができます：
 
 ```bash
 ldd /bin/ls
@@ -2588,257 +2588,257 @@ ldd /bin/ls
 </details>
 
 <details>
-<summary><b>You have the task of sync the testing and production environments. What steps will you take?</b></summary><br>
+<summary><b>テスト環境と本番環境の同期作業があります。どのような手順を踏むべきですか？</b></summary><br>
 
-It's easy to get dragged down into bikeshedding about cloning environments and miss the real point:
+環境のクローンについて細かいことにこだわると、重要な点を見失うことがあります：
 
-- only production is production
+- 本番環境だけが本番環境である
 
-and every time you deploy there you are testing a unique combination of deploy code + software + environment.
+そして、デプロイのたびに、デプロイコード + ソフトウェア + 環境のユニークな組み合わせをテストしていることになります。
 
-Every once in a while a good solution is regular cloning of the production servers to create testing servers. You can create instances with an exact copy of your production environment under a dev/test with snapshots, for example:
+時々、良い解決策は本番サーバーを定期的にクローンしてテストサーバーを作成することです。例えば、スナップショットを使って本番環境の正確なコピーを持つインスタンスを作成することができます：
 
-- generate a snapshot of production
-- copy the snapshot to staging (or other)
-- create a new disk using this snapshot
+- 本番環境のスナップショットを生成する
+- スナップショットをステージング（または他の場所）にコピーする
+- このスナップショットを使って新しいディスクを作成する
 
-Sure, you can spin up clones of various system components or entire systems, and capture real traffic to replay offline (the gold standard of systems testing). But many systems are too big, complex, and cost-prohibitive to clone.
+もちろん、さまざまなシステムコンポーネントや全体のシステムのクローンを作成し、実際のトラフィックをキャプチャしてオフラインで再生することもできます（システムテストのゴールドスタンダード）。しかし、多くのシステムは大きすぎ、複雑すぎて、クローン作成がコスト的に難しい場合があります。
 
-Before environment synchronization a good way is keeping track of every change that you make to the testing environment and provide a way for propagating this to the production environment, so that you do not skip any step and do it as smoothly as possible.
+環境同期の前には、テスト環境で行ったすべての変更を追跡し、それを本番環境に伝播する方法を提供することが良い方法です。これにより、どのステップもスキップすることなく、できるだけスムーズに行うことができます。
 
-Also structure comparison tool or deploy scripts that update the testing environment from production environment is a good solution.
+また、環境を本番環境からテスト環境に更新するための構造比較ツールやデプロイスクリプトも良い解決策です。
 
-**Presync tasks**
+**プレシンク作業**
 
-First of all is informing developers and clients about not making changes on the test environment (if possible, disabling test domains that target this environment or set static pages with information about synchronization).
+まず最初に、テスト環境での変更を行わないように開発者やクライアントに通知します（可能であれば、この環境をターゲットにしたテストドメインを無効化するか、同期に関する情報を表示する静的ページを設定します）。
 
-It is also important to make backup/snapshots of both environments.
+両方の環境のバックアップ/スナップショットを作成することも重要です。
 
-**Database servers**
+**データベースサーバー**
 
-- sync/update system version (e.g. packages)
-- create dump file from database on production db server
-- import dump file on testing db server
-- if necessary, syncs login permissions, roles, database permissions, open connections to the database and other
+- システムバージョンを同期/更新する（例：パッケージ）
+- 本番データベースサーバーからダンプファイルを作成する
+- テストデータベースサーバーにダンプファイルをインポートする
+- 必要に応じて、ログイン権限、ロール、データベース権限、データベースへのオープン接続などを同期する
 
-**Web/App servers**
+**Web/Appサーバー**
 
-- sync/update system version (e.g. packages)
-- if necessary, updated kernel parameters, firewall rules and other
-- sync/update configuration files of all running/important services
-- sync/update user accounts (e.g. permissions) and their home directories
-- deploy project from git/svn repository
-- sync/update important directories existing in project, e.g. **static**, **asset** and other
-- sync/update permissions for project directory
-- remove/update all webhooks
-- update cron jobs
+- システムバージョンを同期/更新する（例：パッケージ）
+- 必要に応じて、カーネルパラメーター、ファイアウォールルールなどを更新する
+- 実行中のすべての重要なサービスの設定ファイルを同期/更新する
+- ユーザーアカウント（例：権限）とそのホームディレクトリを同期/更新する
+- git/svnリポジトリからプロジェクトをデプロイする
+- プロジェクト内の重要なディレクトリ（例：**static**、**asset** など）を同期/更新する
+- プロジェクトディレクトリの権限を同期/更新する
+- すべてのWebhookを削除/更新する
+- cronジョブを更新する
 
-**Others tasks**
+**その他の作業**
 
-- updated configurations of load balancers for testing domains and specific urls
-- updated configurations of queues, session and storage instances
+- テストドメインおよび特定のURLのためにロードバランサーの設定を更新する
+- キュー、セッション、およびストレージインスタンスの設定を更新する
 
-Useful resources:
+役立つリソース：
 
-- [Keeping testing and production server environments clean, in sync, and consistent](https://stackoverflow.com/questions/639668/keeping-testing-and-production-server-environments-clean-in-sync-and-consisten)
+- [テストサーバー環境と本番サーバー環境をクリーンで同期し、一貫性を保つ方法](https://stackoverflow.com/questions/639668/keeping-testing-and-production-server-environments-clean-in-sync-and-consisten)
 
 </details>
 
 ###### Network Questions (24)
 
 <details>
-<summary><b>Configure a virtual interface on your workstation. ***</b></summary><br>
+<summary><b>ワークステーションで仮想インターフェースを設定します。 ***</b></summary><br>
 
-To be completed.
-
-</details>
-
-<details>
-<summary><b>According to an HTTP monitor, a website is down. You're able to telnet to the port, so how do you resolve it?</b></summary><br>
-
-If you can telnet to the port, this means that the service listening on the port is running and you can connect to it (it's not a networking problem). It is good to check this way for the IP address to which the domain is resolved and using the same domain to test connection.
-
-First of all check if your site is online from a other location. It then lets you know if the site is down everywhere, or if only your network is unable to view it. It is also a good idea to check what the web browser returns.
-
-**If only IP connection working**
-
-- you can use whois to see what DNS servers serve up the hostname to the site: `whois www.example.com`
-- you can use tools like `dig` or `host` to test DNS to see if the host name is resolving: `host www.example.org dns.example.org`
-- you can also check global public dns servers: `host www.example.com 9.9.9.9`
-
-If domain not resolved it's probably problem with DNS servers.
-
-**If domain resolved properly**
-
-- investigate the log files and resolve the issue regarding to the logs, it's the best way to show what's wrong
-- check the http status code, usually it will be the response with the 5xx, maybe server is overload because clients making lot's of connection to the website or specific url? maybe your caching rules not working properly?
-- check web/proxy server configuration (e.g. `nginx -t -c </path/to/nginx.conf>`), maybe another sysadmin has made some changes to the domain configuration?
-- maybe something on the server has crashed? maybe run out of space or run out of memory?
-- maybe it's a programming error on the website?
+完了予定です。
 
 </details>
 
 <details>
-<summary><b>Load balancing can dramatically impact server performance. Discuss several load balancing mechanisms. ***</b></summary><br>
+<summary><b>HTTPモニターによると、ウェブサイトがダウンしています。ポートにはtelnetできるので、どうやって解決しますか？</b></summary><br>
 
-To be completed.
+ポートにtelnetできる場合、ポートでリスニングしているサービスは実行中で、接続できることを意味します（ネットワークの問題ではありません）。ドメインが解決されるIPアドレスを確認し、同じドメインを使用して接続テストを行うことが良いです。
 
-</details>
+まず、他の場所からサイトがオンラインかどうかを確認します。これにより、サイトがどこでもダウンしているのか、それとも自分のネットワークだけで表示できないのかが分かります。また、ウェブブラウザが返すものを確認するのも良いアイデアです。
 
-<details>
-<summary><b>List examples of network troubleshooting tools that can degrade during DNS issues. ***</b></summary><br>
+**IP接続だけが動作する場合**
 
-To be completed.
+- `whois` を使用して、どのDNSサーバーがホスト名を提供しているかを確認します： `whois www.example.com`
+- `dig` や `host` などのツールを使ってDNSをテストし、ホスト名が解決されているかを確認します： `host www.example.org dns.example.org`
+- グローバルパブリックDNSサーバーも確認します： `host www.example.com 9.9.9.9`
 
-</details>
+ドメインが解決されない場合、DNSサーバーに問題がある可能性があります。
 
-<details>
-<summary><b>Explain difference between HTTP 1.1 and HTTP 2.0.</b></summary><br>
+**ドメインが適切に解決されている場合**
 
-<b>HTTP/2</b> supports queries multiplexing, headers compression, priority and more intelligent packet streaming management. This results in reduced latency and accelerates content download on modern web pages.
-
-Key differences with **HTTP/1.1**:
-
-- it is binary, instead of textual
-- fully multiplexed, instead of ordered and blocking
-- can therefore use one connection for parallelism
-- uses header compression to reduce overhead
-- allows servers to "push" responses proactively into client caches
-
-Useful resources:
-
-- [What is HTTP/2 - The Ultimate Guide](https://kinsta.com/learn/what-is-http2/)
+- ログファイルを調査し、ログに基づいて問題を解決します。これが問題を示す最良の方法です。
+- HTTPステータスコードを確認します。通常、5xx のレスポンスが返される場合、サーバーが過負荷になっている可能性があります。クライアントが多くの接続を行っているか、特定のURLに対する要求が多すぎるかもしれません。キャッシュのルールが適切に機能していない可能性もあります。
+- ウェブ/プロキシサーバーの設定（例： `nginx -t -c </path/to/nginx.conf>`）を確認します。他のシステム管理者がドメイン設定に変更を加えた可能性があります。
+- サーバーで何かがクラッシュしているかもしれません。スペースが不足しているか、メモリが不足している可能性があります。
+- ウェブサイトにプログラミングエラーがあるかもしれません。
 
 </details>
 
 <details>
-<summary><b>Dev team reports an error: <code>POST http://ws.int/api/v1/Submit/ resulted in a 413 Request Entity Too Large</code>. What's wrong?</b></summary><br>
+<summary><b>ロードバランシングはサーバーのパフォーマンスに大きな影響を与える可能性があります。いくつかのロードバランシングメカニズムについて説明してください。 ***</b></summary><br>
 
-**Modify NGINX configuration file for domain**
+完了予定です。
 
-Set correct `client_max_body_size` variable value:
+</details>
+
+<details>
+<summary><b>DNSの問題によって性能が低下するネットワークトラブルシューティングツールの例をリストしてください。 ***</b></summary><br>
+
+完了予定です。
+
+</details>
+
+<details>
+<summary><b>HTTP 1.1 と HTTP 2.0 の違いを説明してください。</b></summary><br>
+
+<b>HTTP/2</b> は、クエリの多重化、ヘッダーの圧縮、優先順位付け、よりインテリジェントなパケットストリーミング管理をサポートします。これにより、レイテンシーが削減され、現代のウェブページでのコンテンツのダウンロードが加速します。
+
+**HTTP/1.1** との主な違い：
+
+- テキスト形式ではなく、バイナリ形式である
+- 順序通りでブロックされる代わりに、完全に多重化されている
+- したがって、並行処理のために1つの接続を使用できる
+- オーバーヘッドを減らすためにヘッダー圧縮を使用する
+- サーバーがクライアントキャッシュに対して「プッシュ」レスポンスを積極的に送信できる
+
+役立つリソース：
+
+- [HTTP/2 とは - 完全ガイド](https://kinsta.com/learn/what-is-http2/)
+
+</details>
+
+<details>
+<summary><b>開発チームからエラー報告があります：<code>POST http://ws.int/api/v1/Submit/ 結果 413 Request Entity Too Large</code>。何が問題ですか？</b></summary><br>
+
+**NGINX 設定ファイルの修正**
+
+`client_max_body_size` 変数の値を正しく設定します：
 
 ```bash
 client_max_body_size 20M;
 ```
 
-Restart Nginx to apply the changes.
+Nginx を再起動して変更を適用します。
 
-**Modify php.ini file for upload limits**
+**php.ini ファイルのアップロード制限の修正**
 
-It’s not needed on all configurations, but you may also have to modify the PHP upload settings as well to ensure that nothing is going out of limit by php configurations.
+すべての設定で必要ではありませんが、PHPのアップロード設定も修正して、PHPの設定で制限を超えないようにする必要があるかもしれません。
 
-Now find following directives one by one:
+次に、以下のディレクティブを1つずつ見つけてください：
 
 ```bash
 upload_max_filesize
 post_max_size
 ```
 
-and increase its limit to 20M, by default they are 8M and 2M:
+制限を 20M に増やします。デフォルトでは 8M と 2M です：
 
 ```bash
 upload_max_filesize = 20M
 post_max_size = 20M
 ```
 
-Finally save it and restart PHP.
+最後に保存して PHP を再起動します。
 
-Useful resources:
+役立つリソース：
 
-- [413 Request Entity Too Large in Nginx with client_max_body_size set](https://serverfault.com/questions/814767/413-request-entity-too-large-in-nginx-with-client-max-body-size-set)
-
-</details>
-
-<details>
-<summary><b>What is handshake mechanism and why do we need 3 way handshake?</b></summary><br>
-
-**Handshaking** begins when one device sends a message to another device indicating that it wants to establish a communications channel. The two devices then send several messages back and forth that enable them to agree on a communications protocol.
-
-A **three-way handshake** is a method used in a TCP/IP network to create a connection between a local host/client and server. It is a three-step method that requires both the client and server to exchange `SYN` and `ACK` (`SYN`, `SYN-ACK`, `ACK`) packets before actual data communication begins.
-
-Useful resources:
-
-- [Why do we need a 3-way handshake? Why not just 2-way?](https://networkengineering.stackexchange.com/questions/24068/why-do-we-need-a-3-way-handshake-why-not-just-2-way)
+- [NGINX で client_max_body_size を設定して 413 Request Entity Too Large エラーを解決する方法](https://serverfault.com/questions/814767/413-request-entity-too-large-in-nginx-with-client-max-body-size-set)
 
 </details>
 
 <details>
-<summary><b>Why is UDP faster than TCP?</b></summary><br>
+<summary><b>ハンドシェイクメカニズムとは何ですか？なぜ3ウェイハンドシェイクが必要なのですか？</b></summary><br>
 
-**UDP** is faster than **TCP**, and the simple reason is because its nonexistent acknowledge packet (`ACK`) that permits a continuous packet stream, instead of TCP that acknowledges a set of packets, calculated by using the TCP window size and round-trip time (`RTT`).
+**ハンドシェイキング** は、一つのデバイスが別のデバイスに対して通信チャネルを確立したい旨のメッセージを送信することで始まります。その後、二つのデバイスは数回メッセージをやり取りし、通信プロトコルについて合意します。
 
-Useful resources:
+**3ウェイハンドシェイク** は、TCP/IPネットワークでローカルホスト/クライアントとサーバーの間に接続を作成するために使用される方法です。これは3段階のプロセスで、クライアントとサーバーが `SYN` と `ACK`（`SYN`、`SYN-ACK`、`ACK`）パケットを交換する必要があります。その後、実際のデータ通信が始まります。
 
-- [UDP vs TCP, how much faster is it?](https://stackoverflow.com/questions/47903/udp-vs-tcp-how-much-faster-is-it)
+役立つリソース：
 
-</details>
-
-<details>
-<summary><b>Which, in your opinion, are the 5 most important OpenSSH parameters that improve the security? ***</b></summary><br>
-
-To be completed.
-
-Useful resources:
-
-- [OpenSSH security and hardening](https://linux-audit.com/audit-and-harden-your-ssh-configuration/)
+- [なぜ3ウェイハンドシェイクが必要なのか？2ウェイではダメなのか？](https://networkengineering.stackexchange.com/questions/24068/why-do-we-need-a-3-way-handshake-why-not-just-2-way)
 
 </details>
 
 <details>
-<summary><b>What is NAT? What is it used for?</b></summary><br>
+<summary><b>なぜUDPはTCPよりも速いのですか？</b></summary><br>
 
-It enables private IP networks that use unregistered IP addresses to connect to the Internet. **NAT** operates on a router, usually connecting two networks together, and translates the private (not globally unique) addresses in the internal network into legal addresses, before packets are forwarded to another network.
+**UDP** は **TCP** よりも速いです。その理由は、UDPには確認パケット（`ACK`）が存在しないため、継続的なパケットストリームを許可するからです。一方、TCPはパケットのセットを確認し、TCPウィンドウサイズとラウンドトリップタイム（`RTT`）を使用して計算します。
 
-Workstations or other computers requiring special access outside the network can be assigned specific external IPs using **NAT**, allowing them to communicate with computers and applications that require a unique public IP address. **NAT** is also a very important aspect of firewall security.
+役立つリソース：
 
-Useful resources:
-
-- [Network Address Translation (NAT) Concepts](http://www.firewall.cx/networking-topics/network-address-translation-nat/227-nat-concepts.html)
+- [UDP と TCP、どれくらい速いのか？](https://stackoverflow.com/questions/47903/udp-vs-tcp-how-much-faster-is-it)
 
 </details>
 
 <details>
-<summary><b>What is the purpose of Spanning Tree?</b></summary><br>
+<summary><b>セキュリティを向上させるための最も重要な OpenSSH パラメータを5つ挙げてください。 ***</b></summary><br>
 
-This protocol operates at layer 2 of the OSI model with the purpose of preventing loops on the network. Without **STP**, a redundant switch deployment would create broadcast storms that cripple even the most robust networks. There are several iterations based on the original IEEE 802.1D standard; each operates slightly different than the others while largely accomplishing the same loop-free goal.
+完了予定です。
+
+役立つリソース：
+
+- [OpenSSH のセキュリティとハードニング](https://linux-audit.com/audit-and-harden-your-ssh-configuration/)
 
 </details>
 
 <details>
-<summary><b>How to check which ports are listening on my Linux Server?</b></summary><br>
+<summary><b>NATとは何ですか？何に使われるのですか？</b></summary><br>
 
-Use the:
+NAT（ネットワークアドレス変換）は、登録されていないIPアドレスを使用するプライベートIPネットワークがインターネットに接続できるようにします。**NAT** は通常、二つのネットワークを接続するルーター上で動作し、内部ネットワークのプライベート（グローバルにユニークでない）アドレスを合法的なアドレスに変換します。その後、パケットが別のネットワークに転送されます。
+
+ネットワーク外部の特別なアクセスが必要なワークステーションや他のコンピュータには、**NAT** を使用して特定の外部IPを割り当てることができ、ユニークな公開IPアドレスを必要とするコンピュータやアプリケーションと通信できます。**NAT** はファイアウォールのセキュリティの重要な側面でもあります。
+
+役立つリソース：
+
+- [ネットワークアドレス変換（NAT）の概念](http://www.firewall.cx/networking-topics/network-address-translation-nat/227-nat-concepts.html)
+
+</details>
+
+<details>
+<summary><b>スパニングツリーの目的は何ですか？</b></summary><br>
+
+このプロトコルはOSIモデルのレイヤー2で動作し、ネットワーク上のループを防ぐことを目的としています。**STP（スパニングツリー・プロトコル）** がなければ、冗長なスイッチの展開がブロードキャストストームを引き起こし、最も堅牢なネットワークでさえも機能不全に陥る可能性があります。元のIEEE 802.1D標準に基づくいくつかのバージョンがあり、それぞれがわずかに異なる方法で動作しますが、主に同じループフリーの目標を達成します。
+
+</details>
+
+<details>
+<summary><b>Linuxサーバーでリスニングしているポートを確認するにはどうすればよいですか？</b></summary><br>
+
+以下のコマンドを使用します：
 
 - `lsof -i`
 - `ss -l`
-- `netstat -atn` - for tcp
-- `netstat -aun` - for udp
+- `netstat -atn` - TCP用
+- `netstat -aun` - UDP用
 - `netstat -tulapn`
 
 </details>
 
 <details>
-<summary><b>What mean <code>Host key verification failed</code> when you connect to the remote host? Do you accept it automatically?</b></summary><br>
+<summary><b>リモートホストに接続するときに `<code>Host key verification failed</code>` とはどういう意味ですか？自動的に受け入れますか？</b></summary><br>
 
-`Host key verification failed` means that the host key of the remote host was changed. This can easily happen when connecting to a computer who's host keys in `/etc/ssh` have changed if that computer was upgraded without copying its old host keys. The host keys here are proof when you reconnect to a remote computer with ssh that you are talking to the same computer you connected to the first time you accessed it.
+`Host key verification failed` は、リモートホストのホストキーが変更されたことを意味します。これは、ホストキーが `/etc/ssh` にあるコンピュータが、アップグレード中に古いホストキーをコピーせずにアップグレードされた場合に簡単に発生します。ここでのホストキーは、最初にアクセスしたときと同じコンピュータに再接続する際の証明です。
 
-Whenever you connect to a server via SSH, that server's public key is stored in your home directory (or possibly in your local account settings if using a Mac or Windows desktop) file called **known_hosts**. When you reconnect to the same server, the SSH connection will verify the current public key matches the one you have saved in your **known_hosts** file. If the server's key has changed since the last time you connected to it, you will receive the above error.
+SSHを介してサーバーに接続するたびに、そのサーバーの公開鍵が自分のホームディレクトリ（またはMacやWindowsデスクトップを使用している場合はローカルアカウント設定）にある**known_hosts**というファイルに保存されます。再接続時にSSH接続は、現在の公開鍵が**known_hosts**ファイルに保存されているものと一致するかどうかを確認します。サーバーの鍵が前回接続したときから変更されている場合、上記のエラーが表示されます。
 
-Don't delete the entire **known_hosts** file as recommended by some people, this totally voids the point of the warning. It's a security feature to warn you that a man in the middle attack may have happened.
+一部の人が推奨するように、全体の**known_hosts**ファイルを削除しないでください。これは警告の意味を完全に無効にします。これは、中間者攻撃が発生しているかもしれないという警告のセキュリティ機能です。
 
-Before accepting the new host key, contact your/other system administrator for verification.
+新しいホストキーを受け入れる前に、確認のためにシステム管理者に連絡してください。
 
-Useful resources:
+役立つリソース：
 
-- [Git error: "Host Key Verification Failed" when connecting to remote repository](https://stackoverflow.com/questions/13363553/git-error-host-key-verification-failed-when-connecting-to-remote-repository)
+- [Gitエラー：「Host Key Verification Failed」でリモートリポジトリに接続する際の対処法](https://stackoverflow.com/questions/13363553/git-error-host-key-verification-failed-when-connecting-to-remote-repository)
 
 </details>
 
 <details>
-<summary><b>How to send an HTTP request using <code>telnet</code>?</b></summary><br>
+<summary><b><code>telnet</code>を使用してHTTPリクエストを送信するにはどうすればよいですか？</b></summary><br>
 
-For example:
+例えば：
 
 ```bash
 telnet example.com 80
@@ -2856,9 +2856,9 @@ Content-Type: text/html; charset=utf-8
 </details>
 
 <details>
-<summary><b>How do you kill program using e.g. 80 port in Linux?</b></summary><br>
+<summary><b>Linuxでポート80を使用しているプログラムを終了するにはどうすればよいですか？</b></summary><br>
 
-To list any process listening to the port 80:
+ポート80をリスニングしているプロセスをリストするには：
 
 ```bash
 # with lsof
@@ -2868,54 +2868,54 @@ lsof -i:80
 fuser 80/tcp
 ```
 
-To kill any process listening to the port 80:
+ポート80をリスニングしているプロセスをkillするには:
 
 ```bash
 kill $(lsof -t -i:80)
 ```
 
-or more violently:
+もしくは雑に:
 
 ```bash
 kill -9 $(lsof -t -i:80)
 ```
 
-or with `fuser` command:
+それか`fuser`コマンドで:
 
 ```bash
 fuser -k 80/tcp
 ```
 
-Useful resources:
+有用なリソース:
 
-- [How to kill a process running on particular port in Linux?](https://stackoverflow.com/questions/11583562/how-to-kill-a-process-running-on-particular-port-in-linux/32592965)
-- [Finding the PID of the process using a specific port?](https://unix.stackexchange.com/questions/106561/finding-the-pid-of-the-process-using-a-specific-port)
+- [Linuxで特定のポートで実行されているプロセスを終了する方法](https://stackoverflow.com/questions/11583562/how-to-kill-a-process-running-on-particular-port-in-linux/32592965)
+- [特定のポートを使用しているプロセスのPIDを見つける方法](https://unix.stackexchange.com/questions/106561/finding-the-pid-of-the-process-using-a-specific-port)
 
 </details>
 
 <details>
-<summary><b>You get <code>curl: (56) TCP connection reset by peer</code>. What steps will you take to solve this problem?</b></summary><br>
+<summary><b><code>curl: (56) TCP connection reset by peer</code>というエラーが発生しました。問題を解決するためにどのような手順を取りますか？</b></summary><br>
 
-- check if the URL is correct, maybe you should add `www` or set correctly `Host:` header? Check also scheme (http or https)
-- check the domain is resolving into a correct IP address
-- enable debug tracing with `--trace-ascii curl.dump`. `Recv failure` is a really generic error so its hard for more info
-- use external proxy with `--proxy` for debug connection from external ip
-- use network sniffer (e.g. `tcpdump`) for debug connection in the lower TCP/IP layers
-- check firewall rules on the production environment and on the exit point of your network, also check your NAT rules
-- check MTU size of packets traveling over your network
-- check SSL version with ssl/tls `curl` params if you connecting to https protocol
-- it may be a problem on the client side e.g. the netfilter drop or limit  connections from your IP address to the domain
+- URLが正しいか確認してください。`www`を追加する必要があるか、`Host:`ヘッダーを正しく設定する必要があるかもしれません。また、スキーム（httpまたはhttps）も確認してください。
+- ドメインが正しいIPアドレスに解決されているか確認してください。
+- `--trace-ascii curl.dump`でデバッグトレースを有効にします。`Recv failure`は非常に一般的なエラーで、詳細情報を得るのが難しいです。
+- 外部IPからのデバッグ接続のために`--proxy`を使用して外部プロキシを利用します。
+- ネットワークスニファー（例: `tcpdump`）を使用してTCP/IP層でのデバッグ接続を行います。
+- プロダクション環境やネットワークの出口ポイントでファイアウォールルールを確認し、NATルールも確認してください。
+- ネットワークを通過するパケットのMTUサイズを確認してください。
+- httpsプロトコルに接続している場合、SSL/TLSの`curl`パラメータでSSLバージョンを確認します。
+- クライアント側に問題があるかもしれません。例えば、netfilterがあなたのIPアドレスからドメインへの接続をドロップまたは制限している可能性があります。
 
-Useful resources:
+有用なリソース:
 
 - [CURL ERROR: Recv failure: Connection reset by peer - PHP Curl](https://stackoverflow.com/questions/10285700/curl-error-recv-failure-connection-reset-by-peer-php-curl)
 
 </details>
 
 <details>
-<summary><b>How to allow traffic to/from specific IP with iptables?</b></summary><br>
+<summary><b>iptablesで特定のIPへの/からのトラフィックを許可するにはどうすればよいですか？</b></summary><br>
 
-For example:
+例えば：
 
 ```bash
 /sbin/iptables -A INPUT -p tcp -s XXX.XXX.XXX.XXX -j ACCEPT
@@ -2925,16 +2925,16 @@ For example:
 </details>
 
 <details>
-<summary><b>How to block abusive IP addresses with <code>pf</code> in OpenBSD?</b></summary><br>
+<summary><b>OpenBSDで<code>pf</code>を使用して悪質なIPアドレスをブロックするにはどうすればよいですか？</b></summary><br>
 
-The best way to do this is to define a table and create a rule to block the hosts, in `pf.conf`:
+これを実現する最良の方法は、テーブルを定義し、`pf.conf`でホストをブロックするルールを作成することです：
 
 ```bash
 table <badhosts> persist
 block on fxp0 from <badhosts> to any
 ```
 
-And then dynamically add/delete IP addresses from it:
+その後、IPアドレスを動的に追加/削除するには：
 
 ```bash
 pfctl -t badhosts -T add 1.2.3.4
@@ -2944,51 +2944,51 @@ pfctl -t badhosts -T delete 1.2.3.4
 </details>
 
 <details>
-<summary><b>When does the web server like Apache or Nginx write info to log file? Before or after serving the request?</b></summary><br>
+<summary><b>ApacheやNginxのようなWebサーバーは、リクエストを処理する前と後のどちらでログファイルに情報を書き込みますか？</b></summary><br>
 
-Both servers provides very comprehensive and flexible logging capabilities - for logging everything that happens on your server, from the initial request, through the URL mapping process, to the final resolution of the connection, including any errors that may have occurred in the process.
+両方のサーバーは非常に包括的で柔軟なログ機能を提供しています。これにより、サーバーで発生するすべての出来事を記録することができます。初期リクエストから、URLマッピングプロセスを経て、最終的な接続の解決まで、プロセス中に発生したエラーも含まれます。
 
 **Apache**
 
-The Apache server access log records all requests processed by the server (after the request has been completed).
+Apacheサーバーのアクセスログは、サーバーが処理したすべてのリクエストを記録します（リクエストが完了した後に記録されます）。
 
 **Nginx**
 
-NGINX writes information about client requests in the access log right after the request is processed.
+NGINXは、リクエストが処理された直後にアクセスログにクライアントリクエストに関する情報を書き込みます。
 
-Useful resources:
+有用なリソース:
 
-- [When does Apache log to access.log - before or after serving the request?](https://webmasters.stackexchange.com/questions/65566/when-does-apache-log-to-access-log-before-or-after-serving-the-request)
-- [nginx log request before processing](https://serverfault.com/questions/693049/nginx-log-request-before-processing)
+- [Apacheがアクセスログに書き込むタイミング - リクエストを処理する前か後か？](https://webmasters.stackexchange.com/questions/65566/when-does-apache-log-to-access-log-before-or-after-serving-the-request)
+- [Nginxがリクエストを処理する前にログを記録する方法](https://serverfault.com/questions/693049/nginx-log-request-before-processing)
 
 </details>
 
 <details>
-<summary><b>Analyse web server log and show only <code>5xx</code> http codes. What external tools do you use?</b></summary><br>
+<summary><b>Webサーバーログを分析し、<code>5xx</code> HTTPコードのみを表示するには、どの外部ツールを使用しますか？</b></summary><br>
 
-```bash
+  ```bash
 tail -n 100 -f /path/to/logfile | grep "HTTP/[1-2].[0-1]\" [5]"
 ```
 
-Examples of http/https log management tools:
+http/httpsログ管理ツールの例:
 
-- **goaccess** - is an open source real-time web log analyzer and interactive viewer that runs in a terminal in *nix systems or through your browser
-- **graylog** - is a free and open-source log management platform that supports in-depth log collection and analysis
+- **goaccess** - オープンソースのリアルタイムWebログアナライザーで、*nixシステムのターミナルまたはブラウザを通じてインタラクティブに表示します。
+- **graylog** - 無料でオープンソースのログ管理プラットフォームで、詳細なログ収集と分析をサポートしています。
 
-Useful resources:
+有用なリソース:
 
-- [Best Log Management Tools: 51 Useful Tools for Log Management, Monitoring, Analytics, and More](https://stackify.com/best-log-management-tools/)
+- [ベストログ管理ツール: ログ管理、監視、分析などのための51の便利なツール](https://stackify.com/best-log-management-tools/)
 
 </details>
 
 <details>
-<summary><b>Developer uses private key on the server to deploy app through ssh. Why it is incorrect behavior and what is the better (but not ideal) solution in such situations?</b></summary><br>
+<summary><b>開発者がサーバー上でアプリをデプロイするために、SSHを使ってプライベートキーを使用しています。なぜこれは不適切な行動であり、こういった状況でのより良い（しかし理想的ではない）解決策は何ですか？</b></summary><br>
 
-You have the private key for your personal account. The server needs your public key so that it can verify that your private key for the account you are trying to use is authorized.
+プライベートキーは個人のアカウントのためのものです。サーバーはあなたの公開鍵が必要で、それにより、あなたが使用しようとしているアカウントのプライベートキーが認証されていることを確認できます。
 
-The whole point with private keys is that they are private, meaning only you have your private key. If someone takes over your private key, it will be able to impersonate you any time he wants.
+プライベートキーの全目的は、それが「プライベート」であることです。つまり、あなただけがプライベートキーを持っているということです。もし誰かがあなたのプライベートキーを手に入れると、その人物はいつでもあなたになりすますことができるようになります。
 
-A better solutions is the use of ssh key forwarding. An essence, you need to create a `~/.ssh/config` file, if it doesn't exist. Then, add the hosts (either domain name or IP address in the file and set `ForwardAgent yes`). Example:
+より良い解決策は、SSHキー転送を使用することです。本質的には、`~/.ssh/config`ファイルを作成する必要があります。存在しない場合は、新しく作成します。そして、ホスト（ドメイン名またはIPアドレス）をファイルに追加し、`ForwardAgent yes`を設定します。例：
 
 ```bash
 Host git.example.com
@@ -2998,70 +2998,54 @@ Host git.example.com
     ForwardAgent yes
 ```
 
-Your remote server must allow SSH agent forwarding on inbound connections and your local `ssh-agent` must be running.
+リモートサーバーはSSHエージェント転送を受け入れる必要があり、ローカルの`ssh-agent`が実行されている必要があります。
 
-Forwarding an ssh agent carries its own security risk. If someone on the remote machine can gain access to your forwarded ssh agent connection, they can still make use of your keys. However, this is better than storing keys on remote machines: the attacker can only use the ssh agent connection, not the key itself. Thus, only while you're logged into the remote machine can they do anything. If you store the key on the remote machine, they can make a copy of it and use it whenever they want.
+SSHエージェントの転送にはセキュリティリスクがあります。リモートマシン上の誰かが転送されたSSHエージェント接続にアクセスできる場合、その人はあなたの鍵を使用することができます。ただし、これはリモートマシンに鍵を保存するよりも良い方法です。攻撃者はSSHエージェント接続のみを使用でき、鍵自体にはアクセスできません。したがって、リモートマシンにログインしている間だけ、攻撃者は何かを行うことができます。リモートマシンに鍵を保存すると、攻撃者はそれをコピーしていつでも使用できるようになります。
 
-If you use ssh keys remember about passphrases which is strongly recommended to reduce risk of keys accidentally leaking.
+SSH鍵を使用する場合は、鍵が偶発的に漏洩するリスクを減らすためにパスフレーズの使用を強くお勧めします。
 
-Useful resources:
+有用なリソース:
 
-- [How to forward local keypair in a SSH session?](https://stackoverflow.com/questions/12257968/how-to-forward-local-keypair-in-a-ssh-session)
-- [Using SSH agent forwarding](https://developer.github.com/v3/guides/using-ssh-agent-forwarding/)
-- [SSH Agent Forwarding considered harmful](https://heipei.github.io/2015/02/26/SSH-Agent-Forwarding-considered-harmful/)
-- [Security Consideration while using ssh-agent](https://www.commandprompt.com/blog/security_considerations_while_using_ssh-agent/)
-
-</details>
-
-<details>
-<summary><b>What is the difference between CORS and CSPs?</b></summary><br>
-
-**CORS** allows the **Same Origin Policy** to be relaxed for a domain.
-
-e.g. normally if the user logs into both `example.com` and `example.org`, the Same Origin Policy prevents `example.com` from making an AJAX request to `example.org/current_user/full_user_details` and gaining access to the response.
-
-This is the default policy of the web and prevents the user's data from being leaked when logged into multiple sites at the same time.
-
-Now with **CORS**, `example.org` could set a policy to say it will allow the origin `https://example.com` to read responses made by AJAX. This would be done if both `example.com` and `example.org` are ran by the same company and data sharing between the origins is to be allowed in the user's browser. It only affects the client-side of things, not the server-side.
-
-**CSPs** on the other hand set a policy of what content can run on the current site. For example, if JavaScript can be executed inline, or which domains `.js` files can be loaded from. This can be beneficial to act as another line of defense against **XSS** attacks, where the attacker will try and inject script into the HTML page. Normally output would be encoded, however say the developer had forgotten only on one output field. Because the policy is preventing in-line script from executing, the attack is thwarted.
-
-Useful resources:
-
-- [What is the difference between CORS and CSPs? (original)](https://stackoverflow.com/questions/39488241/what-is-the-difference-between-cors-and-csps)
-- [CSP, SRI and CORS](https://colorblindprogramming.com/csp-sri-and-cors)
+- [SSHセッションでローカル鍵ペアを転送する方法](https://stackoverflow.com/questions/12257968/how-to-forward-local-keypair-in-a-ssh-session)
+- [SSHエージェント転送の使用](https://developer.github.com/v3/guides/using-ssh-agent-forwarding/)
+- [SSHエージェント転送は危険とみなされる](https://heipei.github.io/2015/02/26/SSH-Agent-Forwarding-considered-harmful/)
+- [ssh-agent使用時のセキュリティ考慮事項](https://www.commandprompt.com/blog/security_considerations_while_using_ssh-agent/)
 
 </details>
 
 <details>
-<summary><b>Explain four types of responses from firewall when scanning with <code>nmap</code>.</b></summary><br>
+<summary><b>CORSとCSPsの違いは何ですか？</b></summary><br>
 
-There might be four types of responses:
+**CORS**（Cross-Origin Resource Sharing）は、ドメインに対して**同一オリジンポリシー**を緩和することを許可します。
 
-- **Open port** - few ports in the case of the firewall
-- **Closed port** - most ports are closed because of the firewall
-- **Filtered** - `nmap` is not sure whether the port is open or not
-- **Unfiltered** - `nmap` can access the port but is still confused about the open status of the port
+例えば、通常ユーザーが`example.com`と`example.org`の両方にログインしている場合、同一オリジンポリシーは`example.com`が`example.org/current_user/full_user_details`へのAJAXリクエストを行い、その応答にアクセスすることを防ぎます。
 
-Useful resources:
+これはウェブのデフォルトのポリシーで、同時に複数のサイトにログインしているときにユーザーのデータが漏洩するのを防ぎます。
 
-- [NMAP - Closed vs Filtered](https://security.stackexchange.com/questions/182504/nmap-closed-vs-filtered)
+**CORS**を使用すると、`example.org`はポリシーを設定して、`https://example.com`というオリジンがAJAXによって行われた応答を読み取ることを許可することができます。これは、`example.com`と`example.org`が同じ会社によって運営されていて、オリジン間でデータ共有が許可される場合に行います。これはクライアント側にのみ影響を与え、サーバー側には影響を与えません。
+
+一方で、**CSPs**（Content Security Policies）は、現在のサイトで実行できるコンテンツのポリシーを設定します。例えば、JavaScriptがインラインで実行できるか、どのドメインから`.js`ファイルが読み込まれるかなどです。これは、攻撃者がHTMLページにスクリプトを挿入しようとする**XSS**攻撃に対して、別の防御線として役立ちます。通常、出力はエンコードされますが、開発者が出力フィールドの1つだけを忘れてしまった場合、ポリシーがインラインスクリプトの実行を防ぐため、攻撃が阻止されます。
+
+有用なリソース:
+
+- [CORSとCSPsの違いは何ですか？（原文）](https://stackoverflow.com/questions/39488241/what-is-the-difference-between-cors-and-csps)
+- [CSP、SRI、およびCORS](https://colorblindprogramming.com/csp-sri-and-cors)
 
 </details>
 
 <details>
-<summary><b>What does a <code>tcpdump</code> do? How to capture only incoming traffic to your interface?</b></summary><br>
+<summary><b><code>tcpdump</code>は何をしますか？インターフェースへの受信トラフィックのみをキャプチャするにはどうすればよいですか？</b></summary><br>
 
-`tcpdump` is a most powerful and widely used command-line packets sniffer or package analyzer tool which is used to capture or filter TCP/IP packets that received or transferred over a network on a specific interface.
+`tcpdump` は、最も強力で広く使用されているコマンドラインのパケットスニファーまたはパッケージアナライザーツールで、特定のインターフェースで受信または転送されたTCP/IPパケットをキャプチャまたはフィルタリングするために使用されます。
 
-`tcpdump` puts your network card into promiscuous mode, which basically tells it to accept every packet it receives. It allows the user to see all traffic being passed over the network. Wireshark uses pcap to capture packets.
+`tcpdump` はネットワークカードをプロミスキャスモードに設定します。これは、受信するすべてのパケットを受け入れるように指示するもので、ユーザーはネットワーク上で通過するすべてのトラフィックを確認できます。Wiresharkはパケットキャプチャにpcapを使用します。
 
-If you want to view only packets that come to your interface you should:
+インターフェースに到着するパケットのみを表示したい場合は、次のようにします：
 
-- `-Q in` - for Linux `tcpdump` version
-- `-D in` - for BSD `tcpdump` version
+- `-Q in` - Linux `tcpdump` バージョン用
+- `-D in` - BSD `tcpdump` バージョン用
 
-Both params set send/receive direction direction for which packets should be captured.
+これらのパラメータは、どのパケットをキャプチャするかの送信/受信方向を設定します。
 
 ```bash
 tcpdump -nei eth0 -Q in host 192.168.252.125 and port 8080
@@ -3072,68 +3056,68 @@ tcpdump -nei eth0 -Q in host 192.168.252.125 and port 8080
 ###### Devops Questions (7)
 
 <details>
-<summary><b>Which are the top DevOps tools? Which tools have you worked on?</b></summary><br>
+<summary><b>主要なDevOpsツールはどれですか？どのツールを使ったことがありますか？</b></summary><br>
 
-The most popular DevOps tools are mentioned below:
+最も人気のあるDevOpsツールは以下の通りです：
 
-- **Git** : Version Control System tool
-- **Jenkins** : Continuous Integration tool
-- **Selenium** : Continuous Testing tool
-- **Puppet**, **Chef**, **Ansible** : Configuration Management and Deployment tools
-- **Nagios** : Continuous Monitoring tool
-- **Docker** : Containerization tool
-
-</details>
-
-<details>
-<summary><b>How do all these tools work together?</b></summary><br>
-
-The most popular DevOps tools are mentioned below:
-
-- Developers develop the code and this source code is managed by Version Control System tools like Git etc.
-- Developers send this code to the Git repository and any changes made in the code is committed to this Repository
-- Jenkins pulls this code from the repository using the Git plugin and build it using tools like Ant or Maven
-- Configuration management tools like puppet deploys & provisions testing environment and then Jenkins releases this code on the test environment on which testing is done using tools like selenium
-- Once the code is tested, Jenkins send it for deployment on the production server (even production server is provisioned & maintained by tools like puppet)
-- After deployment It is continuously monitored by tools like Nagios
-- Docker containers provides testing environment to test the build features
+- **Git** : バージョン管理システムツール
+- **Jenkins** : 継続的インテグレーションツール
+- **Selenium** : 継続的テストツール
+- **Puppet**, **Chef**, **Ansible** : 構成管理とデプロイメントツール
+- **Nagios** : 継続的監視ツール
+- **Docker** : コンテナ化ツール
 
 </details>
 
 <details>
-<summary><b>What are playbooks in Ansible?</b></summary><br>
+<summary><b>これらのツールはどのように連携して動作しますか？</b></summary><br>
 
-Playbooks are Ansible’s configuration, deployment, and orchestration language.
+最も人気のあるDevOpsツールの連携の流れは以下の通りです：
 
-They can describe a policy you want your remote systems to enforce, or a set of steps in a general IT process. Playbooks are designed to be human-readable and are developed in a basic text language.
-
-At a basic level, playbooks can be used to manage configurations of and deployments to remote machines.
-
-</details>
-
-<details>
-<summary><b>What is NRPE (Nagios Remote Plugin Executor) in Nagios?</b></summary><br>
-
-The **NRPE** addon is designed to allow you to execute Nagios plugins on remote Linux/Unix machines. The main reason for doing this is to allow Nagios to monitor "local" resources (like CPU load, memory usage, etc.) on remote machines.
-
-Since these public resources are not usually exposed to external machines, an agent like **NRPE** must be installed on the remote Linux/Unix machines.
+- 開発者がコードを開発し、そのソースコードはGitなどのバージョン管理システムツールで管理されます。
+- 開発者はこのコードをGitリポジトリに送信し、コードの変更はこのリポジトリにコミットされます。
+- JenkinsはGitプラグインを使用してリポジトリからコードを取得し、AntやMavenなどのツールを使用してビルドします。
+- Puppetのような構成管理ツールがテスト環境をデプロイおよびプロビジョニングし、Jenkinsがテスト環境にコードをリリースします。このテスト環境ではSeleniumなどのツールを使用してテストが行われます。
+- コードがテストされた後、Jenkinsはそれを本番サーバーにデプロイします（本番サーバーもPuppetなどのツールでプロビジョニングおよび管理されます）。
+- デプロイ後はNagiosのようなツールで継続的に監視されます。
+- Dockerコンテナはビルド機能をテストするためのテスト環境を提供します。
 
 </details>
 
 <details>
-<summary><b>What is the difference between Active and Passive check in Nagios?</b></summary><br>
+<summary><b>Ansibleのプレイブックとは何ですか？</b></summary><br>
 
-The major difference between Active and Passive checks is that Active checks are initiated and performed by Nagios, while passive checks are performed by external applications.
+プレイブックは、Ansibleの構成、デプロイメント、およびオーケストレーション言語です。
 
-Passive checks are useful for monitoring services that are:
+プレイブックは、リモートシステムに強制したいポリシーや、一般的なITプロセスの一連の手順を記述することができます。プレイブックは人間が読みやすいように設計されており、基本的なテキスト言語で開発されます。
 
-- asynchronous in nature and cannot be monitored effectively by polling their status on a regularly scheduled basis.
-- located behind a firewall and cannot be checked actively from the monitoring host.
+基本的なレベルでは、プレイブックはリモートマシンの構成やデプロイメントを管理するために使用できます。
 
-The main features of Actives checks are as follows:
+</details>
 
-- active checks are initiated by the Nagios process.
-- active checks are run on a regularly scheduled basis.
+<details>
+<summary><b>NRPE（Nagios Remote Plugin Executor）とは何ですか？</b></summary><br>
+
+**NRPE**アドオンは、リモートLinux/UnixマシンでNagiosプラグインを実行するために設計されています。これを行う主な理由は、Nagiosがリモートマシンの「ローカル」リソース（CPU負荷、メモリ使用量など）を監視できるようにするためです。
+
+これらのパブリックリソースは通常外部マシンには公開されていないため、**NRPE**のようなエージェントをリモートLinux/Unixマシンにインストールする必要があります。
+
+</details>
+
+<details>
+<summary><b>Nagiosにおけるアクティブチェックとパッシブチェックの違いは何ですか？</b></summary><br>
+
+アクティブチェックとパッシブチェックの主要な違いは、アクティブチェックはNagiosによって開始され実行されるのに対し、パッシブチェックは外部アプリケーションによって実行される点です。
+
+パッシブチェックは以下のようなサービスの監視に便利です：
+
+- 非同期的な性質を持ち、定期的にそのステータスをポーリングして監視するのが効果的でないサービス。
+- ファイアウォールの背後にあり、監視ホストからアクティブにチェックできないサービス。
+
+アクティブチェックの主な特徴は以下の通りです：
+
+- アクティブチェックはNagiosプロセスによって開始されます。
+- アクティブチェックは定期的に実行されます。
 
 </details>
 
