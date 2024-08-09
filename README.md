@@ -1341,7 +1341,7 @@ HTTPS接続を処理し、リクエストを復号化して、暗号化されて
 
 </details>
 
-### :diamond_shape_with_a_dot_inside: <a name="regular-sysadmin">普通のシステム管理者</a>
+### :diamond_shape_with_a_dot_inside: <a name="regular-sysadmin">一般的なシステム管理者</a>
 
 ###### System Questions (60)
 
